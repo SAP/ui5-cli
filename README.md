@@ -5,7 +5,7 @@
 > Part of the [UI5 Build and Development Tooling](https://github.com/SAP/ui5-tooling)
 
 [![Travis CI Build Status](https://travis-ci.org/SAP/ui5-cli.svg?branch=master)](https://travis-ci.org/SAP/ui5-cli)
-[![npm Package Version](https://img.shields.io/npm/v/@ui5/cli.svg)](https://www.npmjs.com/package/@ui5/cli)
+[![npm Package Version](https://img.shields.io/npm/v/@ui5/cli.svg)](https://www.npmjs.com/package/@ui5/cli) [![Greenkeeper badge](https://badges.greenkeeper.io/SAP/ui5-cli.svg)](https://greenkeeper.io/)
 
 **This is a Pre-Alpha release!**  
 **The UI5 Build and Development Tooling described here is not intended for productive use yet. Breaking changes are to be expected.**
