@@ -1,0 +1,32 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "test/fixtures/application.a/package.json",
+        "test/fixtures/application.b/package.json",
+        "test/fixtures/application.c/package.json",
+        "test/fixtures/application.c2/package.json",
+        "test/fixtures/application.c3/package.json",
+        "test/fixtures/application.d/package.json",
+        "test/fixtures/application.e/package.json",
+        "test/fixtures/application.f/package.json",
+        "test/fixtures/collection/library.a/package.json",
+        "test/fixtures/collection/library.b/package.json",
+        "test/fixtures/collection/library.c/package.json",
+        "test/fixtures/collection/package.json",
+        "test/fixtures/glob/application.a/package.json",
+        "test/fixtures/glob/application.b/package.json",
+        "test/fixtures/glob/package.json",
+        "test/fixtures/init-application/package.json",
+        "test/fixtures/init-invalid-webapp-src/package.json",
+        "test/fixtures/init-library/package.json",
+        "test/fixtures/library.d-depender/package.json",
+        "test/fixtures/library.d/package.json",
+        "test/fixtures/library.e/package.json",
+        "test/fixtures/library.f/package.json",
+        "test/fixtures/library.g/package.json"
+      ]
+    }
+  }
+}
