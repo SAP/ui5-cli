@@ -16,21 +16,36 @@ if (pkg.engines && pkg.engines.node && !semver.satisfies(nodeVersion, pkg.engine
 	process.exit(1);
 }
 
-const updateNotifier = require("update-notifier");
-const cli = require("yargs");
+(function() {
+	// Wrapping in IIFE to use return
 
-updateNotifier({
-	pkg,
-	updateCheckInterval: 1000 * 60 * 60 * 24, // 1 day
-	shouldNotifyInNpmScript: true
-}).notify();
+	const importLocal = require("import-local");
+	// Prefer a local installation of @ui5/cli.
+	// This will invoke the local CLI, so no further action required
+	if (importLocal(__filename)) {
+		return;
+	}
 
-// CLI modules
-cli.commandDir("../lib/cli/commands");
+	const updateNotifier = require("update-notifier");
+	const cli = require("yargs");
 
-// Format terminal output to full available width
-cli.wrap(cli.terminalWidth());
+	updateNotifier({
+		pkg,
+		updateCheckInterval: 1000 * 60 * 60 * 24, // 1 day
+		shouldNotifyInNpmScript: true
+	}).notify();
 
-// yargs registers a get method on the argv property.
-// The property needs to be accessed to initialize everything.
-cli.argv;
+	// Explicitly set CLI version as the yargs default might
+	// be wrong in case a local CLI installation is used
+	cli.version(pkg.version);
+
+	// CLI modules
+	cli.commandDir("../lib/cli/commands");
+
+	// Format terminal output to full available width
+	cli.wrap(cli.terminalWidth());
+
+	// yargs registers a get method on the argv property.
+	// The property needs to be accessed to initialize everything.
+	cli.argv;
+})();
