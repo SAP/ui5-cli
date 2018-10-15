@@ -42,7 +42,8 @@ setTimeout(() => {
 
 	// Explicitly set CLI version as the yargs default might
 	// be wrong in case a local CLI installation is used
-	cli.version(pkg.version);
+	// Also add CLI location
+	cli.version(`${pkg.version} (from ${__filename})`);
 
 	// Explicitly set script name to prevent windows from displaying "ui5.js"
 	cli.scriptName("ui5");
