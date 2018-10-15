@@ -16,14 +16,19 @@ if (pkg.engines && pkg.engines.node && !semver.satisfies(nodeVersion, pkg.engine
 	process.exit(1);
 }
 
-(function() {
-	// Wrapping in IIFE to use return
-
-	const importLocal = require("import-local");
-	// Prefer a local installation of @ui5/cli.
-	// This will invoke the local CLI, so no further action required
-	if (importLocal(__filename)) {
-		return;
+// Timeout is required to log info when importing from local installation
+setTimeout(() => {
+	if (!process.env.UI5_DO_NOT_PREFER_LOCAL_CLI) {
+		const importLocal = require("import-local");
+		// Prefer a local installation of @ui5/cli.
+		// This will invoke the local CLI, so no further action required
+		if (importLocal(__filename)) {
+			console.info(`Info: This project has an individual ${pkg.name} installation which ` +
+				"will be used over the global one.");
+			console.info("See https://github.com/SAP/ui5-cli#local-vs-global-installation for details.");
+			console.info("");
+			return;
+		}
 	}
 
 	const updateNotifier = require("update-notifier");
@@ -48,4 +53,4 @@ if (pkg.engines && pkg.engines.node && !semver.satisfies(nodeVersion, pkg.engine
 	// yargs registers a get method on the argv property.
 	// The property needs to be accessed to initialize everything.
 	cli.argv;
-})();
+}, 0);
