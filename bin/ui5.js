@@ -44,6 +44,9 @@ setTimeout(() => {
 	// be wrong in case a local CLI installation is used
 	cli.version(pkg.version);
 
+	// Explicitly set script name to prevent windows from displaying "ui5.js"
+	cli.scriptName("ui5");
+
 	// CLI modules
 	cli.commandDir("../lib/cli/commands");
 
