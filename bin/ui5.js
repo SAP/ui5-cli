@@ -18,15 +18,20 @@ if (pkg.engines && pkg.engines.node && !semver.satisfies(nodeVersion, pkg.engine
 
 // Timeout is required to log info when importing from local installation
 setTimeout(() => {
-	if (!process.env.UI5_DO_NOT_PREFER_LOCAL_CLI) {
+	if (!process.env.UI5_CLI_NO_LOCAL) {
 		const importLocal = require("import-local");
 		// Prefer a local installation of @ui5/cli.
 		// This will invoke the local CLI, so no further action required
 		if (importLocal(__filename)) {
-			console.info(`Info: This project has an individual ${pkg.name} installation which ` +
-				"will be used over the global one.");
-			console.info("See https://github.com/SAP/ui5-cli#local-vs-global-installation for details.");
-			console.info("");
+			if (process.argv.includes("--verbose")) {
+				console.info(`INFO: This project contains an individual ${pkg.name} installation which ` +
+					"will be used over the global one.");
+				console.info("See https://github.com/SAP/ui5-cli#local-vs-global-installation for details.");
+				console.info("");
+			} else {
+				console.info(`INFO: Using local ${pkg.name} installation`);
+				console.info("");
+			}
 			return;
 		}
 	}

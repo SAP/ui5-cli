@@ -146,7 +146,7 @@ However, it makes sense to add the UI5 CLI as a [devDependency](https://docs.npm
 
 In case you have both, a local installation in one of your projects as well as a global installation, the UI5 CLI will always try to invoke the local installation. This is in part because [npm scripts](https://docs.npmjs.com/misc/scripts) defined in your `package.json` will also always invoke the local installation.
 
-This behavior can be disabled by setting the environment variable `UI5_DO_NOT_PREFER_LOCAL_CLI`.
+This behavior can be disabled by setting the environment variable `UI5_CLI_NO_LOCAL`.
 
 **Example**  
 You have a project located at `/my-application`. The project has a devDependency to `@ui5/cli` and defines a start-script `"ui5 serve"`.
@@ -157,8 +157,8 @@ Current Working Directory | Command | Uses globally installed UI5 CLI | Uses loc
 `/my-application` | `ui5 --version` |  | ✔️
 `/my-application` | `ui5 serve` |  | ✔️
 `/my-application` | `npm start` |  | ✔️
-`/my-application` | `UI5_DO_NOT_PREFER_LOCAL_CLI=X ui5 serve` | ✔️ |
-`/my-application` | `UI5_DO_NOT_PREFER_LOCAL_CLI=X npm start` |  | ✔️
+`/my-application` | `UI5_CLI_NO_LOCAL=X ui5 serve` | ✔️ |
+`/my-application` | `UI5_CLI_NO_LOCAL=X npm start` |  | ✔️
 
 
 ## Contributing
