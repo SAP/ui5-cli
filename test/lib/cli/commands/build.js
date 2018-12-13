@@ -1,0 +1,97 @@
+const {test} = require("ava");
+const sinon = require("sinon");
+const build = require("../../../../lib/cli/commands/build");
+const normalizer = require("@ui5/project").normalizer;
+const builder = require("@ui5/builder").builder;
+const logger = require("@ui5/logger");
+let normalizerStub = null;
+let builderStub = null;
+let loggerStub = null;
+
+const args = {
+	_: [],
+	dest: "./dist",
+	loglevel: "info",
+	t8r: "npm",
+	translator: "npm"
+};
+const defaultBuilderArgs = {
+	tree: {
+		metadata: {
+			name: "Sample"
+		}
+	},
+	destPath: "./dist",
+	buildDependencies: undefined,
+	dev: false,
+	selfContained: false,
+	devExcludeProject: undefined,
+	includedTasks: undefined,
+	excludedTasks: undefined
+};
+
+test.before("Mocking before test execution", (t) => {
+	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
+	builderStub = sinon.stub(builder, "build").returns(Promise.resolve());
+	loggerStub = sinon.stub(logger, "setShowProgress");
+});
+
+test.after("Restore mocks after test exection", (t) => {
+	loggerStub.restore();
+	builderStub.restore();
+	normalizerStub.restore();
+});
+
+test("ui5 build (default) ", async (t) => {
+	normalizerStub.resolves({
+		metadata:
+		{
+			name: "Sample"
+		}
+	});
+	args._ = ["build"];
+	await build.handler(args);
+	t.deepEqual(builderStub.getCall(0).args[0], defaultBuilderArgs, "default build triggered with expected arguments");
+});
+
+test("ui5 build dev", async (t) => {
+	normalizerStub.resolves({
+		metadata:
+		{
+			name: "Sample"
+		}
+	});
+	args._ = ["build", "dev"];
+	await build.handler(args);
+	t.deepEqual(
+		builderStub.getCall(0).args[0],
+		Object.assign({}, {dev: true}, defaultBuilderArgs),
+		"Dev build called with expected arguments"
+	);
+});
+
+test("ui5 build self-contained", async (t) => {
+	normalizerStub.resolves({
+		metadata:
+		{
+			name: "Sample"
+		}
+	});
+	args._ = ["build", "self-contained"];
+	await build.handler(args);
+	t.deepEqual(
+		builderStub.getCall(0).args[0],
+		Object.assign({}, {selfContained: true}, defaultBuilderArgs),
+		"Self-contained build called with expected arguments"
+	);
+});
+
+// test("Error: exits build process if error is thrown while processing", async (t) => {
+// 	sinon.stub(process, "exit");
+// 	normalizerStub.rejects(new Error("Error: Project Tree wasn't created"));
+// 	args._ = ["build", "should-throw"];
+// 	await build.handler(args).catch((err) => {
+// 		t.is(process.exit.firstCall().args[0], 1);
+// 		process.exit.restore();
+// 	});
+// });
