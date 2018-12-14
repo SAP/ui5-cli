@@ -68,8 +68,8 @@ test.serial("ui5 serve --h2", async (t) => {
 	normalizerStub.resolves(projectTree);
 	serverStub.resolves({h2: true, port: 8443});
 	sslUtilStub.resolves({
-		key: "randombyte-likes-ponies",
-		cert: "secret"
+		key: "randombyte-likes-ponies-key",
+		cert: "randombyte-likes-ponies-cert"
 	});
 
 	// loads project tree using http 2
@@ -84,6 +84,8 @@ test.serial("ui5 serve --h2", async (t) => {
 	const injectedProjectTree = serverStub.getCall(0).args[0];
 	const injectedServerConfig = serverStub.getCall(0).args[1];
 
+	t.is(sslUtilStub.getCall(0).args[0], "$HOME/.ui5/server/server.key", "Load ssl key from default path");
+	t.is(sslUtilStub.getCall(0).args[1], "$HOME/.ui5/server/server.crt", "Load ssl cert from default path");
 	t.deepEqual(injectedProjectTree, projectTree, "Starting server with given project tree");
 	t.is(injectedServerConfig.port === 8443, true, "http2 default port was auto set");
 
@@ -92,8 +94,8 @@ test.serial("ui5 serve --h2", async (t) => {
 		acceptRemoteConnections: false,
 		h2: true,
 		port: 8443,
-		key: "randombyte-likes-ponies",
-		cert: "secret"
+		key: "randombyte-likes-ponies-key",
+		cert: "randombyte-likes-ponies-cert"
 	}, "Starting server with specific server config");
 });
 
@@ -134,10 +136,42 @@ test.serial("ui5 serve --open (opens default url)", async (t) => {
 	const openedUrl = openUrlStub.getCall(0).lastArg;
 	t.is(openedUrl, "http://localhost:8080", `Opens url: ${openedUrl}`);
 });
-// test("ui5 serve --config", async (t) => { });
+
+test.serial("ui5 serve --key --cert", async (t) => {
+	normalizerStub.resolves(projectTree);
+	serverStub.resolves({h2: true, port: 8443});
+	sslUtilStub.resolves({
+		key: "ponies-loaded-from-custompath-key",
+		cert: "ponies-loaded-from-custompath-crt"
+	});
+
+	// loads project tree using http 2
+	const pPrepareServerConfig = await serve.handler(Object.assign({}, defaultInitialHandlerArgs, {
+		h2: true,
+		key: "server/randombyte-likes-ponies.key",
+		cert: "server/randombyte-likes-ponies.crt"
+	}));
+	// preprocess project config
+	const pFetchSSLCert = await pPrepareServerConfig;
+	// Fetching ssl certificate
+	const pServeServer = await pFetchSSLCert;
+	// serve server using config
+	await pServeServer;
+
+	const injectedServerConfig = serverStub.getCall(0).args[1];
+	t.is(sslUtilStub.getCall(0).args[0], "server/randombyte-likes-ponies.key", "Loading key from specified path");
+	t.is(sslUtilStub.getCall(0).args[1], "server/randombyte-likes-ponies.crt", "Loading cert from specified path");
+	t.deepEqual(injectedServerConfig, {
+		changePortIfInUse: true,
+		acceptRemoteConnections: false,
+		h2: true,
+		port: 8443,
+		key: "ponies-loaded-from-custompath-key",
+		cert: "ponies-loaded-from-custompath-crt"
+	}, "Starting server with specific server config");
+});
+
+// test.serial("ui5 serve --config", async (t) => { });
 
 // test("ui5 serve --translator", async (t) => { });
 
-// test("ui5 serve --key", async (t) => { });
-
-// test("ui5 serve --cert", async (t) => { });
