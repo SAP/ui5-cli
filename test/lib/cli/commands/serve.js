@@ -58,7 +58,9 @@ test.serial("ui5 serve: default", async (t) => {
 		changePortIfInUse: true,
 		acceptRemoteConnections: false,
 		h2: false,
-		port: 8080
+		port: 8080,
+		cert: undefined,
+		key: undefined
 	}, "Starting server with specific server config");
 });
 
