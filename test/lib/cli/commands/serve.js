@@ -171,7 +171,21 @@ test.serial("ui5 serve --key --cert", async (t) => {
 	}, "Starting server with specific server config");
 });
 
-// test.serial("ui5 serve --config", async (t) => { });
 
-// test("ui5 serve --translator", async (t) => { });
+test.serial("ui5 serve --translator --config", async (t) => {
+	normalizerStub.resolves(projectTree);
+	serverStub.resolves({h2: false, port: 8080});
+
+	const pPrepareServerConfig = await serve.handler(Object.assign({}, defaultInitialHandlerArgs, {
+		translator: "static",
+		config: "path/to/my/config.json"
+	}));
+	const pServeServer = await pPrepareServerConfig;
+	await pServeServer;
+
+	t.deepEqual(normalizerStub.getCall(0).args[0], {
+		translator: "static",
+		configPath: "path/to/my/config.json"
+	}, "CLI was called with static translator");
+});
 
