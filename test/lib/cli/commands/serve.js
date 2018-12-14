@@ -1,6 +1,5 @@
 const {test} = require("ava");
 const sinon = require("sinon");
-// const opn = require("opn");
 const normalizer = require("@ui5/project").normalizer;
 const serve = require("../../../../lib/cli/commands/serve");
 const ui5Server = require("@ui5/server");
@@ -14,6 +13,7 @@ const defaultInitialHandlerArgs = Object.freeze({
 	t8r: "npm",
 	translator: "npm"
 });
+
 const projectTree = {
 	metadata: {
 		name: "Sample"
@@ -23,17 +23,20 @@ const projectTree = {
 let normalizerStub = null;
 let serverStub = null;
 let sslUtilStub = null;
+let openUrlStub = null;
 
 test.beforeEach("Stubbing modules before execution", (t) => {
 	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
 	serverStub = sinon.stub(server, "serve");
 	sslUtilStub = sinon.stub(ui5Server.sslUtil, "getSslCertificate");
+	openUrlStub = sinon.stub(serve, "openUrl");
 });
 
 test.afterEach("Stubs Cleanup", (t) => {
 	normalizerStub.restore();
 	serverStub.restore();
 	sslUtilStub.restore();
+	openUrlStub.restore();
 });
 
 test.serial("ui5 serve: default", async (t) => {
@@ -41,7 +44,7 @@ test.serial("ui5 serve: default", async (t) => {
 	serverStub.resolves({h2: false, port: 8080});
 
 	// loads project tree
-	const pPrepareServerConfig = await serve.handler(Object.assign({}, defaultInitialHandlerArgs));
+	const pPrepareServerConfig = await serve.handler(defaultInitialHandlerArgs);
 	// preprocess project config, skipping cert load
 	const pServeServer = await pPrepareServerConfig;
 	// serve server using config
@@ -92,26 +95,47 @@ test.serial("ui5 serve --h2", async (t) => {
 	}, "Starting server with specific server config");
 });
 
-// test("ui5 serve --config", async (t) => {
+test.serial("ui5 serve --accept-remote-connections", async (t) => {
+	normalizerStub.resolves(projectTree);
+	serverStub.resolves({port: 8080});
+	const pPrepareServerConfig = await serve.handler(
+		Object.assign({}, defaultInitialHandlerArgs, {acceptRemoteConnections: true})
+	);
+	const pServeServer = await pPrepareServerConfig;
+	await pServeServer;
+	const injectedServerConfig = serverStub.getCall(0).args[1];
+	t.is(injectedServerConfig.acceptRemoteConnections, true, "Remove connections are accepted");
+});
 
-// });
+test.serial("ui5 serve --open", async (t) => {
+	normalizerStub.resolves(projectTree);
+	serverStub.resolves({port: 8080});
+	const pPrepareServerConfig = await serve.handler(
+		Object.assign({}, defaultInitialHandlerArgs, {open: "webapp/index.html"})
+	);
+	const pServeServer = await pPrepareServerConfig;
+	const pServeServerHandler = await pServeServer;
+	await pServeServerHandler;
+	const openedUrl = openUrlStub.getCall(0).lastArg;
+	t.is(openedUrl, "http://localhost:8080/webapp/index.html", `Opens url: ${openedUrl}`);
+});
 
-// test("ui5 serve --translator", async (t) => {
+test.serial("ui5 serve --open (opens default url)", async (t) => {
+	normalizerStub.resolves(projectTree);
+	serverStub.resolves({port: 8080});
+	const pPrepareServerConfig = await serve.handler(
+		Object.assign({}, defaultInitialHandlerArgs, {open: true})
+	);
+	const pServeServer = await pPrepareServerConfig;
+	const pServeServerHandler = await pServeServer;
+	await pServeServerHandler;
+	const openedUrl = openUrlStub.getCall(0).lastArg;
+	t.is(openedUrl, "http://localhost:8080", `Opens url: ${openedUrl}`);
+});
+// test("ui5 serve --config", async (t) => { });
 
-// });
+// test("ui5 serve --translator", async (t) => { });
 
-// test("ui5 serve --port --open", async (t) => {
+// test("ui5 serve --key", async (t) => { });
 
-// });
-
-// test("ui5 serve --accept-remote-connections", async (t) => {
-
-// });
-
-// test("ui5 serve --key", async (t) => {
-
-// });
-
-// test("ui5 serve --cert", async (t) => {
-
-// });
+// test("ui5 serve --cert", async (t) => { });
