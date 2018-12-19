@@ -188,4 +188,3 @@ test.serial("ui5 serve --translator --config", async (t) => {
 		configPath: "path/to/my/config.json"
 	}, "CLI was called with static translator");
 });
-
