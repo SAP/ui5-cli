@@ -85,13 +85,3 @@ test("ui5 build self-contained", async (t) => {
 		"Self-contained build called with expected arguments"
 	);
 });
-
-// test("Error: exits build process if error is thrown while processing", async (t) => {
-// 	sinon.stub(process, "exit");
-// 	normalizerStub.rejects(new Error("Error: Project Tree wasn't created"));
-// 	args._ = ["build", "should-throw"];
-// 	await build.handler(args).catch((err) => {
-// 		t.is(process.exit.firstCall().args[0], 1);
-// 		process.exit.restore();
-// 	});
-// });
