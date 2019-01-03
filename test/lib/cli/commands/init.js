@@ -1,7 +1,7 @@
 const {test} = require("ava");
 const sinon = require("sinon");
 const initCommand = require("../../../../lib/cli/commands/init");
-const validate = require("../../../../lib/utils/validate");
+const fsHelper = require("../../../../lib/utils/fsHelper");
 const path = require("path");
 const promisify = require("util").promisify;
 const init = require("../../../../lib/init/init");
@@ -17,12 +17,12 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 	type: application`;
 
 	const pathStub = sinon.stub(path, "resolve").returns(ui5YamlPath);
-	const validateStub = sinon.stub(validate, "exists").resolves(false);
+	const fsHelperStub = sinon.stub(fsHelper, "exists").resolves(false);
 	const initStub = sinon.stub(init, "init").resolves({});
 	const safeDumpYamlStub = sinon.stub(jsYaml, "safeDump").returns(ui5Yaml);
 	const fsWriteFileStub = sinon.stub(fs, "writeFile").callsArgWith(2);
 	const lazyRequireStub = sinon.stub(initCommand, "lazyRequireDependencies").returns({
-		validate: validate,
+		fsHelper: fsHelper,
 		init: init,
 		promisify: promisify,
 		path: path,
@@ -35,7 +35,7 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 	t.is(fsWriteFileStub.getCall(0).args[0], ui5YamlPath, "Passes yaml path to write the yaml file to");
 	t.is(fsWriteFileStub.getCall(0).args[1], ui5Yaml, "Passes yaml content to write to fs");
 
-	validateStub.restore();
+	fsHelperStub.restore();
 	pathStub.restore();
 	initStub.restore();
 	safeDumpYamlStub.restore();
@@ -45,7 +45,7 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 
 // FIXME: stubbing process leads to errors, need to be fixed
 // test.serial("Error: throws if ui5.yaml already exists", async (t) => {
-// 	const fileExistsStub = sinon.stub(validate, "exists").resolves(true);
+// 	const fileExistsStub = sinon.stub(fsHelper, "exists").resolves(true);
 // 	const processExitStub = sinon.stub(process, "exit");
 
 // 	await initCommand.handler();

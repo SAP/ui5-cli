@@ -1,12 +1,12 @@
 const {test} = require("ava");
-const {exists, pathsExist} = require("../../../lib/utils/validate");
+const {exists, pathsExist} = require("../../../lib/utils/fsHelper");
 
-test("validates if directory or file exists", async (t) => {
+test("check if directory or file exists", async (t) => {
 	t.is(await exists("./test/fixtures/init/application/ui5.yaml"), true, "ui5.yaml found in path");
 	t.is(await exists("./test/fixtures/init"), true, "directory exists in path");
 });
 
-test("validate if list of paths exist", async (t) => {
+test("check if list of paths exist", async (t) => {
 	t.deepEqual(await pathsExist(["src", "test"], "./test/fixtures/init/library"), [true, true], "paths do exist");
 });
 
