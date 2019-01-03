@@ -30,19 +30,19 @@ const defaultBuilderArgs = {
 	excludedTasks: undefined
 };
 
-test.before("Mocking before test execution", (t) => {
+test.beforeEach("Mocking before test execution", (t) => {
 	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
 	builderStub = sinon.stub(builder, "build").returns(Promise.resolve());
 	loggerStub = sinon.stub(logger, "setShowProgress");
 });
 
-test.after("Restore mocks after test exection", (t) => {
+test.afterEach("Restore mocks after test exection", (t) => {
 	loggerStub.restore();
 	builderStub.restore();
 	normalizerStub.restore();
 });
 
-test("ui5 build (default) ", async (t) => {
+test.serial("ui5 build (default) ", async (t) => {
 	normalizerStub.resolves({
 		metadata:
 		{
@@ -54,7 +54,7 @@ test("ui5 build (default) ", async (t) => {
 	t.deepEqual(builderStub.getCall(0).args[0], defaultBuilderArgs, "default build triggered with expected arguments");
 });
 
-test("ui5 build dev", async (t) => {
+test.serial("ui5 build dev", async (t) => {
 	normalizerStub.resolves({
 		metadata:
 		{
@@ -65,12 +65,12 @@ test("ui5 build dev", async (t) => {
 	await build.handler(args);
 	t.deepEqual(
 		builderStub.getCall(0).args[0],
-		Object.assign({}, {dev: true}, defaultBuilderArgs),
+		Object.assign({}, defaultBuilderArgs, {dev: true}),
 		"Dev build called with expected arguments"
 	);
 });
 
-test("ui5 build self-contained", async (t) => {
+test.serial("ui5 build self-contained", async (t) => {
 	normalizerStub.resolves({
 		metadata:
 		{
@@ -81,7 +81,7 @@ test("ui5 build self-contained", async (t) => {
 	await build.handler(args);
 	t.deepEqual(
 		builderStub.getCall(0).args[0],
-		Object.assign({}, {selfContained: true}, defaultBuilderArgs),
+		Object.assign({}, defaultBuilderArgs, {selfContained: true}),
 		"Self-contained build called with expected arguments"
 	);
 });
