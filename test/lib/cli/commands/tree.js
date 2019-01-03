@@ -16,7 +16,7 @@ test.afterEach("Stubbing modules before execution", (t) => {
 
 test.serial("ui5 tree (generates dependency tree before output)", async (t) => {
 	normalizer.generateDependencyTree.resolves({});
-	await tree.handler();
+	await tree.handler({});
 	t.is(normalizer.generateDependencyTree.called, true, "dependency tree output");
 });
 
@@ -37,7 +37,7 @@ test.serial("ui5 tree --json (output tree in json)", async (t) => {
 test.serial("ui5 tree (output tree)", async (t) => {
 	const treeifySpy = sinon.spy(treeify, "asTree");
 	normalizer.generateDependencyTree.resolves({name: "sample"});
-	await tree.handler();
+	await tree.handler({});
 	t.is(treeify.asTree.called, true, "retrieves dependency tree using treeify");
 	treeifySpy.restore();
 });

@@ -30,7 +30,7 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 		jsYaml: jsYaml
 	});
 
-	await initCommand.handler();
+	await initCommand.handler({});
 
 	t.is(fsWriteFileStub.getCall(0).args[0], ui5YamlPath, "Passes yaml path to write the yaml file to");
 	t.is(fsWriteFileStub.getCall(0).args[1], ui5Yaml, "Passes yaml content to write to fs");
