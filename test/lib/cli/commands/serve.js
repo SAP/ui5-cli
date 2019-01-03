@@ -4,6 +4,7 @@ const normalizer = require("@ui5/project").normalizer;
 const serve = require("../../../../lib/cli/commands/serve");
 const ui5Server = require("@ui5/server");
 const server = ui5Server.server;
+const mockRequire = require("mock-require");
 const defaultInitialHandlerArgs = Object.freeze({
 	accessRemoteConnections: false,
 	cert: "$HOME/.ui5/server/server.crt",
@@ -23,20 +24,17 @@ const projectTree = {
 let normalizerStub = null;
 let serverStub = null;
 let sslUtilStub = null;
-let openUrlStub = null;
 
 test.beforeEach("Stubbing modules before execution", (t) => {
 	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
 	serverStub = sinon.stub(server, "serve");
 	sslUtilStub = sinon.stub(ui5Server.sslUtil, "getSslCertificate");
-	openUrlStub = sinon.stub(serve, "openUrl");
 });
 
 test.afterEach("Stubs Cleanup", (t) => {
 	normalizerStub.restore();
 	serverStub.restore();
 	sslUtilStub.restore();
-	openUrlStub.restore();
 });
 
 test.serial("ui5 serve: default", async (t) => {
@@ -114,27 +112,25 @@ test.serial("ui5 serve --accept-remote-connections", async (t) => {
 test.serial("ui5 serve --open", async (t) => {
 	normalizerStub.resolves(projectTree);
 	serverStub.resolves({port: 8080});
-	const pPrepareServerConfig = await serve.handler(
+	mockRequire("opn", function(openedUrl) {
+		t.is(openedUrl, "http://localhost:8080/webapp/index.html", `Opens url: ${openedUrl}`);
+		mockRequire.stop("opn");
+	});
+	await serve.handler(
 		Object.assign({}, defaultInitialHandlerArgs, {open: "webapp/index.html"})
 	);
-	const pServeServer = await pPrepareServerConfig;
-	const pServeServerHandler = await pServeServer;
-	await pServeServerHandler;
-	const openedUrl = openUrlStub.getCall(0).lastArg;
-	t.is(openedUrl, "http://localhost:8080/webapp/index.html", `Opens url: ${openedUrl}`);
 });
 
 test.serial("ui5 serve --open (opens default url)", async (t) => {
 	normalizerStub.resolves(projectTree);
 	serverStub.resolves({port: 8080});
-	const pPrepareServerConfig = await serve.handler(
+	mockRequire("opn", function(openedUrl) {
+		t.is(openedUrl, "http://localhost:8080", `Opens url: ${openedUrl}`);
+		mockRequire.stop("opn");
+	});
+	await serve.handler(
 		Object.assign({}, defaultInitialHandlerArgs, {open: true})
 	);
-	const pServeServer = await pPrepareServerConfig;
-	const pServeServerHandler = await pServeServer;
-	await pServeServerHandler;
-	const openedUrl = openUrlStub.getCall(0).lastArg;
-	t.is(openedUrl, "http://localhost:8080", `Opens url: ${openedUrl}`);
 });
 
 test.serial("ui5 serve --key --cert", async (t) => {
