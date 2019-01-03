@@ -15,8 +15,3 @@ test.serial("uses default middleware", async (t) => {
 	baseMiddleware({loglevel: 1});
 	t.is(logger.init.called, true, "Logger middleware initialized");
 });
-
-test.serial("skip base middleware initialisation if no arguments have been given", async (t) => {
-	const usedMiddleware = baseMiddleware();
-	t.deepEqual(usedMiddleware, null, "No middleware is used");
-});
