@@ -29,13 +29,13 @@ const defaultBuilderArgs = {
 	excludedTasks: undefined
 };
 
-test.beforeEach("Mocking before test execution", (t) => {
+test.beforeEach((t) => {
 	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
 	builderStub = sinon.stub(builder, "build").returns(Promise.resolve());
 	sinon.stub(logger, "setShowProgress");
 });
 
-test.afterEach("Restore mocks after test exection", (t) => {
+test.afterEach.always((t) => {
 	sinon.restore();
 });
 

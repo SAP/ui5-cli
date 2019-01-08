@@ -25,13 +25,13 @@ let normalizerStub = null;
 let serverStub = null;
 let sslUtilStub = null;
 
-test.beforeEach("Stubbing modules before execution", (t) => {
+test.beforeEach((t) => {
 	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
 	serverStub = sinon.stub(server, "serve");
 	sslUtilStub = sinon.stub(ui5Server.sslUtil, "getSslCertificate");
 });
 
-test.afterEach("Stubs Cleanup", (t) => {
+test.afterEach.always((t) => {
 	sinon.restore();
 });
 

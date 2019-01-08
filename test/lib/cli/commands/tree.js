@@ -4,12 +4,12 @@ const normalizer = require("@ui5/project").normalizer;
 const tree = require("../../../../lib/cli/commands/tree");
 const treeify = require("treeify");
 
-test.beforeEach("Stubbing modules before execution", (t) => {
+test.beforeEach((t) => {
 	sinon.stub(normalizer, "generateProjectTree");
 	sinon.stub(normalizer, "generateDependencyTree");
 });
 
-test.afterEach("Stubbing modules before execution", (t) => {
+test.afterEach.always((t) => {
 	sinon.restore();
 });
 
