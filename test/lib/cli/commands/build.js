@@ -6,7 +6,6 @@ const builder = require("@ui5/builder").builder;
 const logger = require("@ui5/logger");
 let normalizerStub = null;
 let builderStub = null;
-let loggerStub = null;
 
 const args = {
 	_: [],
@@ -33,13 +32,11 @@ const defaultBuilderArgs = {
 test.beforeEach("Mocking before test execution", (t) => {
 	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
 	builderStub = sinon.stub(builder, "build").returns(Promise.resolve());
-	loggerStub = sinon.stub(logger, "setShowProgress");
+	sinon.stub(logger, "setShowProgress");
 });
 
 test.afterEach("Restore mocks after test exection", (t) => {
-	loggerStub.restore();
-	builderStub.restore();
-	normalizerStub.restore();
+	sinon.restore();
 });
 
 test.serial("ui5 build (default) ", async (t) => {

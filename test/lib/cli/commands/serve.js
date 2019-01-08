@@ -32,9 +32,7 @@ test.beforeEach("Stubbing modules before execution", (t) => {
 });
 
 test.afterEach("Stubs Cleanup", (t) => {
-	normalizerStub.restore();
-	serverStub.restore();
-	sslUtilStub.restore();
+	sinon.restore();
 });
 
 test.serial("ui5 serve: default", async (t) => {

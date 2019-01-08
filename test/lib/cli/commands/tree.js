@@ -10,8 +10,7 @@ test.beforeEach("Stubbing modules before execution", (t) => {
 });
 
 test.afterEach("Stubbing modules before execution", (t) => {
-	normalizer.generateProjectTree.restore();
-	normalizer.generateDependencyTree.restore();
+	sinon.restore();
 });
 
 test.serial("ui5 tree (generates dependency tree before output)", async (t) => {

@@ -8,7 +8,7 @@ test.beforeEach("Stubbing modules before execution", (t) => {
 });
 
 test.afterEach("Stubs Cleanup", (t) => {
-	logger.init.restore();
+	sinon.restore();
 });
 
 test.serial("uses default middleware", async (t) => {
