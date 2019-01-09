@@ -101,7 +101,7 @@
 		"@ui5/project": "^0.2.5",
 		"@ui5/server": "^0.2.1",
 		"import-local": "^2.0.0",
-		"js-yaml": "^3.10.0",
+		"js-yaml": "^3.12.1",
 		"opn": "^5.1.0",
 		"semver": "^5.6.0",
 		"supports-color": "^6.0.0",
