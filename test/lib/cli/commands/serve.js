@@ -57,7 +57,7 @@ test.serial("ui5 serve: default", async (t) => {
 		port: 8080,
 		cert: undefined,
 		key: undefined,
-		cspDefaults: false
+		sendSapPolicies: false
 	}, "Starting server with specific server config");
 });
 
@@ -93,7 +93,7 @@ test.serial("ui5 serve --h2", async (t) => {
 		port: 8443,
 		key: "randombyte-likes-ponies-key",
 		cert: "randombyte-likes-ponies-cert",
-		cspDefaults: false
+		sendSapPolicies: false
 	}, "Starting server with specific server config");
 });
 
@@ -164,7 +164,7 @@ test.serial("ui5 serve --key --cert", async (t) => {
 		port: 8443,
 		key: "ponies-loaded-from-custompath-key",
 		cert: "ponies-loaded-from-custompath-crt",
-		cspDefaults: false
+		sendSapPolicies: false
 	}, "Starting server with specific server config");
 });
 
@@ -186,12 +186,12 @@ test.serial("ui5 serve --translator --config", async (t) => {
 	}, "CLI was called with static translator");
 });
 
-test.serial("ui5 serve --csp-defaults", async (t) => {
+test.serial("ui5 serve --sap-csp-policies", async (t) => {
 	normalizerStub.resolves(projectTree);
-	serverStub.resolves({cspDefaults: true});
+	serverStub.resolves({});
 
 	// loads project tree using http 2
-	const pPrepareServerConfig = await serve.handler(Object.assign({}, defaultInitialHandlerArgs, {cspDefaults: true}));
+	const pPrepareServerConfig = await serve.handler(Object.assign({}, defaultInitialHandlerArgs, {sapCspPolicies: true}));
 	// preprocess project config
 	const pServeServer = await pPrepareServerConfig;
 	// serve server using config
@@ -201,8 +201,6 @@ test.serial("ui5 serve --csp-defaults", async (t) => {
 	const injectedServerConfig = serverStub.getCall(0).args[1];
 
 	t.deepEqual(injectedProjectTree, projectTree, "Starting server with given project tree");
-	t.is(injectedServerConfig.cspDefaults, true, "set");
-
 	t.deepEqual(injectedServerConfig, {
 		changePortIfInUse: true,
 		acceptRemoteConnections: false,
@@ -210,6 +208,6 @@ test.serial("ui5 serve --csp-defaults", async (t) => {
 		port: 8080,
 		cert: undefined,
 		key: undefined,
-		cspDefaults: true
+		sendSapPolicies: true
 	}, "Starting server with specific server config");
 });
