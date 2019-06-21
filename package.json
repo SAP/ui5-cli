@@ -110,6 +110,7 @@
 		"import-local": "^3.0.2",
 		"js-yaml": "^3.13.1",
 		"open": "^7.0.0",
+		"pacote": "^9.5.1",
 		"semver": "^7.1.1",
 		"supports-color": "^7.1.0",
 		"treeify": "^1.0.1",
