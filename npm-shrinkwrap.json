@@ -2967,6 +2967,12 @@
 			"resolved": "https://registry.npmjs.org/escape-html/-/escape-html-1.0.3.tgz",
 			"integrity": "sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg="
 		},
+		"escape-regex-string": {
+			"version": "1.0.6",
+			"resolved": "https://registry.npmjs.org/escape-regex-string/-/escape-regex-string-1.0.6.tgz",
+			"integrity": "sha512-AcaPwAOKpF52ETT4uu4vmpqQphuQGjIEhdDwG/gAJYah8ixJlrSBFjhtLMT7frc9y3RWgOnLov9E0MsRBdeRbw==",
+			"dev": true
+		},
 		"escape-string-regexp": {
 			"version": "1.0.5",
 			"resolved": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz",
@@ -3110,14 +3116,34 @@
 			"dev": true
 		},
 		"eslint-plugin-jsdoc": {
-			"version": "4.8.4",
-			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-4.8.4.tgz",
-			"integrity": "sha512-VDP+BI2hWpKNNdsJDSPofSQ9q7jGLgWbDMI0LzOeEcfsTjSS7jQtHDUuVLQ5E+OV2MPyQPk/3lnVcHfStXk5yA==",
+			"version": "11.2.1",
+			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-11.2.1.tgz",
+			"integrity": "sha512-Cvt9+E1A8Xjy0BM1v3LF9mi5jb1Ax6nKkWdJ5sicfdMO/utu5hXOSS6p/cuOinaVFzz1/n560z4BGGb99eVC2g==",
 			"dev": true,
 			"requires": {
-				"comment-parser": "^0.5.4",
-				"jsdoctypeparser": "3.1.0",
+				"comment-parser": "^0.5.5",
+				"debug": "^4.1.1",
+				"escape-regex-string": "^1.0.6",
+				"flat-map-polyfill": "^0.3.8",
+				"jsdoctypeparser": "4.0.0",
 				"lodash": "^4.17.11"
+			},
+			"dependencies": {
+				"debug": {
+					"version": "4.1.1",
+					"resolved": "https://registry.npmjs.org/debug/-/debug-4.1.1.tgz",
+					"integrity": "sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==",
+					"dev": true,
+					"requires": {
+						"ms": "^2.1.1"
+					}
+				},
+				"ms": {
+					"version": "2.1.2",
+					"resolved": "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz",
+					"integrity": "sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==",
+					"dev": true
+				}
 			}
 		},
 		"eslint-scope": {
@@ -3636,6 +3662,12 @@
 				"rimraf": "2.6.3",
 				"write": "1.0.3"
 			}
+		},
+		"flat-map-polyfill": {
+			"version": "0.3.8",
+			"resolved": "https://registry.npmjs.org/flat-map-polyfill/-/flat-map-polyfill-0.3.8.tgz",
+			"integrity": "sha512-ZfmD5MnU7GglUEhiky9C7yEPaNq1/wh36RDohe+Xr3nJVdccwHbdTkFIYvetcdsoAckUKT51fuf44g7Ni5Doyg==",
+			"dev": true
 		},
 		"flatted": {
 			"version": "2.0.1",
@@ -4921,9 +4953,9 @@
 			}
 		},
 		"jsdoctypeparser": {
-			"version": "3.1.0",
-			"resolved": "https://registry.npmjs.org/jsdoctypeparser/-/jsdoctypeparser-3.1.0.tgz",
-			"integrity": "sha512-JNbkKpDFqbYjg+IU3FNo7qjX7Opy7CwjHywT32zgAcz/d4lX6Umn5jOHVETUdnNNgGrMk0nEx1gvP0F4M0hzlQ==",
+			"version": "4.0.0",
+			"resolved": "https://registry.npmjs.org/jsdoctypeparser/-/jsdoctypeparser-4.0.0.tgz",
+			"integrity": "sha512-Bh6AW8eJ1bVdofhYUuqgFOVo0FE9qII+a+Go+juEnAfaDS5lZAiIqBAFm9gDu80OqBcQ1UI3v/8cP+3D5IGVww==",
 			"dev": true
 		},
 		"jsesc": {
