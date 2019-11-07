@@ -15,10 +15,7 @@ const defaultInitialHandlerArgs = Object.freeze({
 	loglevel: "info",
 	t8r: "npm",
 	translator: "npm",
-	showHidden: true,
-	showDetails: true,
-	hidden: true,
-	details: true
+	simpleIndex: false
 });
 
 const projectTree = {
@@ -60,8 +57,7 @@ test.serial("ui5 serve: default", async (t) => {
 		changePortIfInUse: true,
 		acceptRemoteConnections: false,
 		h2: false,
-		showHidden: true,
-		showDetails: true,
+		simpleIndex: false,
 		port: 8080,
 		cert: undefined,
 		key: undefined,
@@ -98,8 +94,7 @@ test.serial("ui5 serve --h2", async (t) => {
 		changePortIfInUse: true,
 		acceptRemoteConnections: false,
 		h2: true,
-		showHidden: true,
-		showDetails: true,
+		simpleIndex: false,
 		port: 8443,
 		key: "randombyte-likes-ponies-key",
 		cert: "randombyte-likes-ponies-cert",
@@ -171,8 +166,7 @@ test.serial("ui5 serve --key --cert", async (t) => {
 		changePortIfInUse: true,
 		acceptRemoteConnections: false,
 		h2: true,
-		showHidden: true,
-		showDetails: true,
+		simpleIndex: false,
 		port: 8443,
 		key: "ponies-loaded-from-custompath-key",
 		cert: "ponies-loaded-from-custompath-crt",
@@ -217,8 +211,7 @@ test.serial("ui5 serve --sap-csp-policies", async (t) => {
 		changePortIfInUse: true,
 		acceptRemoteConnections: false,
 		h2: false,
-		showHidden: true,
-		showDetails: true,
+		simpleIndex: false,
 		port: 8080,
 		cert: undefined,
 		key: undefined,
