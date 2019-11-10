@@ -1665,9 +1665,9 @@
 			"optional": true
 		},
 		"comment-parser": {
-			"version": "0.6.2",
-			"resolved": "https://registry.npmjs.org/comment-parser/-/comment-parser-0.6.2.tgz",
-			"integrity": "sha512-Wdms0Q8d4vvb2Yk72OwZjwNWtMklbC5Re7lD9cjCP/AG1fhocmc0TrxGBBAXPLy8fZQPrfHGgyygwI0lA7pbzA==",
+			"version": "0.7.0",
+			"resolved": "https://registry.npmjs.org/comment-parser/-/comment-parser-0.7.0.tgz",
+			"integrity": "sha512-m0SGP0RFO4P3hIBlIor4sBFPe5Y4HUeGgo/UZK/1Zdea5eUiqxroQ3lFqBDDSfWo9z9Q6LLnt2u0JqwacVEd/A==",
 			"dev": true
 		},
 		"common-path-prefix": {
@@ -2686,12 +2686,12 @@
 			"dev": true
 		},
 		"eslint-plugin-jsdoc": {
-			"version": "15.12.2",
-			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-15.12.2.tgz",
-			"integrity": "sha512-QHzPc3VKTEbTn369/HpqDjl/czv3fCei/bZg5NA5tu9Od10MfpTH4kc1xnRDobhQoDs3AMz9wuaI4coHWRzMQw==",
+			"version": "17.1.1",
+			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-17.1.1.tgz",
+			"integrity": "sha512-astLOTsj87UIzvDyiuAKbkgQgtChutazTDVxdG254tAtcvIVlWnPmlN7/dLnMYld/aHBhB4SWiUalMuKwTaynQ==",
 			"dev": true,
 			"requires": {
-				"comment-parser": "^0.6.2",
+				"comment-parser": "^0.7.0",
 				"debug": "^4.1.1",
 				"jsdoctypeparser": "^5.1.1",
 				"lodash": "^4.17.15",
