@@ -1690,9 +1690,9 @@
 			"integrity": "sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="
 		},
 		"comment-parser": {
-			"version": "0.6.2",
-			"resolved": "https://registry.npmjs.org/comment-parser/-/comment-parser-0.6.2.tgz",
-			"integrity": "sha512-Wdms0Q8d4vvb2Yk72OwZjwNWtMklbC5Re7lD9cjCP/AG1fhocmc0TrxGBBAXPLy8fZQPrfHGgyygwI0lA7pbzA==",
+			"version": "0.7.0",
+			"resolved": "https://registry.npmjs.org/comment-parser/-/comment-parser-0.7.0.tgz",
+			"integrity": "sha512-m0SGP0RFO4P3hIBlIor4sBFPe5Y4HUeGgo/UZK/1Zdea5eUiqxroQ3lFqBDDSfWo9z9Q6LLnt2u0JqwacVEd/A==",
 			"dev": true
 		},
 		"common-path-prefix": {
@@ -2713,17 +2713,19 @@
 			"dev": true
 		},
 		"eslint-plugin-jsdoc": {
-			"version": "15.12.2",
-			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-15.12.2.tgz",
-			"integrity": "sha512-QHzPc3VKTEbTn369/HpqDjl/czv3fCei/bZg5NA5tu9Od10MfpTH4kc1xnRDobhQoDs3AMz9wuaI4coHWRzMQw==",
+			"version": "18.1.4",
+			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-18.1.4.tgz",
+			"integrity": "sha512-X3jXbAZAFwr2xZXpz8cyozDuu9ea2eWf8qiIgmgUbAo3vs8xWL0g4hVmCo/Pwg5T2qL6/+iksY3m+xjmd8NAig==",
 			"dev": true,
 			"requires": {
-				"comment-parser": "^0.6.2",
+				"comment-parser": "^0.7.0",
 				"debug": "^4.1.1",
-				"jsdoctypeparser": "^5.1.1",
+				"jsdoctypeparser": "^6.0.0",
 				"lodash": "^4.17.15",
 				"object.entries-ponyfill": "^1.0.1",
-				"regextras": "^0.6.1"
+				"regextras": "^0.6.1",
+				"semver": "^6.3.0",
+				"spdx-expression-parse": "^3.0.0"
 			},
 			"dependencies": {
 				"debug": {
@@ -4229,9 +4231,9 @@
 			}
 		},
 		"jsdoctypeparser": {
-			"version": "5.1.1",
-			"resolved": "https://registry.npmjs.org/jsdoctypeparser/-/jsdoctypeparser-5.1.1.tgz",
-			"integrity": "sha512-APGygIJrT5bbz5lsVt8vyLJC0miEbQf/z9ZBfTr4RYvdia8AhWMRlYgivvwHG5zKD/VW3d6qpChCy64hpQET3A==",
+			"version": "6.0.0",
+			"resolved": "https://registry.npmjs.org/jsdoctypeparser/-/jsdoctypeparser-6.0.0.tgz",
+			"integrity": "sha512-61VtBXLkHfOFSIdp/VDVNMksxK0ID0cPTNvxDR92tPA6K7r2AX0OcJegYxhJIwtpWKU4p3D9L3U02hhlP1kQLQ==",
 			"dev": true
 		},
 		"jsesc": {
