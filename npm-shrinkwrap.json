@@ -638,16 +638,17 @@
 			}
 		},
 		"@ui5/project": {
-			"version": "1.2.0",
-			"resolved": "https://registry.npmjs.org/@ui5/project/-/project-1.2.0.tgz",
-			"integrity": "sha512-Y6PzptX3SDS+chCWNKHFaleOpV7w7Z6nS5iYRrsYWs92e0TKVhMmHNuMpU/hP0U0DUprIh8gPifBc2fsWlUHRg==",
+			"version": "github:SAP/ui5-project#991173168fb5dd56b713108050c5408b9ce6dadb",
+			"from": "github:SAP/ui5-project#ui5-install-poc",
 			"requires": {
 				"@ui5/builder": "^1.9.0",
 				"@ui5/logger": "^1.0.2",
 				"@ui5/server": "^1.5.2",
 				"graceful-fs": "^4.2.3",
 				"js-yaml": "^3.13.1",
+				"libnpmconfig": "^1.2.1",
 				"mock-require": "^3.0.3",
+				"pacote": "^9.5.8",
 				"pretty-hrtime": "^1.0.3",
 				"read-pkg": "^3.0.0",
 				"read-pkg-up": "^4.0.0",
@@ -5007,6 +5008,16 @@
 			"requires": {
 				"prelude-ls": "~1.1.2",
 				"type-check": "~0.3.2"
+			}
+		},
+		"libnpmconfig": {
+			"version": "1.2.1",
+			"resolved": "https://registry.npmjs.org/libnpmconfig/-/libnpmconfig-1.2.1.tgz",
+			"integrity": "sha512-9esX8rTQAHqarx6qeZqmGQKBNZR5OIbl/Ayr0qQDy3oXja2iFVQQI81R6GZ2a02bSNZ9p3YOGX1O6HHCb1X7kA==",
+			"requires": {
+				"figgy-pudding": "^3.5.1",
+				"find-up": "^3.0.0",
+				"ini": "^1.3.5"
 			}
 		},
 		"linkify-it": {
