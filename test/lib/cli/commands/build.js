@@ -100,3 +100,9 @@ test.serial("ui5 build jsdoc", async (t) => {
 		"JSDoc build called with expected arguments"
 	);
 });
+
+test.todo("ui5 build --framework-version");
+test.todo("ui5 build preload --framework-version");
+test.todo("ui5 build self-contained --framework-version");
+test.todo("ui5 build dev --framework-version");
+test.todo("ui5 build jsdoc --framework-version");
