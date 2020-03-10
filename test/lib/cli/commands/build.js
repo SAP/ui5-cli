@@ -101,8 +101,25 @@ test.serial("ui5 build jsdoc", async (t) => {
 	);
 });
 
-test.todo("ui5 build --framework-version");
-test.todo("ui5 build preload --framework-version");
-test.todo("ui5 build self-contained --framework-version");
-test.todo("ui5 build dev --framework-version");
-test.todo("ui5 build jsdoc --framework-version");
+test.serial("ui5 build --framework-version 1.99", async (t) => {
+	normalizerStub.resolves({
+		metadata:
+		{
+			name: "Sample"
+		}
+	});
+
+	args._ = ["build"];
+	args.frameworkVersion = "1.99.0";
+	await build.handler(args);
+	t.deepEqual(
+		normalizerStub.getCall(0).args[0],
+		{
+			configPath: undefined,
+			translatorName: "npm",
+			frameworkOptions: {
+				versionOverride: "1.99.0"
+			}
+		}, "generateProjectTree got called with expected arguments"
+	);
+});
