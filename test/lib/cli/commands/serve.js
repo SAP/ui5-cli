@@ -188,7 +188,7 @@ test.serial("ui5 serve --translator --config", async (t) => {
 
 	t.deepEqual(normalizerStub.getCall(0).args[0], {
 		translatorName: "static",
-		configPath: "path/to/my/config.json"
+		configPath: "pony/path"
 	}, "CLI was called with static translator");
 });
 
@@ -243,7 +243,7 @@ test.serial("ui5 serve with ui5.yaml port setting", async (t) => {
 	const injectedServerConfig = serverStub.getCall(0).args[1];
 
 	t.deepEqual(injectedProjectTree, projectTree, "Starting server with given project tree");
-	t.deepEqual(injectedServerConfig.port, 1337, "http port setting from project tree was used");
+	t.deepEqual(injectedServerConfig.port, 1338, "http port setting from project tree was used");
 	t.deepEqual(injectedServerConfig.changePortIfInUse, false, "changePortIfInUse is set to false");
 });
 
@@ -334,7 +334,7 @@ test.serial("ui5 serve: --framework-version", async (t) => {
 	// serve server using config
 	await pServeServer;
 
-	t.is(normalizerStub.called, true);
+	t.is(normalizerStub.called, false);
 	t.deepEqual(normalizerStub.getCall(0).args, [{
 		configPath: undefined,
 		translatorName: "npm",
