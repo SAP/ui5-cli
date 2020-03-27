@@ -2756,6 +2756,14 @@
 				"assert-plus": "^1.0.0"
 			}
 		},
+		"data-with-position": {
+			"version": "0.4.0",
+			"resolved": "https://registry.npmjs.org/data-with-position/-/data-with-position-0.4.0.tgz",
+			"integrity": "sha512-pMjD0tsOtUrYaCn0oQs1WcHwsPiqCIb4OnO0kcCIdcnfUbPUU9hEok5ug7pLZHSrzgA3lQCoFQqeXRTe5RFE5w==",
+			"requires": {
+				"yaml-ast-parser": "^0.0.43"
+			}
+		},
 		"date-time": {
 			"version": "2.1.0",
 			"resolved": "https://registry.npmjs.org/date-time/-/date-time-2.1.0.tgz",
@@ -9014,6 +9022,11 @@
 			"resolved": "https://registry.npmjs.org/yallist/-/yallist-2.1.2.tgz",
 			"integrity": "sha1-HBH5IY8HYImkfdUS+TxmmaaoHVI=",
 			"dev": true
+		},
+		"yaml-ast-parser": {
+			"version": "0.0.43",
+			"resolved": "https://registry.npmjs.org/yaml-ast-parser/-/yaml-ast-parser-0.0.43.tgz",
+			"integrity": "sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A=="
 		},
 		"yargs": {
 			"version": "15.3.1",
