@@ -2,7 +2,7 @@ const test = require("ava");
 const sinon = require("sinon");
 const mock = require("mock-require");
 
-const useFramework = require("../../../../lib/framework/use");
+// const useFramework = require("../../../../lib/framework/use");
 
 test.afterEach.always(() => {
 	mock.stopAll();
