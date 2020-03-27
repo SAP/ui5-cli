@@ -53,6 +53,37 @@ framework:
 `, "writeFile should be called with expected content");
 });
 
+
+test.serial("Should add new properties to document", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project`);
+
+	await updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project"}
+		},
+		data: {
+			framework: {
+				name: "OpenUI5",
+				version: "1.76.0"
+			}
+		}
+	});
+
+	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
+		"writeFile should be called with expected path");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+`, "writeFile should be called with expected content");
+});
+
 test.serial("Should update first document", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
 specVersion: "2.0"
@@ -106,7 +137,7 @@ shims:
 });
 
 
-test.serial.only("Should update second document", async (t) => {
+test.serial("Should update second document", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
 specVersion: "1.0"
 kind: extension
