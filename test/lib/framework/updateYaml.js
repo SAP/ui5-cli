@@ -192,6 +192,7 @@ metadata:
 framework:
   name: OpenUI5
   version: "1.76.0"
+
 `, "writeFile should be called with expected content");
 });
 
