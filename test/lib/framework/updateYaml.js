@@ -229,6 +229,128 @@ framework:
 `, "writeFile should be called with expected content");
 });
 
+test.serial("Should add new array to document", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+`);
+
+	await updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project"}
+		},
+		data: {
+			framework: {
+				libraries: [
+					{name: "sap.ui.core"},
+					{name: "sap.m"}
+				]
+			}
+		}
+	});
+
+	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
+		"writeFile should be called with expected path");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+  libraries:
+    - name: sap.ui.core
+    - name: sap.m
+`, "writeFile should be called with expected content");
+});
+
+test.serial("Should add new array element to document", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+  libraries:
+    - name: sap.ui.core
+`);
+
+	await updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project"}
+		},
+		data: {
+			framework: {
+				libraries: [
+					{name: "sap.ui.core"},
+					{name: "sap.m"}
+				]
+			}
+		}
+	});
+
+	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
+		"writeFile should be called with expected path");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+  libraries:
+    - name: sap.ui.core
+    - name: sap.m
+`, "writeFile should be called with expected content");
+});
+
+test.serial.only("Should add new array elements to document", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+  libraries:
+    - name: sap.ui.core
+`);
+
+	await updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project"}
+		},
+		data: {
+			framework: {
+				libraries: [
+					{name: "sap.ui.core"},
+					{name: "sap.m"},
+					{name: "sap.ui.layout"}
+				]
+			}
+		}
+	});
+
+	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
+		"writeFile should be called with expected path");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+  libraries:
+    - name: sap.ui.core
+    - name: sap.m
+    - name: sap.ui.layout
+`, "writeFile should be called with expected content");
+});
 
 test.serial("Should validate YAML before writing file", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
