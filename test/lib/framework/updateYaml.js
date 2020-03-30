@@ -309,7 +309,7 @@ framework:
 `, "writeFile should be called with expected content");
 });
 
-test.serial.only("Should add new array elements to document", async (t) => {
+test.serial("Should add new array elements to document", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
 metadata:
   name: my-project
