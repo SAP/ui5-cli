@@ -7,7 +7,8 @@ const useCommand = require("../../../../lib/cli/commands/use");
 async function assertUseHandler(t, {argv, expectedFrameworkOptions}) {
 	const frameworkUseStub = sinon.stub().resolves({
 		usedFramework: undefined, // not required for this test
-		usedVersion: undefined // not required for this test
+		usedVersion: undefined, // not required for this test
+		yamlUpdated: true
 	});
 	mock("../../../../lib/framework/use", frameworkUseStub);
 
@@ -108,6 +109,16 @@ test.serial("Accepts framework name (SAPUI5)", async (t) => {
 		argv: {"framework-info": "SAPUI5"},
 		expectedFrameworkOptions: {
 			name: "SAPUI5",
+			version: null
+		}
+	});
+});
+
+test.serial("Accepts framework name (sapui5)", async (t) => {
+	await assertUseHandler(t, {
+		argv: {"framework-info": "sapui5"},
+		expectedFrameworkOptions: {
+			name: "sapui5",
 			version: null
 		}
 	});
