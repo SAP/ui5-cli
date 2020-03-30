@@ -228,3 +228,32 @@ framework:
   version: "1.76.0"
 `, "writeFile should be called with expected content");
 });
+
+
+test.serial("Should validate YAML before writing file", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project
+framework: { name: "SAPUI5" }
+`); // Using JSON object notation is currently not supported
+
+	const error = await t.throwsAsync(updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project"}
+		},
+		data: {
+			framework: {
+				name: "SAPUI5",
+				version: "1.76.0"
+			}
+		}
+	}));
+
+	t.is(error.message,
+		"Failed to update YAML file: bad indentation of a mapping entry in \"my-project/ui5.yaml\" at line 5, column 14:\n" +
+		"                 version: \"1.76.0\"\n" +
+		"                 ^"
+	);
+	t.is(t.context.fsWriteFileStub.callCount, 0, "fs.writeFile should not be called");
+});
