@@ -273,7 +273,64 @@ test.serial("Use with version only (SAPUI5)", async (t) => {
 	}], "updateYaml should be called with expected args");
 });
 
-test.serial("Use with name only (no version)", async (t) => {
+test.serial("Use with name only (no existing framework configuration)", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub, Sapui5ResolveVersionStub, updateYamlStub} = t.context;
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	const result = await useFramework({
+		normalizerOptions,
+		frameworkOptions: {
+			name: "SAPUI5",
+			version: null
+		}
+	});
+
+	t.deepEqual(result, {
+		usedFramework: "SAPUI5",
+		usedVersion: null,
+		yamlUpdated: true
+	}, "useFramework should return expected result object");
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Sapui5ResolveVersionStub.callCount, 0, "Sapui5Resolver.resolveVersion should not be called");
+
+	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
+	t.deepEqual(updateYamlStub.getCall(0).args, [{
+		project,
+		data: {
+			framework: {
+				name: "SAPUI5"
+			}
+		}
+	}], "updateYaml should be called with expected args");
+});
+
+test.serial("Use with name only (existing framework configuration)", async (t) => {
 	const {generateDependencyTreeStub, processTreeStub, Sapui5ResolveVersionStub, updateYamlStub} = t.context;
 
 	const normalizerOptions = {

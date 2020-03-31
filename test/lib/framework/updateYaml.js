@@ -21,6 +21,7 @@ test.afterEach.always(() => {
 
 test.serial("Should update single document", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
+---
 metadata:
   name: my-project
 framework:
@@ -55,6 +56,7 @@ framework:
 
 test.serial("Should update first document", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
+---
 specVersion: "2.0"
 metadata:
   name: my-project
@@ -164,8 +166,36 @@ framework:
 `, "writeFile should be called with expected content");
 });
 
+test.serial("Should add new object with one property to document", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project`);
 
-test.serial("Should add new object to document", async (t) => {
+	await updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project"}
+		},
+		data: {
+			framework: {
+				name: "OpenUI5"
+			}
+		}
+	});
+
+	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
+		"writeFile should be called with expected path");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+metadata:
+  name: my-project
+framework:
+  name: OpenUI5
+
+`, "writeFile should be called with expected content");
+});
+
+test.serial("Should add new object with two properties to document", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
 metadata:
   name: my-project`);
@@ -196,12 +226,12 @@ framework:
 `, "writeFile should be called with expected content");
 });
 
-test.serial("Should add new property to document", async (t) => {
+test.serial("Should add version property to document and keep name", async (t) => {
 	t.context.fsReadFileStub.yieldsAsync(null, `
 metadata:
   name: my-project
 framework:
-  name: OpenUI5
+  name: "OpenUI5"
 `);
 
 	await updateYaml({
@@ -224,8 +254,41 @@ framework:
 metadata:
   name: my-project
 framework:
-  name: OpenUI5
+  name: "OpenUI5"
   version: "1.76.0"
+`, "writeFile should be called with expected content");
+});
+
+test.serial("Should add name property to document and keep version", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project
+framework:
+  version: 1.76.0
+`);
+
+	await updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project"}
+		},
+		data: {
+			framework: {
+				name: "OpenUI5",
+				version: "1.76.0"
+			}
+		}
+	});
+
+	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
+		"writeFile should be called with expected path");
+	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+metadata:
+  name: my-project
+framework:
+  version: 1.76.0
+  name: OpenUI5
 `, "writeFile should be called with expected content");
 });
 
@@ -425,5 +488,26 @@ framework: { name: "SAPUI5" }
 		"                 version: \"1.76.0\"\n" +
 		"                 ^"
 	);
+	t.is(t.context.fsWriteFileStub.callCount, 0, "fs.writeFile should not be called");
+});
+
+test.serial("Should throw error when project document can't be found", async (t) => {
+	t.context.fsReadFileStub.yieldsAsync(null, `
+metadata:
+  name: my-project-1
+---
+metadata:
+  name: my-project-2
+`);
+
+	const error = await t.throwsAsync(updateYaml({
+		project: {
+			path: "my-project",
+			metadata: {"name": "my-project-3"}
+		},
+		data: {}
+	}));
+
+	t.is(error.message, "Could not find project with name my-project-3 in YAML: my-project/ui5.yaml");
 	t.is(t.context.fsWriteFileStub.callCount, 0, "fs.writeFile should not be called");
 });
