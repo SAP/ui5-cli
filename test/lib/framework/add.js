@@ -220,3 +220,150 @@ test.serial("Add optional with existing libraries in config", async (t) => {
 		}
 	}], "updateYaml should be called with expected args");
 });
+
+test.serial("Add with specVersion 1.0", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub,
+		Openui5GetLibraryMetadataStub, Sapui5GetLibraryMetadataStub, updateYamlStub} = t.context;
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "1.0",
+		metadata: {
+			name: "my-project"
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	const error = await t.throwsAsync(addFramework({
+		normalizerOptions,
+		frameworkOptions: {
+			name: "Foo",
+			version: "latest"
+		}
+	}));
+
+	t.is(error.message,
+		`ui5 add command requires specVersion "2.0" or higher. Project my-project uses specVersion "1.0"`);
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Openui5GetLibraryMetadataStub.callCount, 0, "Openui5Resolver.getLibraryMetadata should not be called");
+	t.is(Sapui5GetLibraryMetadataStub.callCount, 0, "Sapui5Resolver.getLibraryMetadata should not be called");
+
+	t.is(updateYamlStub.callCount, 0, "updateYaml should not be called");
+});
+
+test.serial("Add without framework configuration", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub,
+		Openui5GetLibraryMetadataStub, Sapui5GetLibraryMetadataStub, updateYamlStub} = t.context;
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	const error = await t.throwsAsync(addFramework({
+		normalizerOptions,
+		frameworkOptions: {
+			name: "Foo",
+			version: "latest"
+		}
+	}));
+
+	t.is(error.message, `Project my-project is missing a framework configuration. ` +
+		`Please use "ui5 use" to configure a framework and version.`);
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Openui5GetLibraryMetadataStub.callCount, 0, "Openui5Resolver.getLibraryMetadata should not be called");
+	t.is(Sapui5GetLibraryMetadataStub.callCount, 0, "Sapui5Resolver.getLibraryMetadata should not be called");
+
+	t.is(updateYamlStub.callCount, 0, "updateYaml should not be called");
+});
+
+test.serial("Add without framework version configuration", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub,
+		Openui5GetLibraryMetadataStub, Sapui5GetLibraryMetadataStub, updateYamlStub} = t.context;
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		},
+		framework: {
+			name: "OpenUI5"
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	const error = await t.throwsAsync(addFramework({
+		normalizerOptions,
+		frameworkOptions: {
+			name: "Foo",
+			version: "latest"
+		}
+	}));
+
+	t.is(error.message, `Project my-project does not define a framework version configuration. ` +
+		`Please use "ui5 use" to configure a version.`);
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Openui5GetLibraryMetadataStub.callCount, 0, "Openui5Resolver.getLibraryMetadata should not be called");
+	t.is(Sapui5GetLibraryMetadataStub.callCount, 0, "Sapui5Resolver.getLibraryMetadata should not be called");
+
+	t.is(updateYamlStub.callCount, 0, "updateYaml should not be called");
+});

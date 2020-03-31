@@ -39,6 +39,20 @@ async function assertFailingUseHandler(t, {argv, expectedMessage}) {
 	t.is(frameworkUseStub.callCount, 0, "Use function should not be called");
 }
 
+async function assertFailingYamlUpdateUseHandler(t, {argv, expectedMessage}) {
+	const frameworkUseStub = sinon.stub().resolves({
+		usedFramework: "SAPUI5",
+		usedVersion: "1.76.0",
+		yamlUpdated: false
+	});
+	mock("../../../../lib/framework/use", frameworkUseStub);
+
+	const exception = await t.throwsAsync(useCommand.handler(argv));
+
+	t.is(exception.message, expectedMessage, "Use handler should throw expected error");
+	t.is(frameworkUseStub.callCount, 1, "Use function should be called once");
+}
+
 test.afterEach.always(() => {
 	mock.stopAll();
 	sinon.restore();
@@ -196,5 +210,19 @@ test.serial("Rejects on invalid framework-info (SAPUI5@1.2.3@4.5.6)", async (t) 
 	await assertFailingUseHandler(t, {
 		argv: {"framework-info": "SAPUI5@1.2.3@4.5.6"},
 		expectedMessage: "Invalid framework info: SAPUI5@1.2.3@4.5.6"
+	});
+});
+
+test.serial("Rejects when YAML could not be updated", async (t) => {
+	await assertFailingYamlUpdateUseHandler(t, {
+		argv: {"framework-info": "SAPUI5@1.76.0"},
+		expectedMessage: "Internal error while updating ui5.yaml to SAPUI5 version 1.76.0"
+	});
+});
+
+test.serial("Rejects when YAML could not be updated (with config path)", async (t) => {
+	await assertFailingYamlUpdateUseHandler(t, {
+		argv: {"framework-info": "SAPUI5@1.76.0", "config": "/path/to/ui5.yaml"},
+		expectedMessage: "Internal error while updating config at /path/to/ui5.yaml to SAPUI5 version 1.76.0"
 	});
 });

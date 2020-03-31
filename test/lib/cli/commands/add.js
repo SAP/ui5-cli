@@ -36,6 +36,18 @@ async function assertFailingAddHandler(t, {argv, expectedMessage}) {
 	t.is(frameworkAddStub.callCount, 0, "Add function should not be called");
 }
 
+async function assertFailingYamlUpdateAddHandler(t, {argv, expectedMessage}) {
+	const frameworkAddStub = sinon.stub().resolves({
+		yamlUpdated: false
+	});
+	mock("../../../../lib/framework/add", frameworkAddStub);
+
+	const exception = await t.throwsAsync(addCommand.handler(argv));
+
+	t.is(exception.message, expectedMessage, "Add handler should throw expected error");
+	t.is(frameworkAddStub.callCount, 1, "Add function should be called once");
+}
+
 test.afterEach.always(() => {
 	mock.stopAll();
 	sinon.restore();
@@ -114,5 +126,34 @@ test.serial("Rejects on empty framework-libraries", async (t) => {
 	await assertFailingAddHandler(t, {
 		argv: {"framework-libraries": ""},
 		expectedMessage: "Missing mandatory parameter framework-libraries"
+	});
+});
+
+test.serial("Rejects when YAML could not be updated (single library)", async (t) => {
+	await assertFailingYamlUpdateAddHandler(t, {
+		argv: {"framework-libraries": ["sap.ui.lib1"]},
+		expectedMessage: "Internal error while adding framework library sap.ui.lib1 to ui5.yaml"
+	});
+});
+
+test.serial("Rejects when YAML could not be updated (multiple libraries)", async (t) => {
+	await assertFailingYamlUpdateAddHandler(t, {
+		argv: {"framework-libraries": ["sap.ui.lib1", "sap.ui.lib2"]},
+		expectedMessage: "Internal error while adding framework libraries sap.ui.lib1 sap.ui.lib2 to ui5.yaml"
+	});
+});
+
+test.serial("Rejects when YAML could not be updated (single library; with config path)", async (t) => {
+	await assertFailingYamlUpdateAddHandler(t, {
+		argv: {"framework-libraries": ["sap.ui.lib1"], "config": "/path/to/ui5.yaml"},
+		expectedMessage: "Internal error while adding framework library sap.ui.lib1 to config at /path/to/ui5.yaml"
+	});
+});
+
+test.serial("Rejects when YAML could not be updated (multiple libraries; with config path)", async (t) => {
+	await assertFailingYamlUpdateAddHandler(t, {
+		argv: {"framework-libraries": ["sap.ui.lib1", "sap.ui.lib2"], "config": "/path/to/ui5.yaml"},
+		expectedMessage:
+			"Internal error while adding framework libraries sap.ui.lib1 sap.ui.lib2 to config at /path/to/ui5.yaml"
 	});
 });
