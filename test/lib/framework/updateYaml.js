@@ -421,7 +421,7 @@ framework: { name: "SAPUI5" }
 	}));
 
 	t.is(error.message,
-		"Failed to update YAML file: bad indentation of a mapping entry in \"my-project/ui5.yaml\" at line 5, column 14:\n" +
+		"Failed to update YAML file: bad indentation of a mapping entry at line 5, column 14:\n" +
 		"                 version: \"1.76.0\"\n" +
 		"                 ^"
 	);
