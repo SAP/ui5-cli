@@ -46,6 +46,7 @@ framework:
 	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
 		"writeFile should be called with expected path");
 	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+---
 metadata:
   name: my-project
 framework:
@@ -90,6 +91,7 @@ shims:
 	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[0], path.join("my-project", "ui5.yaml"),
 		"writeFile should be called with expected path");
 	t.deepEqual(t.context.fsWriteFileStub.getCall(0).args[1], `
+---
 specVersion: "2.0"
 metadata:
   name: my-project
@@ -191,7 +193,6 @@ metadata:
   name: my-project
 framework:
   name: OpenUI5
-
 `, "writeFile should be called with expected content");
 });
 
@@ -222,7 +223,6 @@ metadata:
 framework:
   name: OpenUI5
   version: "1.76.0"
-
 `, "writeFile should be called with expected content");
 });
 
@@ -425,7 +425,6 @@ framework:
   libraries:
     - name: sap.ui.core
       development: true
-
 `);
 
 	await updateYaml({
