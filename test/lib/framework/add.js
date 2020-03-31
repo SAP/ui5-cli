@@ -51,12 +51,12 @@ test.serial("Add without existing libraries in config", async (t) => {
 	processTreeStub.resolves(project);
 	Openui5GetLibraryMetadataStub.resolves();
 
-	const {yamlUpdated} = await addFramework({
+	const result = await addFramework({
 		normalizerOptions,
 		libraries: [{name: "sap.ui.lib1"}]
 	});
 
-	t.true(yamlUpdated, "yamlUpdated should be true");
+	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
 
 	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
 	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
@@ -112,12 +112,12 @@ test.serial("Add with existing libraries in config", async (t) => {
 	processTreeStub.resolves(project);
 	Openui5GetLibraryMetadataStub.resolves();
 
-	const {yamlUpdated} = await addFramework({
+	const result = await addFramework({
 		normalizerOptions,
 		libraries: [{name: "sap.ui.lib1"}, {name: "sap.ui.lib3"}]
 	});
 
-	t.true(yamlUpdated, "yamlUpdated should be true");
+	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
 
 	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
 	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
@@ -183,12 +183,12 @@ test.serial("Add optional with existing libraries in config", async (t) => {
 	processTreeStub.resolves(project);
 	Openui5GetLibraryMetadataStub.resolves();
 
-	const {yamlUpdated} = await addFramework({
+	const result = await addFramework({
 		normalizerOptions,
 		libraries: [{name: "sap.ui.lib1", optional: true}, {name: "sap.ui.lib3", optional: true}]
 	});
 
-	t.true(yamlUpdated, "yamlUpdated should be true");
+	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
 
 	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
 	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
@@ -243,11 +243,7 @@ test.serial("Add with specVersion 1.0", async (t) => {
 	processTreeStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
-		normalizerOptions,
-		frameworkOptions: {
-			name: "Foo",
-			version: "latest"
-		}
+		normalizerOptions
 	}));
 
 	t.is(error.message,
@@ -291,11 +287,7 @@ test.serial("Add without framework configuration", async (t) => {
 	processTreeStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
-		normalizerOptions,
-		frameworkOptions: {
-			name: "Foo",
-			version: "latest"
-		}
+		normalizerOptions
 	}));
 
 	t.is(error.message, `Project my-project is missing a framework configuration. ` +
@@ -342,11 +334,7 @@ test.serial("Add without framework version configuration", async (t) => {
 	processTreeStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
-		normalizerOptions,
-		frameworkOptions: {
-			name: "Foo",
-			version: "latest"
-		}
+		normalizerOptions
 	}));
 
 	t.is(error.message, `Project my-project does not define a framework version configuration. ` +
@@ -366,4 +354,175 @@ test.serial("Add without framework version configuration", async (t) => {
 	t.is(Sapui5GetLibraryMetadataStub.callCount, 0, "Sapui5Resolver.getLibraryMetadata should not be called");
 
 	t.is(updateYamlStub.callCount, 0, "updateYaml should not be called");
+});
+
+test.serial("Add with failing library metadata call", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub,
+		Sapui5GetLibraryMetadataStub, updateYamlStub} = t.context;
+
+	Sapui5GetLibraryMetadataStub.rejects(new Error("Failed to load library sap.ui.lib1"));
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		},
+		framework: {
+			name: "SAPUI5",
+			version: "1.76.0"
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	const error = await t.throwsAsync(addFramework({
+		normalizerOptions,
+		libraries: [{name: "sap.ui.lib1"}]
+	}));
+
+	t.is(error.message, `Failed to find SAPUI5 framework library sap.ui.lib1: Failed to load library sap.ui.lib1`);
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Sapui5GetLibraryMetadataStub.callCount, 1, "Sapui5Resolver.getLibraryMetadata should be called once");
+	t.deepEqual(Sapui5GetLibraryMetadataStub.getCall(0).args, ["sap.ui.lib1"],
+		"Sapui5Resolver.getLibraryMetadata should be called with expected args on first call");
+
+	t.is(updateYamlStub.callCount, 0, "updateYaml should not be called");
+});
+
+test.serial("Add with failing YAML update", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub,
+		Sapui5GetLibraryMetadataStub, updateYamlStub} = t.context;
+
+	const yamlUpdateError = new Error("Failed to update YAML file");
+	yamlUpdateError.name = "FrameworkUpdateYamlFailed";
+	updateYamlStub.rejects(yamlUpdateError);
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		},
+		framework: {
+			name: "SAPUI5",
+			version: "1.76.0"
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	const result = await addFramework({
+		normalizerOptions,
+		libraries: [{name: "sap.ui.lib1"}]
+	});
+
+	t.deepEqual(result, {yamlUpdated: false}, "yamlUpdated should be false");
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Sapui5GetLibraryMetadataStub.callCount, 1, "Sapui5Resolver.getLibraryMetadata should be called once");
+	t.deepEqual(Sapui5GetLibraryMetadataStub.getCall(0).args, ["sap.ui.lib1"],
+		"Sapui5Resolver.getLibraryMetadata should be called with expected args on first call");
+
+	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
+	t.deepEqual(updateYamlStub.getCall(0).args, [{
+		project,
+		data: {
+			framework: {
+				libraries: [{name: "sap.ui.lib1"}]
+			}
+		}
+	}], "updateYaml should be called with expected args");
+});
+
+test.serial("Add with failing YAML update (unexpected error)", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub,
+		Sapui5GetLibraryMetadataStub, updateYamlStub} = t.context;
+
+	updateYamlStub.rejects(new Error("Some unexpected error"));
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		},
+		framework: {
+			name: "SAPUI5",
+			version: "1.76.0"
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	const error = await t.throwsAsync(addFramework({
+		normalizerOptions,
+		libraries: [{name: "sap.ui.lib1"}]
+	}));
+
+	t.is(error.message, `Some unexpected error`);
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Sapui5GetLibraryMetadataStub.callCount, 1, "Sapui5Resolver.getLibraryMetadata should be called once");
+	t.deepEqual(Sapui5GetLibraryMetadataStub.getCall(0).args, ["sap.ui.lib1"],
+		"Sapui5Resolver.getLibraryMetadata should be called with expected args on first call");
+
+	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
+	t.deepEqual(updateYamlStub.getCall(0).args, [{
+		project,
+		data: {
+			framework: {
+				libraries: [{name: "sap.ui.lib1"}]
+			}
+		}
+	}], "updateYaml should be called with expected args");
 });
