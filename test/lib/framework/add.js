@@ -526,3 +526,39 @@ test.serial("Add with failing YAML update (unexpected error)", async (t) => {
 		}
 	}], "updateYaml should be called with expected args");
 });
+
+
+test.serial("Add should not modify input parameters", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub} = t.context;
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		},
+		framework: {
+			name: "SAPUI5",
+			version: "1.76.0",
+			libraries: [{"name": "sap.ui.lib1"}]
+		}
+	};
+
+	const libraries = [{name: "sap.ui.lib2"}];
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+
+	await addFramework({
+		normalizerOptions,
+		libraries
+	});
+
+	t.deepEqual(libraries, [{name: "sap.ui.lib2"}], "libraries array should not be changed");
+});
