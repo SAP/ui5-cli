@@ -500,11 +500,12 @@ metadata:
 	const error = await t.throwsAsync(updateYaml({
 		project: {
 			path: "my-project",
+			configPath: "ui5.yaml",
 			metadata: {"name": "my-project-3"}
 		},
 		data: {}
 	}));
 
-	t.is(error.message, "Could not find project with name my-project-3 in YAML: my-project/ui5.yaml");
+	t.is(error.message, "Could not find project with name my-project-3 in YAML: ui5.yaml");
 	t.is(t.context.fsWriteFileStub.callCount, 0, "fs.writeFile should not be called");
 });
