@@ -53,7 +53,7 @@ test.serial("Add without existing libraries in config", async (t) => {
 
 	const {yamlUpdated} = await addFramework({
 		normalizerOptions,
-		libraries: ["sap.ui.lib1"]
+		libraries: [{name: "sap.ui.lib1"}]
 	});
 
 	t.true(yamlUpdated, "yamlUpdated should be true");
@@ -80,7 +80,6 @@ test.serial("Add without existing libraries in config", async (t) => {
 		}
 	}], "updateYaml should be called with expected args");
 });
-
 
 test.serial("Add with existing libraries in config", async (t) => {
 	const {generateDependencyTreeStub, processTreeStub,
@@ -115,7 +114,7 @@ test.serial("Add with existing libraries in config", async (t) => {
 
 	const {yamlUpdated} = await addFramework({
 		normalizerOptions,
-		libraries: ["sap.ui.lib1", "sap.ui.lib3"]
+		libraries: [{name: "sap.ui.lib1"}, {name: "sap.ui.lib3"}]
 	});
 
 	t.true(yamlUpdated, "yamlUpdated should be true");
@@ -145,6 +144,77 @@ test.serial("Add with existing libraries in config", async (t) => {
 					{name: "sap.ui.lib1"},
 					{name: "sap.ui.lib2"},
 					{name: "sap.ui.lib3"}
+				]
+			}
+		}
+	}], "updateYaml should be called with expected args");
+});
+
+test.serial("Add optional with existing libraries in config", async (t) => {
+	const {generateDependencyTreeStub, processTreeStub,
+		Openui5GetLibraryMetadataStub, updateYamlStub} = t.context;
+
+	const normalizerOptions = {
+		"fakeNormalizerOption": true
+	};
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		specVersion: "2.0",
+		metadata: {
+			name: "my-project"
+		},
+		framework: {
+			name: "OpenUI5",
+			version: "1.76.0",
+			libraries: [{
+				name: "sap.ui.lib2",
+				development: true
+			}, {
+				name: "sap.ui.lib1",
+				development: true
+			}]
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processTreeStub.resolves(project);
+	Openui5GetLibraryMetadataStub.resolves();
+
+	const {yamlUpdated} = await addFramework({
+		normalizerOptions,
+		libraries: [{name: "sap.ui.lib1", optional: true}, {name: "sap.ui.lib3", optional: true}]
+	});
+
+	t.true(yamlUpdated, "yamlUpdated should be true");
+
+	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
+	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
+		"normalizer.generateDependencyTree should be called with expected args");
+
+	t.is(processTreeStub.callCount, 1, "projectPreprocessor.processTree should be called once");
+	t.deepEqual(processTreeStub.getCall(0).args, [{
+		dependencies: []
+	}],
+	"projectPreprocessor.processTree should be called with expected args");
+
+	t.is(Openui5GetLibraryMetadataStub.callCount, 2, "Openui5Resolver.getLibraryMetadata should be called twice");
+	t.deepEqual(Openui5GetLibraryMetadataStub.getCall(0).args, ["sap.ui.lib1"],
+		"Openui5Resolver.getLibraryMetadata should be called with expected args on first call");
+	t.deepEqual(Openui5GetLibraryMetadataStub.getCall(1).args, ["sap.ui.lib3"],
+		"Openui5Resolver.getLibraryMetadata should be called with expected args on second call");
+
+	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
+	t.deepEqual(updateYamlStub.getCall(0).args, [{
+		project,
+		data: {
+			framework: {
+				libraries: [
+					{name: "sap.ui.lib1", optional: true},
+					{name: "sap.ui.lib2", development: true},
+					{name: "sap.ui.lib3", optional: true}
 				]
 			}
 		}

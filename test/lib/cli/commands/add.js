@@ -44,14 +44,69 @@ test.afterEach.always(() => {
 test.serial("Accepts single library", async (t) => {
 	await assertAddHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1"]},
-		expectedLibraries: ["sap.ui.lib1"]
+		expectedLibraries: [{name: "sap.ui.lib1"}]
 	});
 });
 
 test.serial("Accepts multiple libraries", async (t) => {
 	await assertAddHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1", "sap.ui.lib2"]},
-		expectedLibraries: ["sap.ui.lib1", "sap.ui.lib2"]
+		expectedLibraries: [{name: "sap.ui.lib1"}, {name: "sap.ui.lib2"}]
+	});
+});
+
+test.serial("Accepts multiple libraries (--development)", async (t) => {
+	await assertAddHandler(t, {
+		argv: {
+			"framework-libraries": [
+				"sap.ui.lib1",
+				"sap.ui.lib2"
+			],
+			"development": true
+		},
+		expectedLibraries: [
+			{
+				name: "sap.ui.lib1",
+				development: true
+			},
+			{
+				name: "sap.ui.lib2",
+				development: true
+			}
+		]
+	});
+});
+
+test.serial("Accepts multiple libraries (--optional)", async (t) => {
+	await assertAddHandler(t, {
+		argv: {
+			"framework-libraries": [
+				"sap.ui.lib1",
+				"sap.ui.lib2"
+			],
+			"optional": true
+		},
+		expectedLibraries: [
+			{
+				name: "sap.ui.lib1",
+				optional: true
+			},
+			{
+				name: "sap.ui.lib2",
+				optional: true
+			}
+		]
+	});
+});
+
+test.serial("Rejects when development and optional are true", async (t) => {
+	await assertFailingAddHandler(t, {
+		argv: {
+			"framework-libraries": ["sap.ui.lib1"],
+			"development": true,
+			"optional": true
+		},
+		expectedMessage: "Options 'development' and 'optional' can not be combined"
 	});
 });
 
