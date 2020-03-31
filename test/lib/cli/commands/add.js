@@ -113,6 +113,6 @@ test.serial("Rejects when development and optional are true", async (t) => {
 test.serial("Rejects on empty framework-libraries", async (t) => {
 	await assertFailingAddHandler(t, {
 		argv: {"framework-libraries": ""},
-		expectedMessage: "Missing mandatory framework-libraries"
+		expectedMessage: "Missing mandatory parameter framework-libraries"
 	});
 });

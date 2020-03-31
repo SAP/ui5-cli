@@ -294,7 +294,7 @@ test.serial("Use with version only (no framework name)", async (t) => {
 		}
 	}));
 
-	t.is(error.message, "No framework configuration defined. Please provide --framework option!");
+	t.is(error.message, "No framework configuration defined. Make sure to also provide the framework name.");
 
 	t.is(generateDependencyTreeStub.callCount, 1, "normalizer.generateDependencyTree should be called once");
 	t.deepEqual(generateDependencyTreeStub.getCall(0).args, [{"fakeNormalizerOption": true}],
