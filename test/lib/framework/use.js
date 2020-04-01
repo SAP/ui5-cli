@@ -37,7 +37,8 @@ test.serial("Use with name and version (OpenUI5)", async (t) => {
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -69,7 +70,7 @@ test.serial("Use with name and version (OpenUI5)", async (t) => {
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Openui5ResolveVersionStub.callCount, 1, "Openui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest"],
+	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest", {cwd: "my-project"}],
 		"Openui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
@@ -98,7 +99,8 @@ test.serial("Use with name and version (SAPUI5)", async (t) => {
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -130,7 +132,7 @@ test.serial("Use with name and version (SAPUI5)", async (t) => {
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Sapui5ResolveVersionStub.callCount, 1, "Sapui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["latest"],
+	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["latest", {cwd: "my-project"}],
 		"Sapui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
@@ -160,6 +162,7 @@ test.serial("Use with version only (OpenUI5)", async (t) => {
 		metadata: {
 			name: "my-project"
 		},
+		path: "my-project",
 		framework: {
 			name: "OpenUI5"
 		}
@@ -194,7 +197,7 @@ test.serial("Use with version only (OpenUI5)", async (t) => {
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Openui5ResolveVersionStub.callCount, 1, "Openui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest"],
+	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest", {cwd: "my-project"}],
 		"Openui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
@@ -224,6 +227,7 @@ test.serial("Use with version only (SAPUI5)", async (t) => {
 		metadata: {
 			name: "my-project"
 		},
+		path: "my-project",
 		framework: {
 			name: "SAPUI5"
 		}
@@ -258,7 +262,7 @@ test.serial("Use with version only (SAPUI5)", async (t) => {
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Sapui5ResolveVersionStub.callCount, 1, "Sapui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["latest"],
+	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["latest", {cwd: "my-project"}],
 		"Sapui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
@@ -287,7 +291,8 @@ test.serial("Use with name only (no existing framework configuration)", async (t
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -345,6 +350,7 @@ test.serial("Use with name only (existing framework configuration)", async (t) =
 		metadata: {
 			name: "my-project"
 		},
+		path: "my-project",
 		framework: {
 			name: "OpenUI5",
 			version: "1.76.0"
@@ -380,7 +386,7 @@ test.serial("Use with name only (existing framework configuration)", async (t) =
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Sapui5ResolveVersionStub.callCount, 1, "Sapui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["1.76.0"],
+	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["1.76.0", {cwd: "my-project"}],
 		"Sapui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
@@ -409,7 +415,8 @@ test.serial("Use with normalizerOptions.configPath", async (t) => {
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -442,7 +449,7 @@ test.serial("Use with normalizerOptions.configPath", async (t) => {
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Sapui5ResolveVersionStub.callCount, 1, "Sapui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["latest"],
+	t.deepEqual(Sapui5ResolveVersionStub.getCall(0).args, ["latest", {cwd: "my-project"}],
 		"Sapui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
@@ -472,7 +479,8 @@ test.serial("Use with version only (no framework name)", async (t) => {
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -519,7 +527,8 @@ test.serial("Use with invalid name", async (t) => {
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -566,7 +575,8 @@ test.serial("Use with specVersion 1.0", async (t) => {
 		specVersion: "1.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -615,6 +625,7 @@ test.serial("Use without framework.name (should actually be validated via ui5-pr
 		metadata: {
 			name: "my-project"
 		},
+		path: "my-project",
 		framework: {}
 	};
 
@@ -664,6 +675,7 @@ test.serial("Use with invalid framework name in config (should actually be valid
 		metadata: {
 			name: "my-project"
 		},
+		path: "my-project",
 		framework: {
 			name: "Foo"
 		}
@@ -716,7 +728,8 @@ test.serial("Use with name and version (YAML update fails)", async (t) => {
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -748,7 +761,7 @@ test.serial("Use with name and version (YAML update fails)", async (t) => {
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Openui5ResolveVersionStub.callCount, 1, "Openui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest"],
+	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest", {cwd: "my-project"}],
 		"Openui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
@@ -779,7 +792,8 @@ test.serial("Use with name and version (YAML update fails with unexpected error)
 		specVersion: "2.0",
 		metadata: {
 			name: "my-project"
-		}
+		},
+		path: "my-project"
 	};
 
 	generateDependencyTreeStub.resolves(tree);
@@ -807,7 +821,7 @@ test.serial("Use with name and version (YAML update fails with unexpected error)
 	"projectPreprocessor.processTree should be called with expected args");
 
 	t.is(Openui5ResolveVersionStub.callCount, 1, "Openui5Resolver.resolveVersion should be called once");
-	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest"],
+	t.deepEqual(Openui5ResolveVersionStub.getCall(0).args, ["latest", {cwd: "my-project"}],
 		"Openui5Resolver.resolveVersion should be called with expected args");
 
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
