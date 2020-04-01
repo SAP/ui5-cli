@@ -145,7 +145,7 @@ test.serial("Rejects when development and optional are true", async (t) => {
 			"development": true,
 			"optional": true
 		},
-		expectedMessage: "Options 'development' and 'optional' can not be combined"
+		expectedMessage: "Options 'development' and 'optional' cannot be combined"
 	});
 });
 
