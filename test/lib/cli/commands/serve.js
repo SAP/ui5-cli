@@ -343,3 +343,22 @@ test.serial("ui5 serve: --framework-version", async (t) => {
 		}
 	}]);
 });
+
+test.serial("ui5 serve: --csp-report-path=pony", async (t) => {
+	normalizerStub.resolves(projectTree);
+	serverStub.resolves({h2: false, port: 8080});
+
+	// loads project tree
+	const pPrepareServerConfig = await serve.handler(
+		Object.assign({}, defaultInitialHandlerArgs, {cspReportPath: "pony"})
+	);
+	// preprocess project config, skipping cert load
+	const pServeServer = await pPrepareServerConfig;
+	// serve server using config
+	await pServeServer;
+
+	const injectedServerConfig = serverStub.getCall(0).args[1];
+
+	t.is(normalizerStub.called, true);
+	t.deepEqual(injectedServerConfig.cspReportPath, "pony", "cspReportPath value set");
+});
