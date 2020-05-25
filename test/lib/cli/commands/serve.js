@@ -61,7 +61,8 @@ test.serial("ui5 serve: default", async (t) => {
 		port: 8080,
 		cert: undefined,
 		key: undefined,
-		sendSAPTargetCSP: false
+		sendSAPTargetCSP: false,
+		cspReportPath: undefined
 	}, "Starting server with specific server config");
 });
 
@@ -98,7 +99,8 @@ test.serial("ui5 serve --h2", async (t) => {
 		port: 8443,
 		key: "randombyte-likes-ponies-key",
 		cert: "randombyte-likes-ponies-cert",
-		sendSAPTargetCSP: false
+		sendSAPTargetCSP: false,
+		cspReportPath: undefined
 	}, "Starting server with specific server config");
 });
 
@@ -170,7 +172,8 @@ test.serial("ui5 serve --key --cert", async (t) => {
 		port: 8443,
 		key: "ponies-loaded-from-custompath-key",
 		cert: "ponies-loaded-from-custompath-crt",
-		sendSAPTargetCSP: false
+		sendSAPTargetCSP: false,
+		cspReportPath: undefined
 	}, "Starting server with specific server config");
 });
 
@@ -215,7 +218,8 @@ test.serial("ui5 serve --sap-csp-policies", async (t) => {
 		port: 8080,
 		cert: undefined,
 		key: undefined,
-		sendSAPTargetCSP: true
+		sendSAPTargetCSP: true,
+		cspReportPath: undefined
 	}, "Starting server with specific server config");
 });
 
