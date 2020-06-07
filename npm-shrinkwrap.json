@@ -2776,18 +2776,18 @@
 			"dev": true
 		},
 		"eslint-plugin-jsdoc": {
-			"version": "24.0.6",
-			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-24.0.6.tgz",
-			"integrity": "sha512-WDzUgShMK7Zg9N6s19LxUqy71At/PxCuMEXaKyBzybhABq6iU4DaZtWZ+4fkCMBvMzMwMAPa2oRD/+fQGORMhg==",
+			"version": "27.0.4",
+			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-27.0.4.tgz",
+			"integrity": "sha512-gRjtUngFu3j5fwHAi4HHECIT7sDyD0IS1K59+PAg1+Wn/aXCMV+fKkoy1r5ezwBU4hkHxuvq8tOaTTvFNFvjbA==",
 			"dev": true,
 			"requires": {
-				"comment-parser": "^0.7.4",
+				"comment-parser": "^0.7.5",
 				"debug": "^4.1.1",
 				"jsdoctypeparser": "^6.1.0",
 				"lodash": "^4.17.15",
-				"regextras": "^0.7.0",
+				"regextras": "^0.7.1",
 				"semver": "^6.3.0",
-				"spdx-expression-parse": "^3.0.0"
+				"spdx-expression-parse": "^3.0.1"
 			},
 			"dependencies": {
 				"debug": {
