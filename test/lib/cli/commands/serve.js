@@ -348,7 +348,7 @@ test.serial("ui5 serve: --framework-version", async (t) => {
 	}]);
 });
 
-test.serial("ui5 serve: --serve-csp-reports=true", async (t) => {
+test.serial("ui5 serve --serve-csp-reports", async (t) => {
 	normalizerStub.resolves(projectTree);
 	serverStub.resolves({h2: false, port: 8080});
 
