@@ -1,0 +1,11 @@
+<mvc:View
+	{{#if controllerName}}
+    controllerName={{controllerName}}
+	{{/if}}
+	{{#if namespaces}}
+	{{#each namespaces}}
+	xmlns{{#if abv}}:{{/if}}{{abv}}="{{name}}"
+	{{/each}}
+	{{/if}}
+    xmlns:mvc="sap.ui.core.mvc">
+</mvc:View>

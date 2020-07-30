@@ -119,8 +119,9 @@
 		"open": "^7.3.0",
 		"semver": "^7.3.4",
 		"treeify": "^1.0.1",
-		"update-notifier": "^5.0.1",
-		"yargs": "^16.2.0"
+		"update-notifier": "^5.0.0",
+		"yargs": "^16.1.0",
+		"handlebars": "^4.7.6"
 	},
 	"devDependencies": {
 		"ava": "^3.14.0",
