@@ -1,6 +1,6 @@
 <mvc:View
 	{{#if controllerName}}
-    controllerName={{controllerName}}
+    controllerName="{{controllerName}}"
 	{{/if}}
 	{{#if namespaces}}
 	{{#each namespaces}}
