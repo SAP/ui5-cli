@@ -115,7 +115,7 @@
 		"string.prototype.matchall": "^4.0.2",
 		"supports-color": "^7.1.0",
 		"treeify": "^1.0.1",
-		"update-notifier": "^4.1.0",
+		"update-notifier": "^4.1.1",
 		"yargs": "^15.4.1"
 	},
 	"devDependencies": {
