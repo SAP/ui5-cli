@@ -1,10 +1,10 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller"{{#if modules}},
 	{{#each modules}}
-	"{{name}}",
+	{{#if @last}}"{{name}}"{{else}}"{{name}}",{{/if}}
 	{{/each}}
-	{{/if}}
-], function(Controller) {
+ 	{{/if}}
+], function(Controller{{#if modules}}, {{#each modules}}{{#if @last}}{{module}}{{else}}{{module}}, {{/if}}{{/each}}{{/if}}) {
 	"use strict";
 	return Controller.extend("{{controllerName}}", {
 	});
