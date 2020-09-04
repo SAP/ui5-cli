@@ -1,9 +1,7 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-	{{#if modules}}
+	"sap/ui/core/mvc/Controller"{{#if modules}},
 	{{#each modules}}
-	,
-	"{{name}}"
+	"{{name}}",
 	{{/each}}
 	{{/if}}
 ], function(Controller) {
