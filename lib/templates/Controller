@@ -3,7 +3,9 @@ sap.ui.define([
 	{{#each modules}}
 	{{#if @last}}"{{name}}"{{else}}"{{name}}",{{/if}}
 	{{/each}}
- 	{{/if}}
+ 	{{else}}
+	 
+	{{/if}}
 ], function(Controller{{#if modules}}, {{#each modules}}{{#if @last}}{{module}}{{else}}{{module}}, {{/if}}{{/each}}{{/if}}) {
 	"use strict";
 	return Controller.extend("{{controllerName}}", {
