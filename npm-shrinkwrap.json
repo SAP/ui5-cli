@@ -2012,9 +2012,9 @@
 			}
 		},
 		"data-with-position": {
-			"version": "0.4.0",
-			"resolved": "https://registry.npmjs.org/data-with-position/-/data-with-position-0.4.0.tgz",
-			"integrity": "sha512-pMjD0tsOtUrYaCn0oQs1WcHwsPiqCIb4OnO0kcCIdcnfUbPUU9hEok5ug7pLZHSrzgA3lQCoFQqeXRTe5RFE5w==",
+			"version": "0.4.1",
+			"resolved": "https://registry.npmjs.org/data-with-position/-/data-with-position-0.4.1.tgz",
+			"integrity": "sha512-EX8Q0e0DrDFcg0DzHMhkO5vDcm4VKJht/qtQFrhtlzLzAbIHda1lPmw+TaYfrz69+NrhpCbAqYEuy3b+zwpbNA==",
 			"requires": {
 				"yaml-ast-parser": "^0.0.43"
 			}
