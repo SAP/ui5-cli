@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 // The following block should be compatible to as many Node.js versions as possible
 /* eslint-disable no-var */
@@ -18,6 +17,7 @@ if (pkg.engines && pkg.engines.node && !semver.satisfies(nodeVersion, pkg.engine
 
 // Timeout is required to log info when importing from local installation
 setTimeout(() => {
+	/*
 	if (!process.env.UI5_CLI_NO_LOCAL) {
 		const importLocal = require("import-local");
 		// Prefer a local installation of @ui5/cli.
@@ -35,6 +35,7 @@ setTimeout(() => {
 			return;
 		}
 	}
+	*/
 
 	const updateNotifier = require("update-notifier");
 	updateNotifier({

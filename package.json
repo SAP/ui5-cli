@@ -39,7 +39,8 @@
 		"version": "git-chglog --next-tag v$npm_package_version -o CHANGELOG.md && git add CHANGELOG.md",
 		"prepublishOnly": "git push --follow-tags",
 		"release-note": "git-chglog -c .chglog/release-config.yml v$npm_package_version",
-		"report-coveralls": "nyc report --reporter=text-lcov | COVERALLS_PARALLEL=true coveralls"
+		"report-coveralls": "nyc report --reporter=text-lcov | COVERALLS_PARALLEL=true coveralls",
+		"create-rollup-bundle": "rollup -c"
 	},
 	"files": [
 		"CONTRIBUTING.md",
@@ -119,6 +120,9 @@
 		"yargs": "^15.4.1"
 	},
 	"devDependencies": {
+		"@rollup/plugin-commonjs": "^15.1.0",
+		"@rollup/plugin-json": "^4.1.0",
+		"@rollup/plugin-node-resolve": "^9.0.0",
 		"ava": "3.11.1",
 		"chokidar-cli": "^2.1.0",
 		"coveralls": "^3.1.0",
@@ -133,6 +137,7 @@
 		"nyc": "^15.1.0",
 		"open-cli": "^6.0.1",
 		"rimraf": "^3.0.2",
+		"rollup": "^2.28.2",
 		"sinon": "^9.0.3",
 		"tap-nyan": "^1.1.0",
 		"tap-xunit": "^2.4.1"
