@@ -4,7 +4,7 @@ const mock = require("mock-require");
 const path = require("path");
 
 const ui5Project = require("@ui5/project");
-
+const ui5Fs = require("@ui5/fs");
 
 async function assertCreateHandler(t, {argv, expectedMessage, expectedMetaInfo, expectedConsoleLog, project}) {
 	const frameworkCreateStub = sinon.stub().resolves({
@@ -47,7 +47,9 @@ async function assertFailingCreateHandler(t, {argv, expectedStatusMessage, expec
 
 test.beforeEach((t) => {
 	t.context.generateDependencyTreeStub = sinon.stub(ui5Project.normalizer, "generateDependencyTree");
+	t.context.generateProjectTreeStub = sinon.stub(ui5Project.normalizer, "generateProjectTree");
 	t.context.processProjectStub = sinon.stub(ui5Project.projectPreprocessor, "processTree");
+	t.context.createCollectionsForTreeStub = sinon.stub(ui5Fs.resourceFactory, "createCollectionsForTree");
 	t.context.consoleLogStub = sinon.stub(console, "log");
 });
 
@@ -518,3 +520,61 @@ test.serial("Add control with modules", async (t) => {
 		project: project
 	});
 });
+
+// test.serial("Add default view interactive", async (t) => {
+// 	const {generateDependencyTreeStub, processProjectStub,
+// 		createCollectionsForTreeStub, generateProjectTreeStub} = t.context;
+
+// 	const dependencyTree = {
+// 		dependencies: [{
+// 			id: "fake-dependency"
+// 		}]
+// 	};
+// 	const projectTree = {
+// 		type: "application",
+// 		metadata: {
+// 			namespace: "test"
+// 		}
+// 	};
+// 	const project = {
+// 		type: "application",
+// 		resources: {
+// 			configuration: {
+// 				paths: {
+// 					webapp: "app"
+// 				}
+// 			}
+// 		}
+// 	};
+// 	const dependencies = {
+// 		dependencies: [{
+// 			type: "fake-dependency",
+// 			_readers: []
+// 		}]
+// 	};
+// 	generateDependencyTreeStub.resolves(dependencyTree);
+// 	processProjectStub.resolves(project);
+// 	createCollectionsForTreeStub.resolves(dependencies);
+// 	generateProjectTreeStub.resolves(projectTree);
+
+// 	await assertCreateHandler(t, {
+// 		argv: {
+// 			_: ["create", "view"],
+// 			name: "test",
+// 			controller: true,
+// 			route: false,
+// 			interactive: true
+// 		},
+// 		expectedMessage: "view",
+// 		expectedMetaInfo: {
+// 			controller: true,
+// 			moduleList: [],
+// 			namespaceList: [],
+// 			route: false,
+// 			type: "view",
+// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
+// 		},
+// 		expectedConsoleLog: ["Add new view with corresponding controller"],
+// 		project: project
+// 	});
+// });
