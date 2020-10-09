@@ -2,7 +2,7 @@ const test = require("ava");
 const sinon = require("sinon");
 const mock = require("mock-require");
 const path = require("path");
-const {prompt} = require("enquirer");
+const {Prompt} = require("enquirer");
 
 const ui5Project = require("@ui5/project");
 const ui5Fs = require("@ui5/fs");
@@ -92,10 +92,8 @@ test.beforeEach((t) => {
 	t.context.createCollectionsForTreeStub = sinon.stub(ui5Fs.resourceFactory, "createCollectionsForTree").
 		resolves(collection);
 	t.context.byGlobStub = sinon.stub(ui5Fs.AbstractReader.prototype, "byGlob");
-	t.context.promptStub = sinon.stub();
-	mock("enquirer", {
-		prompt: t.context.promptStub
-	});
+	t.context.runStub = sinon.stub(Prompt.prototype, "run");
+
 	t.context.consoleLogStub = sinon.stub(console, "log");
 });
 
@@ -635,77 +633,92 @@ test.serial("Add control with modules", async (t) => {
 	});
 });
 
-// async function assertInteractiveCreateHandler(t, {argv, expectedMessage, expectedMetaInfo,
-// 	expectedConsoleLog, project}) {
-// 	const frameworkCreateStub = sinon.stub().resolves({
-// 		statusMessage: expectedMessage
-// 	});
-// 	mock("../../../../lib/framework/create", frameworkCreateStub);
+test.serial("Add default view interactive with component selection", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub} = t.context;
 
+	const dependencyTree = {
+		dependencies: [{
+			id: "fake-dependency"
+		}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
+	runStub.onCall(0).resolves("View");
+	runStub.onCall(1).resolves("test");
+	runStub.onCall(2).resolves(true);
+	runStub.onCall(3).resolves(false);
+	runStub.onCall(4).resolves([]);
 
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create"],
+			interactive: true
+		},
+		expectedMessage: "view",
+		expectedMetaInfo: {
+			controller: true,
+			moduleList: [],
+			namespaceList: [],
+			route: false,
+			type: "view",
+			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view with corresponding controller"],
+		project: project
+	});
+});
 
-// 	const createCommand = mock.reRequire("../../../../lib/cli/commands/create");
-// 	await createCommand.handler(argv);
+test.serial("Add control interactive with component selection", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub} = t.context;
 
-// 	t.is(frameworkCreateStub.callCount, 1, "Create function should be called");
-// 	t.deepEqual(frameworkCreateStub.getCall(0).args, [
-// 		{
-// 			name: argv["name"],
-// 			metaInformation: expectedMetaInfo,
-// 			project: project
-// 		}],
-// 	"Create function should be called with expected args");
+	const dependencyTree = {
+		dependencies: [{
+			id: "fake-dependency"
+		}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
+	runStub.onCall(0).resolves("Custom Control");
+	runStub.onCall(1).resolves("test");
+	runStub.onCall(2).resolves([]);
 
-// 	t.is(t.context.consoleLogStub.callCount, expectedConsoleLog.length,
-// 		"console.log should be called " + expectedConsoleLog.length + " times");
-// 	expectedConsoleLog.forEach((expectedLog, i) => {
-// 		t.deepEqual(t.context.consoleLogStub.getCall(i).args, [expectedLog],
-// 			"console.log should be called with expected string on call index " + i);
-// 	});
-// }
-
-// test.serial("Add default view interactive with component selection", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
-
-// 	const dependencyTree = {
-// 		dependencies: [{
-// 			id: "fake-dependency"
-// 		}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(dependencyTree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub(resource);
-
-// 	await assertInteractiveCreateHandler(t, {
-// 		argv: {
-// 			_: ["create"],
-// 			interactive: true
-// 		},
-// 		expectedMessage: "view",
-// 		expectedMetaInfo: {
-// 			controller: true,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: false,
-// 			type: "view",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new view with corresponding controller"],
-// 		project: project
-// 	});
-// });
-// √ Choose a control: · View
-// √ Please name your new view: · test
-// √ Create a corresponding controller? (y/N) · yes
-// √ Add a routing configuration? (y/N) · no
-// √ Pick needed namespaces · No items were selected
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create"],
+			interactive: true
+		},
+		expectedMessage: "control",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			namespaceList: [],
+			route: undefined,
+			type: "control",
+			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new control"],
+		project: project
+	});
+});
