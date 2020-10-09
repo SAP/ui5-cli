@@ -2,9 +2,49 @@ const test = require("ava");
 const sinon = require("sinon");
 const mock = require("mock-require");
 const path = require("path");
+const {prompt} = require("enquirer");
 
 const ui5Project = require("@ui5/project");
 const ui5Fs = require("@ui5/fs");
+const FileSystem = require("@ui5/fs/lib/adapters/FileSystem");
+
+const projectTree = {
+	metadata: {
+		namespace: "sample"
+	},
+	dependencies: [{
+		id: "fake-dependency",
+		metadata: {
+			namespace: "sample"
+		},
+		type: "library",
+		dependencies: []
+	}],
+	type: "application"
+};
+const collection = {
+	dependencies: {
+		_readers: [
+			new FileSystem({
+				virBasePath: "resources/sample/",
+				project: {
+					type: "library"
+				},
+				fsBasePath: "/resources/sample",
+				excludes: []
+			})
+		]
+	}
+};
+const resource = [{
+	_path: "sample",
+	_project: {
+		metadata: {
+			name: "sample"
+		}
+	}
+}];
+
 
 async function assertCreateHandler(t, {argv, expectedMessage, expectedMetaInfo, expectedConsoleLog, project}) {
 	const frameworkCreateStub = sinon.stub().resolves({
@@ -32,9 +72,9 @@ async function assertCreateHandler(t, {argv, expectedMessage, expectedMetaInfo, 
 	});
 }
 
-async function assertFailingCreateHandler(t, {argv, expectedStatusMessage, expectedMessage, expectedCallCount}) {
+async function assertFailingCreateHandler(t, {argv, expectedStatus, expectedMessage, expectedCallCount}) {
 	const frameworkCreateStub = sinon.stub().resolves({
-		statusMessage: expectedStatusMessage
+		statusMessage: expectedStatus
 	});
 	mock("../../../../lib/framework/create", frameworkCreateStub);
 
@@ -47,9 +87,15 @@ async function assertFailingCreateHandler(t, {argv, expectedStatusMessage, expec
 
 test.beforeEach((t) => {
 	t.context.generateDependencyTreeStub = sinon.stub(ui5Project.normalizer, "generateDependencyTree");
-	t.context.generateProjectTreeStub = sinon.stub(ui5Project.normalizer, "generateProjectTree");
 	t.context.processProjectStub = sinon.stub(ui5Project.projectPreprocessor, "processTree");
-	t.context.createCollectionsForTreeStub = sinon.stub(ui5Fs.resourceFactory, "createCollectionsForTree");
+	t.context.generateProjectTreeStub = sinon.stub(ui5Project.normalizer, "generateProjectTree").resolves(projectTree);
+	t.context.createCollectionsForTreeStub = sinon.stub(ui5Fs.resourceFactory, "createCollectionsForTree").
+		resolves(collection);
+	t.context.byGlobStub = sinon.stub(ui5Fs.AbstractReader.prototype, "byGlob");
+	t.context.promptStub = sinon.stub();
+	mock("enquirer", {
+		prompt: t.context.promptStub
+	});
 	t.context.consoleLogStub = sinon.stub(console, "log");
 });
 
@@ -63,7 +109,6 @@ test.serial("Rejects on no component provided", async (t) => {
 		argv: {
 			_: ["create"]
 		},
-		expectedStatusMessage: undefined,
 		expectedMessage: "Component needed. You can run " +
 			"this command without component in interactive mode (--interactive, -i)",
 		expectedCallCount: 0
@@ -75,7 +120,6 @@ test.serial("Rejects on no name provided", async (t) => {
 		argv: {
 			_: ["create", "component"]
 		},
-		expectedStatusMessage: undefined,
 		expectedMessage: "Missing mandatory parameter 'name'. You can run " +
 		"this command without name in interactive mode (--interactive, -i)",
 		expectedCallCount: 0
@@ -99,7 +143,6 @@ test.serial("Rejects on other project type ", async (t) => {
 			_: ["create", "component"],
 			name: "test"
 		},
-		expectedStatusMessage: undefined,
 		expectedMessage: "Create command is currently only supported for projects of type Application",
 		expectedCallCount: 0
 	});
@@ -129,7 +172,6 @@ test.serial("Rejects on no message", async (t) => {
 			_: ["create", "view"],
 			name: "test"
 		},
-		expectedStatusMessage: undefined,
 		expectedMessage: "Internal error while adding component",
 		expectedCallCount: 1
 	});
@@ -159,9 +201,77 @@ test.serial("Rejects on other message", async (t) => {
 			_: ["create", "view"],
 			name: "test"
 		},
-		expectedStatusMessage: "xy",
+		expectedStatus: "xy",
 		expectedMessage: "Internal error",
 		expectedCallCount: 1
+	});
+});
+
+test.serial("Rejects on add default view with invalid namespace", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
+
+	await assertFailingCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			namespaces: ["xy"],
+			route: false,
+		},
+		expectedMessage: "No valid namespace/module provided",
+		expectedCallCount: 0
+	});
+});
+
+test.serial("Rejects on add controller with invalid module", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
+
+	await assertFailingCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			modules: ["xy"],
+			route: false,
+		},
+		expectedMessage: "No valid namespace/module provided",
+		expectedCallCount: 0
 	});
 });
 
@@ -327,7 +437,7 @@ test.serial("Add to existing view an route", async (t) => {
 });
 
 test.serial("Add default view with valid namespace", async (t) => {
-	const {generateDependencyTreeStub, processProjectStub} = t.context;
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
 
 	const tree = {
 		dependencies: [{id: "fake-dependency"}]
@@ -342,22 +452,24 @@ test.serial("Add default view with valid namespace", async (t) => {
 			}
 		}
 	};
+
 	generateDependencyTreeStub.resolves(tree);
 	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
 
 	await assertCreateHandler(t, {
 		argv: {
 			_: ["create", "view"],
 			name: "test",
 			controller: true,
-			namespaces: ["sap.m"],
+			namespaces: ["sample"],
 			route: false,
 		},
 		expectedMessage: "view",
 		expectedMetaInfo: {
 			controller: true,
 			moduleList: [],
-			namespaceList: [{name: "sap.m"}],
+			namespaceList: [{name: "sample"}],
 			route: false,
 			type: "view",
 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
@@ -405,8 +517,8 @@ test.serial("Add controller", async (t) => {
 	});
 });
 
-test.serial("Add controller with modules", async (t) => {
-	const {generateDependencyTreeStub, processProjectStub} = t.context;
+test.serial("Add controller with valid modules", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
 
 	const tree = {
 		dependencies: [{id: "fake-dependency"}]
@@ -423,17 +535,18 @@ test.serial("Add controller with modules", async (t) => {
 	};
 	generateDependencyTreeStub.resolves(tree);
 	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
 
 	await assertCreateHandler(t, {
 		argv: {
 			_: ["create", "controller"],
 			name: "test",
-			modules: ["sap/m/MessageToast"]
+			modules: ["Sample"]
 		},
 		expectedMessage: "controller",
 		expectedMetaInfo: {
 			controller: undefined,
-			moduleList: [{name: "sap/m/MessageToast"}],
+			moduleList: [{name: "sample"}],
 			namespaceList: [],
 			route: undefined,
 			type: "controller",
@@ -483,7 +596,7 @@ test.serial("Add control", async (t) => {
 });
 
 test.serial("Add control with modules", async (t) => {
-	const {generateDependencyTreeStub, processProjectStub} = t.context;
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
 
 	const tree = {
 		dependencies: [{id: "fake-dependency"}]
@@ -500,17 +613,18 @@ test.serial("Add control with modules", async (t) => {
 	};
 	generateDependencyTreeStub.resolves(tree);
 	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
 
 	await assertCreateHandler(t, {
 		argv: {
 			_: ["create", "control"],
 			name: "test",
-			modules: ["sap/m/MessageToast"]
+			modules: ["sample"]
 		},
 		expectedMessage: "control",
 		expectedMetaInfo: {
 			controller: undefined,
-			moduleList: [{name: "sap/m/MessageToast"}],
+			moduleList: [{name: "sample"}],
 			namespaceList: [],
 			route: undefined,
 			type: "control",
@@ -521,20 +635,42 @@ test.serial("Add control with modules", async (t) => {
 	});
 });
 
-// test.serial("Add default view interactive", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub,
-// 		createCollectionsForTreeStub, generateProjectTreeStub} = t.context;
+// async function assertInteractiveCreateHandler(t, {argv, expectedMessage, expectedMetaInfo,
+// 	expectedConsoleLog, project}) {
+// 	const frameworkCreateStub = sinon.stub().resolves({
+// 		statusMessage: expectedMessage
+// 	});
+// 	mock("../../../../lib/framework/create", frameworkCreateStub);
+
+
+
+// 	const createCommand = mock.reRequire("../../../../lib/cli/commands/create");
+// 	await createCommand.handler(argv);
+
+// 	t.is(frameworkCreateStub.callCount, 1, "Create function should be called");
+// 	t.deepEqual(frameworkCreateStub.getCall(0).args, [
+// 		{
+// 			name: argv["name"],
+// 			metaInformation: expectedMetaInfo,
+// 			project: project
+// 		}],
+// 	"Create function should be called with expected args");
+
+// 	t.is(t.context.consoleLogStub.callCount, expectedConsoleLog.length,
+// 		"console.log should be called " + expectedConsoleLog.length + " times");
+// 	expectedConsoleLog.forEach((expectedLog, i) => {
+// 		t.deepEqual(t.context.consoleLogStub.getCall(i).args, [expectedLog],
+// 			"console.log should be called with expected string on call index " + i);
+// 	});
+// }
+
+// test.serial("Add default view interactive with component selection", async (t) => {
+// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
 
 // 	const dependencyTree = {
 // 		dependencies: [{
 // 			id: "fake-dependency"
 // 		}]
-// 	};
-// 	const projectTree = {
-// 		type: "application",
-// 		metadata: {
-// 			namespace: "test"
-// 		}
 // 	};
 // 	const project = {
 // 		type: "application",
@@ -546,23 +682,13 @@ test.serial("Add control with modules", async (t) => {
 // 			}
 // 		}
 // 	};
-// 	const dependencies = {
-// 		dependencies: [{
-// 			type: "fake-dependency",
-// 			_readers: []
-// 		}]
-// 	};
 // 	generateDependencyTreeStub.resolves(dependencyTree);
 // 	processProjectStub.resolves(project);
-// 	createCollectionsForTreeStub.resolves(dependencies);
-// 	generateProjectTreeStub.resolves(projectTree);
+// 	byGlobStub(resource);
 
-// 	await assertCreateHandler(t, {
+// 	await assertInteractiveCreateHandler(t, {
 // 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: true,
-// 			route: false,
+// 			_: ["create"],
 // 			interactive: true
 // 		},
 // 		expectedMessage: "view",
@@ -578,3 +704,8 @@ test.serial("Add control with modules", async (t) => {
 // 		project: project
 // 	});
 // });
+// √ Choose a control: · View
+// √ Please name your new view: · test
+// √ Create a corresponding controller? (y/N) · yes
+// √ Add a routing configuration? (y/N) · no
+// √ Pick needed namespaces · No items were selected
