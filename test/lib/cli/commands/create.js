@@ -200,7 +200,7 @@ test.serial("Rejects on other message", async (t) => {
 			name: "test"
 		},
 		expectedStatus: "xy",
-		expectedMessage: "Internal error",
+		expectedMessage: "Internal error caused by: xy",
 		expectedCallCount: 1
 	});
 });
