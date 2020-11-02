@@ -22,11 +22,9 @@ function handleDependencyBump(line) {
 		versionChangelog = versionChangelog.replace(/^./gm, "      $&");
 		const repoUrl = `https://github.com/SAP/${moduleName.replace("@ui5/", "ui5-")}/tree/v${moduleVersion}`;
 		line += `
-    - <details>
-      <summary>Changes in <a href="${repoUrl}">v${moduleVersion}</a></summary>
+    - Changes contained in [v${moduleVersion}](${repoUrl})
 
-${versionChangelog}
-      </details>`;
+${versionChangelog}`;
 	}
 	return line;
 }
@@ -38,10 +36,10 @@ function readStdin() {
 		});
 
 		let buffer = "";
-		rl.on('line', (line) => {
+		rl.on("line", (line) => {
 			try {
 				if (line.startsWith("- Bump")) {
-					buffer += `${handleDependencyBump(line)}\n`
+					buffer += `${handleDependencyBump(line)}`
 				} else {
 					buffer += `${line}\n`;
 				}
@@ -50,7 +48,7 @@ function readStdin() {
 			}
 		});
 
-		rl.on('pause', () => {
+		rl.on("pause", () => {
 		  resolve(buffer);
 		});
 	});
