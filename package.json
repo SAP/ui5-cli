@@ -67,6 +67,7 @@
 			"text-summary"
 		],
 		"exclude": [
+			".chglog/**",
 			"docs/**",
 			"jsdocs/**",
 			"coverage/**",
