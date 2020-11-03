@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{title}}</title>
+	<script
+		id="sap-ui-bootstrap"
+		src="resources/sap-ui-core.js"
+		{{#if theme}}
+		data-sap-ui-theme="{{theme}}"
+		{{/if}}
+		data-sap-ui-resourceroots='{
+			"{{namespace}}": "./"
+		}'
+		data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+		data-sap-ui-compatVersion="edge"
+		data-sap-ui-async="true">
+	</script>
+</head>
+<body class="sapUiBody" id="content">
+	<div data-sap-ui-component data-name="{{namespace}}" data-id="container" data-settings='{"id" : "{{id}}"}'></div>
+</body>
+</html>
