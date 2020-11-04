@@ -37,6 +37,23 @@ const libraryCollection = {
 		]
 	}
 };
+const themelibraryCollection = {
+	dependencies: {
+		_readers: [
+			new FileSystem({
+				virBasePath: "resources/sample/",
+				project: {
+					type: "themelib",
+					metadata: {
+						name: "themelib_sap_fancy_theme"
+					}
+				},
+				fsBasePath: "/resources/sample",
+				excludes: []
+			})
+		]
+	}
+};
 const resource = [{
 	_path: "sample",
 	_project: {
@@ -340,411 +357,611 @@ test.serial("Add raw view", async (t) => {
 	});
 });
 
-// test.serial("Add default view", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub} = t.context;
+test.serial("Add default view", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: true,
-// 			route: false,
-// 		},
-// 		expectedMessage: "view",
-// 		expectedMetaInfo: {
-// 			controller: true,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: false,
-// 			type: "view",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new view with corresponding controller"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			route: false,
+		},
+		expectedMessage: "Add new view with corresponding controller",
+		expectedMetaInfo: {
+			controller: true,
+			moduleList: [],
+			namespaceList: [],
+			route: false,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view with corresponding controller"],
+		project: project
+	});
+});
 
-// test.serial("Add default view with route", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub} = t.context;
+test.serial("Add default view with route", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: true,
-// 			route: true,
-// 		},
-// 		expectedMessage: "view",
-// 		expectedMetaInfo: {
-// 			controller: true,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: true,
-// 			type: "view",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new view with corresponding controller and route to project"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			route: true,
+		},
+		expectedMessage: "Add new view with corresponding controller and route to project",
+		expectedMetaInfo: {
+			controller: true,
+			moduleList: [],
+			namespaceList: [],
+			route: true,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view with corresponding controller and route to project"],
+		project: project
+	});
+});
 
-// test.serial("Add to existing view an route", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub} = t.context;
+test.serial("Add to existing view an route", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: true,
-// 			route: true,
-// 		},
-// 		expectedMessage: "route",
-// 		expectedMetaInfo: {
-// 			controller: true,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: true,
-// 			type: "view",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add route to view"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			route: true,
+		},
+		expectedMessage: "Add route to view",
+		expectedMetaInfo: {
+			controller: true,
+			moduleList: [],
+			namespaceList: [],
+			route: true,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add route to view"],
+		project: project
+	});
+});
 
-// test.serial("Add default view with valid namespace", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
+test.serial("Add default view with valid namespace", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub,
+		createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
 
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub.resolves(resource);
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resource);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: true,
-// 			namespaces: ["sample"],
-// 			route: false,
-// 		},
-// 		expectedMessage: "view",
-// 		expectedMetaInfo: {
-// 			controller: true,
-// 			moduleList: [],
-// 			namespaceList: [{name: "sample"}],
-// 			route: false,
-// 			type: "view",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new view with corresponding controller"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			namespaces: ["sample"],
+			route: false,
+		},
+		expectedMessage: "Add new view with corresponding controller",
+		expectedMetaInfo: {
+			controller: true,
+			moduleList: [],
+			namespaceList: [{name: "sample"}],
+			route: false,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view with corresponding controller"],
+		project: project
+	});
+});
 
-// test.serial("Add controller", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub} = t.context;
+test.serial("Add controller", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "controller"],
-// 			name: "test"
-// 		},
-// 		expectedMessage: "controller",
-// 		expectedMetaInfo: {
-// 			controller: undefined,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: undefined,
-// 			type: "controller",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new controller"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "controller"],
+			name: "test"
+		},
+		expectedMessage: "Add new controller",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			namespaceList: [],
+			route: undefined,
+			theme: undefined,
+			type: "controller",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new controller"],
+		project: project
+	});
+});
 
-// test.serial("Add controller with valid modules", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
+test.serial("Add controller with valid modules", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub,
+		createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub.resolves(resource);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resource);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "controller"],
-// 			name: "test",
-// 			modules: ["Sample"]
-// 		},
-// 		expectedMessage: "controller",
-// 		expectedMetaInfo: {
-// 			controller: undefined,
-// 			moduleList: [{name: "sample"}],
-// 			namespaceList: [],
-// 			route: undefined,
-// 			type: "controller",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new controller"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "controller"],
+			name: "test",
+			modules: ["Sample"]
+		},
+		expectedMessage: "Add new controller",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [{name: "sample"}],
+			namespaceList: [],
+			route: undefined,
+			theme: undefined,
+			type: "controller",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new controller"],
+		project: project
+	});
+});
 
-// test.serial("Add control", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub} = t.context;
+test.serial("Add control", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "control"],
-// 			name: "test"
-// 		},
-// 		expectedMessage: "control",
-// 		expectedMetaInfo: {
-// 			controller: undefined,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: undefined,
-// 			type: "control",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new control"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "control"],
+			name: "test"
+		},
+		expectedMessage: "Add new control",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			namespaceList: [],
+			route: undefined,
+			theme: undefined,
+			type: "control",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new control"],
+		project: project
+	});
+});
 
-// test.serial("Add control with modules", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
+test.serial("Add control with modules", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub,
+		createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub.resolves(resource);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resource);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "control"],
-// 			name: "test",
-// 			modules: ["sample"]
-// 		},
-// 		expectedMessage: "control",
-// 		expectedMetaInfo: {
-// 			controller: undefined,
-// 			moduleList: [{name: "sample"}],
-// 			namespaceList: [],
-// 			route: undefined,
-// 			type: "control",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new control"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "control"],
+			name: "test",
+			modules: ["sample"]
+		},
+		expectedMessage: "Add new control",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [{name: "sample"}],
+			namespaceList: [],
+			route: undefined,
+			theme: undefined,
+			type: "control",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new control"],
+		project: project
+	});
+});
 
-// test.serial("Add default view interactive with component selection", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub} = t.context;
+test.serial("Add component", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub,
+		createCollectionsForTreeStub} = t.context;
 
-// 	const dependencyTree = {
-// 		dependencies: [{
-// 			id: "fake-dependency"
-// 		}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(dependencyTree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub.resolves(resource);
-// 	runStub.onCall(0).resolves("View");
-// 	runStub.onCall(1).resolves("test");
-// 	runStub.onCall(2).resolves(true);
-// 	runStub.onCall(3).resolves(false);
-// 	runStub.onCall(4).resolves([]);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resource);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create"],
-// 			interactive: true
-// 		},
-// 		expectedMessage: "view",
-// 		expectedMetaInfo: {
-// 			controller: true,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: false,
-// 			type: "view",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new view with corresponding controller"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "component"],
+		},
+		expectedMessage: "Add new Component to project",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			namespaceList: [],
+			route: undefined,
+			theme: undefined,
+			type: "component",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new Component to project"],
+		project: project
+	});
+});
 
-// test.serial("Add control interactive with component selection", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub} = t.context;
+test.serial("Create bootstrap", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
-// 	const dependencyTree = {
-// 		dependencies: [{
-// 			id: "fake-dependency"
-// 		}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
-// 	generateDependencyTreeStub.resolves(dependencyTree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub.resolves(resource);
-// 	runStub.onCall(0).resolves("Custom Control");
-// 	runStub.onCall(1).resolves("test");
-// 	runStub.onCall(2).resolves([]);
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create"],
-// 			interactive: true
-// 		},
-// 		expectedMessage: "control",
-// 		expectedMetaInfo: {
-// 			controller: undefined,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: undefined,
-// 			type: "control",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new control"],
-// 		project: project
-// 	});
-// });
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(themelibraryCollection);
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "bootstrap"],
+			name: undefined,
+			controller: false,
+			route: false,
+			theme: undefined
+		},
+		expectedMessage: "Create bootstrap for project",
+		expectedMetaInfo: {
+			controller: false,
+			moduleList: [],
+			namespaceList: [],
+			route: false,
+			theme: undefined,
+			type: "bootstrap",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Create bootstrap for project"],
+		project: project
+	});
+});
+
+test.serial("Create bootstrap with custom name and theme", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(themelibraryCollection);
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "bootstrap"],
+			name: "test",
+			controller: false,
+			route: false,
+			theme: "fancy_theme"
+		},
+		expectedMessage: "Create bootstrap for project",
+		expectedMetaInfo: {
+			controller: false,
+			moduleList: [],
+			namespaceList: [],
+			route: false,
+			theme: "sap_fancy_theme",
+			type: "bootstrap",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Create bootstrap for project"],
+		project: project
+	});
+});
+
+test.serial("Add default view interactive with component selection", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub,
+		createCollectionsForTreeStub} = t.context;
+
+	const dependencyTree = {
+		dependencies: [{
+			id: "fake-dependency"
+		}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resource);
+	runStub.onCall(0).resolves("View");
+	runStub.onCall(1).resolves("test");
+	runStub.onCall(2).resolves(true);
+	runStub.onCall(3).resolves(false);
+	runStub.onCall(4).resolves([]);
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create"],
+			interactive: true
+		},
+		expectedMessage: "Add new view with corresponding controller",
+		expectedMetaInfo: {
+			controller: true,
+			moduleList: [],
+			namespaceList: [],
+			route: false,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view with corresponding controller"],
+		project: project
+	});
+});
+
+test.serial("Add control interactive with component selection", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub,
+		createCollectionsForTreeStub} = t.context;
+
+	const dependencyTree = {
+		dependencies: [{
+			id: "fake-dependency"
+		}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resource);
+	runStub.onCall(0).resolves("Custom Control");
+	runStub.onCall(1).resolves();
+	runStub.onCall(2).resolves("test");
+	runStub.onCall(3).resolves([]);
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create"],
+			interactive: true
+		},
+		expectedMessage: "Add new control",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			namespaceList: [],
+			route: undefined,
+			theme: undefined,
+			type: "control",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new control"],
+		project: project
+	});
+});
+
+test.serial("Create bootstrap interactive", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, runStub,
+		createCollectionsForTreeStub} = t.context;
+
+	const dependencyTree = {
+		dependencies: [{
+			id: "fake-dependency"
+		}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(themelibraryCollection);
+	runStub.onCall(0).resolves("test");
+	runStub.onCall(1).resolves("fancy_theme");
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "bootstrap"],
+			interactive: true
+		},
+		expectedMessage: "Create bootstrap for project",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			namespaceList: [],
+			route: undefined,
+			theme: "sap_fancy_theme",
+			type: "bootstrap",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Create bootstrap for project"],
+		project: project
+	});
+});
