@@ -23,7 +23,7 @@ const projectTree = {
 	}],
 	type: "application"
 };
-const collection = {
+const libraryCollection = {
 	dependencies: {
 		_readers: [
 			new FileSystem({
@@ -51,7 +51,6 @@ async function assertCreateHandler(t, {argv, expectedMessage, expectedMetaInfo, 
 	const frameworkCreateStub = sinon.stub(createFramework, "create").resolves({
 		statusMessage: expectedMessage
 	});
-	mock("../../../../lib/framework/create", frameworkCreateStub);
 
 	const createCommand = mock.reRequire("../../../../lib/cli/commands/create");
 	await createCommand.handler(argv);
@@ -73,9 +72,9 @@ async function assertCreateHandler(t, {argv, expectedMessage, expectedMetaInfo, 
 	});
 }
 
-async function assertFailingCreateHandler(t, {argv, expectedStatus, expectedMessage, expectedCallCount}) {
+async function assertFailingCreateHandler(t, {argv, expectedMessage, expectedCallCount}) {
 	const frameworkCreateStub = sinon.stub(createFramework, "create").resolves({
-		statusMessage: expectedStatus
+		statusMessage: undefined
 	});
 
 	const createCommand = mock.reRequire("../../../../lib/cli/commands/create");
@@ -89,8 +88,7 @@ test.beforeEach((t) => {
 	t.context.generateDependencyTreeStub = sinon.stub(ui5Project.normalizer, "generateDependencyTree");
 	t.context.processProjectStub = sinon.stub(ui5Project.projectPreprocessor, "processTree");
 	t.context.generateProjectTreeStub = sinon.stub(ui5Project.normalizer, "generateProjectTree").resolves(projectTree);
-	t.context.createCollectionsForTreeStub = sinon.stub(ui5Fs.resourceFactory, "createCollectionsForTree").
-		resolves(collection);
+	t.context.createCollectionsForTreeStub = sinon.stub(ui5Fs.resourceFactory, "createCollectionsForTree");
 	t.context.byGlobStub = sinon.stub(ui5Fs.AbstractReader.prototype, "byGlob");
 	t.context.runStub = sinon.stub(Prompt.prototype, "run");
 
@@ -103,6 +101,17 @@ test.afterEach.always(() => {
 });
 
 test.serial("Rejects on no component provided", async (t) => {
+	const {createCollectionsForTreeStub, generateDependencyTreeStub, processProjectStub} = t.context;
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application"
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 	await assertFailingCreateHandler(t, {
 		argv: {
 			_: ["create"]
@@ -114,6 +123,17 @@ test.serial("Rejects on no component provided", async (t) => {
 });
 
 test.serial("Rejects on no name provided", async (t) => {
+	const {createCollectionsForTreeStub, generateDependencyTreeStub, processProjectStub} = t.context;
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application"
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 	await assertFailingCreateHandler(t, {
 		argv: {
 			_: ["create", "view"]
@@ -142,22 +162,19 @@ test.serial("Rejects on other project type ", async (t) => {
 			name: "test"
 		},
 		expectedMessage: "Failed to read project: " +
-			"Create command is currently only supported for projects of type Application",
+			"Create command is currently only supported for projects of type application",
 		expectedCallCount: 0
 	});
 });
 
 test.serial("Rejects on no message", async (t) => {
-	const {generateDependencyTreeStub, processProjectStub} = t.context;
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
 	const tree = {
 		dependencies: [{id: "fake-dependency"}]
 	};
 	const project = {
 		type: "application",
-		metadata: {
-			namespace: "sample"
-		},
 		resources: {
 			configuration: {
 				paths: {
@@ -168,6 +185,7 @@ test.serial("Rejects on no message", async (t) => {
 	};
 	generateDependencyTreeStub.resolves(tree);
 	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
 	await assertFailingCreateHandler(t, {
 		argv: {
@@ -180,16 +198,13 @@ test.serial("Rejects on no message", async (t) => {
 });
 
 test.serial("Rejects on other message", async (t) => {
-	const {generateDependencyTreeStub, processProjectStub} = t.context;
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
 	const tree = {
 		dependencies: [{id: "fake-dependency"}]
 	};
 	const project = {
 		type: "application",
-		metadata: {
-			namespace: "sample"
-		},
 		resources: {
 			configuration: {
 				paths: {
@@ -200,126 +215,130 @@ test.serial("Rejects on other message", async (t) => {
 	};
 	generateDependencyTreeStub.resolves(tree);
 	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
 	await assertFailingCreateHandler(t, {
 		argv: {
 			_: ["create", "view"],
 			name: "test"
 		},
-		expectedStatus: "xy",
-		expectedMessage: "Internal error caused by: xy",
+		expectedMessage: "Internal error while adding component",
 		expectedCallCount: 1
 	});
 });
 
-// test.serial("Rejects on add default view with invalid namespace", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
+test.serial("Rejects on add default view with invalid namespace", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
 
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub.resolves(resource);
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertFailingCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: true,
-// 			namespaces: ["xy"],
-// 			route: false,
-// 		},
-// 		expectedMessage: "No valid namespace/module provided",
-// 		expectedCallCount: 0
-// 	});
-// });
+	await assertFailingCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			namespaces: ["xy"],
+			route: false,
+		},
+		expectedMessage: "No valid library/module provided",
+		expectedCallCount: 0
+	});
+});
 
-// test.serial("Rejects on add controller with invalid module", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub, byGlobStub} = t.context;
+test.serial("Rejects on add controller with invalid module", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
-// 	};
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
 
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
-// 	byGlobStub.resolves(resource);
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	byGlobStub.resolves(resource);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertFailingCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: true,
-// 			modules: ["xy"],
-// 			route: false,
-// 		},
-// 		expectedMessage: "No valid namespace/module provided",
-// 		expectedCallCount: 0
-// 	});
-// });
+	await assertFailingCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: true,
+			modules: ["xy"],
+			route: false,
+		},
+		expectedMessage: "No valid library/module provided",
+		expectedCallCount: 0
+	});
+});
 
-// test.serial("Add raw view", async (t) => {
-// 	const {generateDependencyTreeStub, processProjectStub} = t.context;
+test.serial("Add raw view", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
-// 	const tree = {
-// 		dependencies: [{id: "fake-dependency"}]
-// 	};
-// 	const project = {
-// 		type: "application",
-// 		resources: {
-// 			configuration: {
-// 				paths: {
-// 					webapp: "app"
-// 				}
-// 			}
-// 		}
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
 
-// 	};
-// 	generateDependencyTreeStub.resolves(tree);
-// 	processProjectStub.resolves(project);
+	};
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
 
-// 	await assertCreateHandler(t, {
-// 		argv: {
-// 			_: ["create", "view"],
-// 			name: "test",
-// 			controller: false,
-// 			route: false,
-// 		},
-// 		expectedMessage: "view",
-// 		expectedMetaInfo: {
-// 			controller: false,
-// 			moduleList: [],
-// 			namespaceList: [],
-// 			route: false,
-// 			type: "view",
-// 			webappPath: path.join(__dirname, "..", "..", "..", "..", "app")
-// 		},
-// 		expectedConsoleLog: ["Add new view"],
-// 		project: project
-// 	});
-// });
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: false,
+			route: false,
+		},
+		expectedMessage: "Add new view",
+		expectedMetaInfo: {
+			controller: false,
+			moduleList: [],
+			namespaceList: [],
+			route: false,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view"],
+		project: project
+	});
+});
 
 // test.serial("Add default view", async (t) => {
 // 	const {generateDependencyTreeStub, processProjectStub} = t.context;
