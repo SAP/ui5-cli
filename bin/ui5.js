@@ -36,14 +36,22 @@ setTimeout(() => {
 		}
 	}
 
-	const updateNotifier = require("update-notifier");
-	updateNotifier({
-		pkg,
-		updateCheckInterval: 1000 * 60 * 60 * 24, // 1 day
-		shouldNotifyInNpmScript: true
-	}).notify();
-	// Remove --no-update-notifier from argv as it's not known to yargs, but we still want to support using it
+	// Only require/call update-notifier when it's not disabled
+	// See: https://github.com/yeoman/update-notifier/blob/f63b2eb5505ce207be6bcbc2dc50ea5fc28cd991/index.js#L43-L46
 	const NO_UPDATE_NOTIFIER = "--no-update-notifier";
+	const disableUpdateNotifier =
+		"NO_UPDATE_NOTIFIER" in process.env ||
+		process.env.NODE_ENV === "test" ||
+		process.argv.includes(NO_UPDATE_NOTIFIER);
+	if (!disableUpdateNotifier) {
+		const updateNotifier = require("update-notifier");
+		updateNotifier({
+			pkg,
+			updateCheckInterval: 1000 * 60 * 60 * 24, // 1 day
+			shouldNotifyInNpmScript: true
+		}).notify();
+	}
+	// Remove --no-update-notifier from argv as it's not known to yargs, but we still want to support using it
 	if (process.argv.includes(NO_UPDATE_NOTIFIER)) {
 		process.argv = process.argv.filter((v) => v !== NO_UPDATE_NOTIFIER);
 	}
