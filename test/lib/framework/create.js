@@ -13,9 +13,9 @@ async function assertCreate(t, {name, metaInformation, project, expectedMessage,
 
 	t.is(fsWriteFileStub.callCount, expectedCallCount, "Write function should not or once be called");
 	if (expectedCallCount != 0) {
-		t.deepEqual(fsWriteFileStub.getCall(0).args[0], expectedPath,
+		t.deepEqual(fsWriteFileStub.getCall(expectedCallCount-1).args[0], expectedPath,
 			"Write function should be called with expected path as argument");
-		t.deepEqual(fsWriteFileStub.getCall(0).args[1], expectedOutput,
+		t.deepEqual(fsWriteFileStub.getCall(expectedCallCount-1).args[1], expectedOutput,
 			"Write function should be called with expected output as argument");
 	}
 	t.is(statusMessage, expectedMessage,
@@ -35,7 +35,6 @@ test.beforeEach((t) => {
 	t.context.existsStub = sinon.stub(fsHelper, "exists");
 	t.context.fsMkDirStub = sinon.stub(fs, "mkdir").yieldsAsync(null);
 	t.context.fsWriteFileStub = sinon.stub(fs, "writeFile").yieldsAsync(null);
-
 
 	t.context.consoleLogStub = sinon.stub(console, "log");
 });
@@ -62,6 +61,30 @@ test.serial("Reject process on creating view", async (t) => {
 		expectedMessage: "Failed to create component: EPERM: operation not permitted, mkdir 'C:\\'.",
 		metaInformation: {
 			controller: true,
+			type: "view",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedCallCount: 0
+	});
+});
+
+test.serial("Reject process on no webappPath", async (t) => {
+	const {existsStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "xy"
+		}
+	};
+
+	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
+	existsStub.withArgs("webappPath").resolves(false);
+
+	await assertFailingCreate(t, {
+		name: "test",
+		expectedMessage: "Failed to create component: Internal error.",
+		metaInformation: {
+			controller: false,
 			type: "view",
 			savePath: "webappPath"
 		},
@@ -260,6 +283,26 @@ test.serial("Return message on existing control", async (t) => {
 	});
 });
 
+test.serial("Return message on existing bootstrap", async (t) => {
+	const {existsStub} = t.context;
+	const project = {};
+
+	existsStub.withArgs("webappPath/test.html").resolves(true);
+
+	await assertCreate(t, {
+		name: "test",
+		expectedMessage: "Bootstrap for project already exists",
+		metaInformation: {
+			type: "bootstrap",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: undefined,
+		expectedOutput: undefined,
+		expectedCallCount: 0
+	});
+});
+
 test.serial("Return view message on view created", async (t) => {
 	const {existsStub} = t.context;
 	const project = {
@@ -327,6 +370,53 @@ test.serial("Return view message on view created with controller and namespace",
 		expectedPath: "webappPath/view/Test.view.xml",
 		expectedOutput: output,
 		expectedCallCount: 1
+	});
+});
+
+test.serial("Return view message on view created with controller and route", async (t) => {
+	const {existsStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "xy"
+		}
+	};
+
+	const manifest =
+`{
+    "sap.ui5": {
+		"routing": {
+
+		}
+    }
+}`;
+
+	const output =
+`<mvc:View
+    controllerName="xy.controller.Test"
+    xmlns:mvc="sap.ui.core.mvc">
+</mvc:View>`;
+
+	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
+	existsStub.withArgs("webappPath/controller/Test.controller.js").resolves(true);
+	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fs.readFile.callThrough();
+	existsStub.withArgs("webappPath").resolves(true);
+	existsStub.withArgs("webappPath/view").resolves(true);
+
+	await assertCreate(t, {
+		name: "test",
+		expectedMessage: "Add new view with corresponding controller and route to project",
+		metaInformation: {
+			route: true,
+			controller: true,
+			namespaceList: [],
+			type: "view",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/view/Test.view.xml",
+		expectedOutput: output,
+		expectedCallCount: 2
 	});
 });
 
@@ -409,6 +499,48 @@ test.serial("Return control message on control created", async (t) => {
 		expectedPath: "webappPath/control/Test.js",
 		expectedOutput: output,
 		expectedCallCount: 1
+	});
+});
+
+test.serial("Return component message on default component created", async (t) => {
+	const {existsStub} = t.context;
+	const project = {
+		type: "application",
+		metadata: {
+			name: "test",
+			namespace: "xy"
+		}
+	};
+
+	const output =
+`sap.ui.define([
+	"sap/ui/core/UIComponent"
+], function (UIComponent) {
+	"use strict";
+	return UIComponent.extend("xy.Component", {
+		metadata : {
+			manifest: "json"
+		},
+		init : function () {
+        	UIComponent.prototype.init.apply(this, arguments);
+      	}
+	});
+});`;
+
+	existsStub.withArgs("webappPath/Component.js").resolves(false);
+	existsStub.withArgs("webappPath/manifest.json").resolves(false);
+	existsStub.withArgs("webappPath").resolves(true);
+
+	await assertCreate(t, {
+		expectedMessage: "Add new Component to project",
+		metaInformation: {
+			type: "component",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/Component.js",
+		expectedOutput: output,
+		expectedCallCount: 2
 	});
 });
 
@@ -556,10 +688,8 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 
 	existsStub.withArgs("webappPath/index.html").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
-	const fsReadFileStub = sinon.stub(fs, "readFile");
-	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 	fs.readFile.callThrough();
-	// .withArgs(__dirname + `/../templates/bootstrap`, "utf8").calls
 
 	await assertCreate(t, {
 		name: undefined,
@@ -576,4 +706,44 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 		expectedOutput: output,
 		expectedCallCount: 1
 	});
+});
+
+test.serial("Return manifest message on create manifest", async (t) => {
+	const project = {
+		type: "application",
+		metadata: {
+			name: "test"
+		}
+	};
+
+	const expectedOutput = JSON.stringify({
+		"_version": "1.1.0",
+		"sap.app": {
+			"id": "fancy.app",
+			"type": "application",
+			"title": "test",
+			"applicationVersion": {
+				"version": "1.0.0"
+			}
+		},
+		"sap.ui": {
+			"technology": "UI5"
+		},
+		"sap.ui5": {}
+	}, null, 4);
+
+	const {fsWriteFileStub, consoleLogStub} = t.context;
+	const {createManifest} = mock.reRequire("../../../lib/framework/create");
+
+	await createManifest("fancy.app", project, "webappPath");
+
+	t.is(fsWriteFileStub.callCount, 1, "Write function should not or once be called");
+	t.deepEqual(fsWriteFileStub.getCall(0).args[0], "webappPath/manifest.json",
+		"Write function should be called with expected path as argument");
+	t.deepEqual(fsWriteFileStub.getCall(0).args[1], expectedOutput,
+		"Write function should be called with expected output as argument");
+	t.is(consoleLogStub.callCount, 1,
+		"console.log should be called " + 1 + " times");
+	t.deepEqual(consoleLogStub.getCall(0).args[0], "manifest.json created",
+		"console.log should be called with expected string");
 });
