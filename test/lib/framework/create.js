@@ -544,6 +544,29 @@ test.serial("Return component message on default component created", async (t) =
 	});
 });
 
+test.serial("Return component message on custom component exist", async (t) => {
+	const {existsStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "xy"
+		}
+	};
+
+	existsStub.withArgs("webappPath/test").resolves(true);
+	existsStub.withArgs("webappPath/test/Component.js").resolves(true);
+
+	await assertCreate(t, {
+		name: "test",
+		expectedMessage: "Component for xy.test already exists",
+		metaInformation: {
+			type: "component",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedCallCount: 0
+	});
+});
+
 test.serial("Return route message on route for existing view created, no routing config", async (t) => {
 	const {existsStub} = t.context;
 	const project = {};
