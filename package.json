@@ -17,7 +17,7 @@
 		"tool"
 	],
 	"bin": {
-		"ui5": "./bin/ui5.js"
+		"ui5": "bin/ui5.js"
 	},
 	"main": "index.js",
 	"engines": {
