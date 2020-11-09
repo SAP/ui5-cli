@@ -30,6 +30,22 @@ test.afterEach.always(() => {
 	sinon.restore();
 });
 
+test.serial("Init not possible, ui5.yaml already exists", async (t) => {
+	const {fsHelperStub, fsWriteFileStub} = t.context;
+
+	fsHelperStub.withArgs(ui5YamlPath).resolves(true);
+
+	mock("path", {resolve: () => ui5YamlPath});
+
+	const initCommand = mock.reRequire("../../../../lib/cli/commands/init");
+
+	const exception = await t.throwsAsync(initCommand.handler({}));
+
+	t.is(fsWriteFileStub.callCount, 0, "Write function should not be called");
+	t.is(exception.message, "Initialization not possible: ui5.yaml already exists",
+		"Init command should throw expected error");
+});
+
 test.serial("Writes ui5.yaml to fs with manifest, type application", async (t) => {
 	const {fsHelperStub, fsWriteFileStub, consoleLogStub, safeDumpYamlStub} = t.context;
 
@@ -83,8 +99,8 @@ test.serial("Writes ui5.yaml to fs with manifest, type application", async (t) =
 	});
 });
 
-test.serial("Init not possible, type library", async (t) => {
-	const {fsHelperStub} = t.context;
+test.serial("Init not possible, no namespace, type library", async (t) => {
+	const {fsHelperStub, fsWriteFileStub} = t.context;
 
 	const projectConfig = {
 		type: "library"
@@ -93,7 +109,6 @@ test.serial("Init not possible, type library", async (t) => {
 	fsHelperStub.withArgs(ui5YamlPath).resolves(false);
 	fsHelperStub.withArgs(`${srcPath}/manifest.json`).resolves(false);
 	sinon.stub(init, "init").resolves(projectConfig);
-	const frameworkCreateManifestStub = sinon.stub(createFramework, "createManifest");
 
 	mock("path", {resolve: (path) => {
 		if (path == "./ui5.yaml") {
@@ -108,7 +123,7 @@ test.serial("Init not possible, type library", async (t) => {
 
 	const exception = await t.throwsAsync(initCommand.handler({}));
 
-	t.is(frameworkCreateManifestStub.callCount, 0, "Create Manifest function should be called");
+	t.is(fsWriteFileStub.callCount, 0, "Create Manifest function should be called");
 	t.is(exception.message, "Initialization not possible: Need namespace",
 		"Init command should throw expected error");
 });
