@@ -521,6 +521,9 @@ test.serial("Return component message on default component created", async (t) =
 		metadata: {
 			name: "test",
 			namespace: "xy"
+		},
+		framework: {
+			libraries: []
 		}
 	};
 
@@ -749,6 +752,11 @@ test.serial("Return manifest message on create manifest", async (t) => {
 		type: "application",
 		metadata: {
 			name: "test"
+		},
+		framework: {
+			libraries: [
+				{name: "ui.tech"}
+			]
 		}
 	};
 
@@ -765,7 +773,13 @@ test.serial("Return manifest message on create manifest", async (t) => {
 		"sap.ui": {
 			"technology": "UI5"
 		},
-		"sap.ui5": {}
+		"sap.ui5": {
+			"dependencies": {
+				"libs": {
+					"ui.tech": {}
+				}
+			}
+		}
 	}, null, 4);
 
 	const {fsWriteFileStub, consoleLogStub} = t.context;
