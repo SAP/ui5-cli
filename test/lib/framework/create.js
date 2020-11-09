@@ -758,7 +758,11 @@ test.serial("Return manifest message on create manifest", async (t) => {
 	const {fsWriteFileStub, consoleLogStub} = t.context;
 	const {createManifest} = mock.reRequire("../../../lib/framework/create");
 
-	await createManifest("fancy.app", project, "webappPath");
+	await createManifest({
+		namespace: "fancy.app",
+		project,
+		savePath: "webappPath"
+	});
 
 	t.is(fsWriteFileStub.callCount, 1, "Write function should not or once be called");
 	t.deepEqual(fsWriteFileStub.getCall(0).args[0], "webappPath/manifest.json",
