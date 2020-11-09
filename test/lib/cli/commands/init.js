@@ -15,10 +15,11 @@ const ui5Yaml = `
 
 const ui5YamlPath = "./ui5.yaml";
 const webappPath = "./webapp";
+const srcPath = "./src";
 
 test.beforeEach((t) => {
 	t.context.fsHelperStub = sinon.stub(fsHelper, "exists");
-	t.context.safeDumpYamlStub = sinon.stub(jsYaml, "safeDump").returns(ui5Yaml);
+	t.context.safeDumpYamlStub = sinon.stub(jsYaml, "safeDump");
 	t.context.fsWriteFileStub = sinon.stub(fs, "writeFile");
 
 	t.context.consoleLogStub = sinon.stub(console, "log");
@@ -30,7 +31,7 @@ test.afterEach.always(() => {
 });
 
 test.serial("Writes ui5.yaml to fs with manifest, type application", async (t) => {
-	const {fsHelperStub, fsWriteFileStub, consoleLogStub} = t.context;
+	const {fsHelperStub, fsWriteFileStub, consoleLogStub, safeDumpYamlStub} = t.context;
 
 	const expectedConsoleLog = [
 		`Wrote ui5.yaml to ${ui5YamlPath}:\n`,
@@ -43,6 +44,7 @@ test.serial("Writes ui5.yaml to fs with manifest, type application", async (t) =
 	fsHelperStub.withArgs(ui5YamlPath).resolves(false);
 	fsHelperStub.withArgs(`${webappPath}/manifest.json`).resolves(false);
 	fsWriteFileStub.callsArgWith(2);
+	safeDumpYamlStub.returns(ui5Yaml);
 	sinon.stub(init, "init").resolves(projectConfig);
 	const frameworkCreateManifestStub = sinon.stub(createFramework, "createManifest");
 
@@ -79,6 +81,36 @@ test.serial("Writes ui5.yaml to fs with manifest, type application", async (t) =
 		t.deepEqual(t.context.consoleLogStub.getCall(i).args, [expectedLog],
 			"console.log should be called with expected string on call index " + i);
 	});
+});
+
+test.serial("Init not possible, type library", async (t) => {
+	const {fsHelperStub} = t.context;
+
+	const projectConfig = {
+		type: "library"
+	};
+
+	fsHelperStub.withArgs(ui5YamlPath).resolves(false);
+	fsHelperStub.withArgs(`${srcPath}/manifest.json`).resolves(false);
+	sinon.stub(init, "init").resolves(projectConfig);
+	const frameworkCreateManifestStub = sinon.stub(createFramework, "createManifest");
+
+	mock("path", {resolve: (path) => {
+		if (path == "./ui5.yaml") {
+			return ui5YamlPath;
+		} else if (path == "./src") {
+			return srcPath;
+		}
+		return undefined;
+	}});
+
+	const initCommand = mock.reRequire("../../../../lib/cli/commands/init");
+
+	const exception = await t.throwsAsync(initCommand.handler({}));
+
+	t.is(frameworkCreateManifestStub.callCount, 0, "Create Manifest function should be called");
+	t.is(exception.message, "Initialization not possible: Need namespace",
+		"Init command should throw expected error");
 });
 
 test.serial("Error: throws if ui5.yaml already exists", async (t) => {

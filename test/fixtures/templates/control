@@ -1,0 +1,19 @@
+sap.ui.define([
+	"sap/ui/core/Control"{{#if modules}},
+	{{#each modules}}
+	{{#if @last}}"{{name}}"{{else}}"{{name}}",{{/if}}
+	{{/each}}
+	{{else}}
+
+ 	{{/if}}
+], function (Control{{#if modules}}, {{#each modules}}{{#if @last}}{{module}}{{else}}{{module}}, {{/if}}{{/each}}{{/if}}) {
+	"use strict";
+	return Control.extend("{{controllerName}}", {
+		metadata : {
+		},
+		init : function () {
+		},
+		renderer : function (oRenderManager, oControl) {
+		}
+	});
+});

@@ -1,0 +1,19 @@
+sap.ui.define([
+	"sap/ui/core/UIComponent"{{#if modules}},
+	{{#each modules}}
+	{{#if @last}}"{{name}}"{{else}}"{{name}}",{{/if}}
+	{{/each}}
+	{{else}}
+
+ 	{{/if}}
+], function (UIComponent{{#if modules}}, {{#each modules}}{{#if @last}}{{module}}{{else}}{{module}}, {{/if}}{{/each}}{{/if}}) {
+	"use strict";
+	return UIComponent.extend("{{controllerName}}", {
+		metadata : {
+			manifest: "json"
+		},
+		init : function () {
+        	UIComponent.prototype.init.apply(this, arguments);
+      	}
+	});
+});

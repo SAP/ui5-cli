@@ -1,8 +1,13 @@
 const test = require("ava");
 const sinon = require("sinon");
 const mock = require("mock-require");
+const path = require("path");
 const fsHelper = require("../../../lib/utils/fsHelper");
 const fs = require("fs");
+
+function getFixturePath(fixtureName) {
+	return path.join(__dirname, "..", "..", "fixtures", "templates", fixtureName);
+}
 
 async function assertCreate(t, {name, metaInformation, project, expectedMessage, expectedPath,
 	expectedOutput, expectedCallCount}) {
@@ -34,6 +39,7 @@ async function assertFailingCreate(t, {name, metaInformation, project, expectedM
 test.beforeEach((t) => {
 	t.context.existsStub = sinon.stub(fsHelper, "exists");
 	t.context.fsMkDirStub = sinon.stub(fs, "mkdir").yieldsAsync(null);
+	t.context.fsReadFileStub = sinon.stub(fs, "readFile");
 	t.context.fsWriteFileStub = sinon.stub(fs, "writeFile").yieldsAsync(null);
 
 	t.context.consoleLogStub = sinon.stub(console, "log");
@@ -45,7 +51,7 @@ test.afterEach.always(() => {
 });
 
 test.serial("Reject process on creating view", async (t) => {
-	const {existsStub, fsMkDirStub} = t.context;
+	const {existsStub, fsMkDirStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -54,6 +60,7 @@ test.serial("Reject process on creating view", async (t) => {
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("view"), "utf-8"));
 	fsMkDirStub.yieldsAsync(new Error("EPERM: operation not permitted, mkdir 'C:\\'"));
 
 	await assertFailingCreate(t, {
@@ -70,7 +77,7 @@ test.serial("Reject process on creating view", async (t) => {
 });
 
 test.serial("Reject process on no webappPath", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -79,6 +86,7 @@ test.serial("Reject process on no webappPath", async (t) => {
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath").resolves(false);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("view"), "utf-8"));
 
 	await assertFailingCreate(t, {
 		name: "test",
@@ -94,7 +102,7 @@ test.serial("Reject process on no webappPath", async (t) => {
 });
 
 test.serial("Reject process on create routing config, already exists", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -124,7 +132,7 @@ test.serial("Reject process on create routing config, already exists", async (t)
 }`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
-	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 
 	await assertFailingCreate(t, {
 		name: "test",
@@ -141,7 +149,7 @@ test.serial("Reject process on create routing config, already exists", async (t)
 });
 
 test.serial("Reject process on create routing config, target is missing", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -164,7 +172,7 @@ test.serial("Reject process on create routing config, target is missing", async 
 }`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
-	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 
 	await assertFailingCreate(t, {
 		name: "test",
@@ -181,7 +189,7 @@ test.serial("Reject process on create routing config, target is missing", async 
 });
 
 test.serial("Reject process on create routing config, 'sapui5' is missing", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -194,7 +202,7 @@ test.serial("Reject process on create routing config, 'sapui5' is missing", asyn
 }`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
-	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 
 	await assertFailingCreate(t, {
 		name: "test",
@@ -304,7 +312,7 @@ test.serial("Return message on existing bootstrap", async (t) => {
 });
 
 test.serial("Return view message on view created", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -319,6 +327,7 @@ test.serial("Return view message on view created", async (t) => {
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
 	existsStub.withArgs("webappPath/view").resolves(false);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("view"), "utf-8"));
 
 	await assertCreate(t, {
 		name: "test",
@@ -336,8 +345,8 @@ test.serial("Return view message on view created", async (t) => {
 	});
 });
 
-test.serial("Return view message on view created with controller and namespace", async (t) => {
-	const {existsStub} = t.context;
+test.serial("Return view message on view created with controller", async (t) => {
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -355,6 +364,7 @@ test.serial("Return view message on view created with controller and namespace",
 	existsStub.withArgs("webappPath/controller/Test.controller.js").resolves(true);
 	existsStub.withArgs("webappPath").resolves(true);
 	existsStub.withArgs("webappPath/view").resolves(true);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("view"), "utf-8"));
 
 	await assertCreate(t, {
 		name: "test",
@@ -374,7 +384,7 @@ test.serial("Return view message on view created with controller and namespace",
 });
 
 test.serial("Return view message on view created with controller and route", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -398,8 +408,8 @@ test.serial("Return view message on view created with controller and route", asy
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath/controller/Test.controller.js").resolves(true);
-	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
-	fs.readFile.callThrough();
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("view"), "utf-8"));
 	existsStub.withArgs("webappPath").resolves(true);
 	existsStub.withArgs("webappPath/view").resolves(true);
 
@@ -421,7 +431,7 @@ test.serial("Return view message on view created with controller and route", asy
 });
 
 test.serial("Return controller message on controller created with modules", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -444,6 +454,7 @@ test.serial("Return controller message on controller created with modules", asyn
 	existsStub.withArgs("webappPath/controller/Test.js").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
 	existsStub.withArgs("webappPath/controller").resolves(true);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("controller"), "utf-8"));
 
 	await assertCreate(t, {
 		name: "test",
@@ -461,7 +472,7 @@ test.serial("Return controller message on controller created with modules", asyn
 });
 
 test.serial("Return control message on control created", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -487,6 +498,7 @@ test.serial("Return control message on control created", async (t) => {
 	existsStub.withArgs("webappPath/control/Test.js").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
 	existsStub.withArgs("webappPath/control").resolves(true);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("control"), "utf-8"));
 
 	await assertCreate(t, {
 		name: "test",
@@ -503,7 +515,7 @@ test.serial("Return control message on control created", async (t) => {
 });
 
 test.serial("Return component message on default component created", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		type: "application",
 		metadata: {
@@ -530,6 +542,7 @@ test.serial("Return component message on default component created", async (t) =
 	existsStub.withArgs("webappPath/Component.js").resolves(false);
 	existsStub.withArgs("webappPath/manifest.json").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("component"), "utf-8"));
 
 	await assertCreate(t, {
 		expectedMessage: "Add new Component to project",
@@ -568,7 +581,7 @@ test.serial("Return component message on custom component exist", async (t) => {
 });
 
 test.serial("Return route message on route for existing view created, no routing config", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {};
 
 	const manifest =
@@ -600,7 +613,7 @@ test.serial("Return route message on route for existing view created, no routing
 }`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(true);
-	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 
 	await assertCreate(t, {
 		name: "test",
@@ -618,7 +631,7 @@ test.serial("Return route message on route for existing view created, no routing
 });
 
 test.serial("Return route message on route for existing view created, have routing config", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {};
 
 	const manifest =
@@ -652,7 +665,7 @@ test.serial("Return route message on route for existing view created, have routi
 }`;
 
 
-	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(true);
 
 	await assertCreate(t, {
@@ -671,7 +684,7 @@ test.serial("Return route message on route for existing view created, have routi
 });
 
 test.serial("Return bootstrap message on bootstrap created", async (t) => {
-	const {existsStub} = t.context;
+	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -711,8 +724,8 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 
 	existsStub.withArgs("webappPath/index.html").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
-	sinon.stub(fs, "readFile").withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
-	fs.readFile.callThrough();
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("bootstrap"), "utf-8"));
 
 	await assertCreate(t, {
 		name: undefined,
