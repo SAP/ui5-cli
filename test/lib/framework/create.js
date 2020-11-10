@@ -517,13 +517,8 @@ test.serial("Return control message on control created", async (t) => {
 test.serial("Return component message on default component created", async (t) => {
 	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
-		type: "application",
 		metadata: {
-			name: "test",
 			namespace: "xy"
-		},
-		framework: {
-			libraries: []
 		}
 	};
 
@@ -543,7 +538,7 @@ test.serial("Return component message on default component created", async (t) =
 });`;
 
 	existsStub.withArgs("webappPath/Component.js").resolves(false);
-	existsStub.withArgs("webappPath/manifest.json").resolves(false);
+	existsStub.withArgs("webappPath/manifest.json").resolves(true);
 	existsStub.withArgs("webappPath").resolves(true);
 	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("component"), "utf-8"));
 
@@ -556,7 +551,7 @@ test.serial("Return component message on default component created", async (t) =
 		project: project,
 		expectedPath: "webappPath/Component.js",
 		expectedOutput: output,
-		expectedCallCount: 2
+		expectedCallCount: 1
 	});
 });
 
@@ -580,6 +575,54 @@ test.serial("Return component message on custom component exist", async (t) => {
 		},
 		project: project,
 		expectedCallCount: 0
+	});
+});
+
+test.serial("Return component message on custom component", async (t) => {
+	const {existsStub, fsReadFileStub} = t.context;
+	const project = {
+		type: "application",
+		metadata: {
+			name: "test",
+			namespace: "xy"
+		},
+		framework: {
+			libraries: []
+		}
+	};
+
+	const output =
+`sap.ui.define([
+	"sap/ui/core/UIComponent"
+], function (UIComponent) {
+	"use strict";
+	return UIComponent.extend("xy.test.Component", {
+		metadata : {
+			manifest: "json"
+		},
+		init : function () {
+        	UIComponent.prototype.init.apply(this, arguments);
+      	}
+	});
+});`;
+
+	existsStub.withArgs("webappPath/test").onCall(0).resolves(false);
+	existsStub.withArgs("webappPath/test").onCall(1).resolves(true);
+	existsStub.withArgs("webappPath/test/Component.js").resolves(false);
+	existsStub.withArgs("webappPath/test/manifest.json").resolves(false);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("component"), "utf-8"));
+
+	await assertCreate(t, {
+		name: "test",
+		expectedMessage: "Add new Component to project",
+		metaInformation: {
+			type: "component",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/test/Component.js",
+		expectedOutput: output,
+		expectedCallCount: 2
 	});
 });
 
@@ -747,7 +790,7 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 	});
 });
 
-test.serial("Return manifest message on create manifest", async (t) => {
+test.serial("Return manifest message on create manifest, has dependencies", async (t) => {
 	const project = {
 		type: "application",
 		metadata: {
@@ -778,6 +821,56 @@ test.serial("Return manifest message on create manifest", async (t) => {
 				"libs": {
 					"ui.tech": {}
 				}
+			}
+		}
+	}, null, 4);
+
+	const {fsWriteFileStub, consoleLogStub} = t.context;
+	const {createManifest} = mock.reRequire("../../../lib/framework/create");
+
+	await createManifest({
+		namespace: "fancy.app",
+		project,
+		savePath: "webappPath"
+	});
+
+	t.is(fsWriteFileStub.callCount, 1, "Write function should not or once be called");
+	t.deepEqual(fsWriteFileStub.getCall(0).args[0], "webappPath/manifest.json",
+		"Write function should be called with expected path as argument");
+	t.deepEqual(fsWriteFileStub.getCall(0).args[1], expectedOutput,
+		"Write function should be called with expected output as argument");
+	t.is(consoleLogStub.callCount, 1,
+		"console.log should be called " + 1 + " times");
+	t.deepEqual(consoleLogStub.getCall(0).args[0], "manifest.json created",
+		"console.log should be called with expected string");
+});
+
+test.serial("Return manifest message on create manifest, no dependencies", async (t) => {
+	const project = {
+		type: "application",
+		metadata: {
+			name: "test"
+		},
+		framework: {
+		}
+	};
+
+	const expectedOutput = JSON.stringify({
+		"_version": "1.1.0",
+		"sap.app": {
+			"id": "fancy.app",
+			"type": "application",
+			"title": "test",
+			"applicationVersion": {
+				"version": "1.0.0"
+			}
+		},
+		"sap.ui": {
+			"technology": "UI5"
+		},
+		"sap.ui5": {
+			"dependencies": {
+				"libs": {}
 			}
 		}
 	}, null, 4);
