@@ -274,7 +274,7 @@ test.serial("Rejects on add default view with invalid namespace", async (t) => {
 			namespaces: ["xy"],
 			route: false,
 		},
-		expectedMessage: "No valid library/module provided",
+		expectedMessage: "No valid library/module provided. Use 'ui5 add' to add the needed library.",
 		expectedCallCount: 0
 	});
 });
@@ -309,7 +309,7 @@ test.serial("Rejects on add controller with invalid module", async (t) => {
 			modules: ["xy"],
 			route: false,
 		},
-		expectedMessage: "No valid library/module provided",
+		expectedMessage: "No valid library/module provided. Use 'ui5 add' to add the needed library.",
 		expectedCallCount: 0
 	});
 });
@@ -861,6 +861,52 @@ test.serial("Add default view interactive with component selection", async (t) =
 		expectedMessage: "Add new view with corresponding controller",
 		expectedMetaInfo: {
 			controller: true,
+			moduleList: [],
+			namespaceList: [],
+			route: false,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view with corresponding controller"],
+		project: project
+	});
+});
+
+test.serial("Add default view interactive without namespace selection", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub,
+		createCollectionsForTreeStub} = t.context;
+
+	const dependencyTree = {
+		dependencies: []
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	const resourceEmpty = [];
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resourceEmpty);
+	runStub.onCall(0).resolves("test");
+	runStub.onCall(1).resolves(false);
+	runStub.onCall(2).resolves(false);
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			interactive: true
+		},
+		expectedMessage: "Add new view with corresponding controller",
+		expectedMetaInfo: {
+			controller: false,
 			moduleList: [],
 			namespaceList: [],
 			route: false,
