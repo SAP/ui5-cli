@@ -2,10 +2,12 @@
 	{{#if controllerName}}
     controllerName="{{controllerName}}"
 	{{/if}}
+	xmlns="sap.m"
 	{{#if namespaces}}
 	{{#each namespaces}}
 	xmlns{{#if abv}}:{{/if}}{{abv}}="{{name}}"
 	{{/each}}
 	{{/if}}
     xmlns:mvc="sap.ui.core.mvc">
+	<Label text="Hello World!"/>
 </mvc:View>
