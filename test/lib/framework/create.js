@@ -321,7 +321,9 @@ test.serial("Return view message on view created", async (t) => {
 
 	const output =
 `<mvc:View
+	xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
+	<Label text="Hello World!"/>
 </mvc:View>`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
@@ -356,8 +358,9 @@ test.serial("Return view message on view created with controller", async (t) => 
 	const output =
 `<mvc:View
     controllerName="xy.controller.Test"
-	xmlns:m="sap.m"
+	xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
+	<Label text="Hello World!"/>
 </mvc:View>`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
@@ -372,7 +375,7 @@ test.serial("Return view message on view created with controller", async (t) => 
 		metaInformation: {
 			route: false,
 			controller: true,
-			namespaceList: [{name: "sap.m"}],
+			namespaceList: [],
 			type: "view",
 			savePath: "webappPath"
 		},
@@ -402,8 +405,10 @@ test.serial("Return view message on view created with controller and route", asy
 
 	const output =
 `<mvc:View
-    controllerName="xy.controller.Test"
+	controllerName="xy.controller.Test"
+	xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
+	<Label text="Hello World!"/>
 </mvc:View>`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
@@ -420,6 +425,52 @@ test.serial("Return view message on view created with controller and route", asy
 			route: true,
 			controller: true,
 			namespaceList: [],
+			type: "view",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/view/Test.view.xml",
+		expectedOutput: output,
+		expectedCallCount: 2
+	});
+});
+
+test.serial("Return view message on view as root created", async (t) => {
+	const {existsStub, fsReadFileStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "xy"
+		}
+	};
+
+	const manifest =
+`{
+    "sap.ui5": {
+
+    }
+}`;
+
+	const output =
+`<mvc:View
+	xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+	<Label text="Hello World!"/>
+</mvc:View>`;
+
+	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("view"), "utf-8"));
+	existsStub.withArgs("webappPath").resolves(true);
+	existsStub.withArgs("webappPath/view").resolves(true);
+
+	await assertCreate(t, {
+		name: "test",
+		expectedMessage: "Add new view as root to project",
+		metaInformation: {
+			route: false,
+			controller: false,
+			namespaceList: [],
+			rootView: true,
 			type: "view",
 			savePath: "webappPath"
 		},
@@ -799,6 +850,62 @@ test.serial("Return manifest message on create manifest, has dependencies", asyn
 		framework: {
 			libraries: [
 				{name: "ui.tech"}
+			]
+		}
+	};
+
+	const expectedOutput = JSON.stringify({
+		"_version": "1.1.0",
+		"sap.app": {
+			"id": "fancy.app",
+			"type": "application",
+			"title": "test",
+			"applicationVersion": {
+				"version": "1.0.0"
+			}
+		},
+		"sap.ui": {
+			"technology": "UI5"
+		},
+		"sap.ui5": {
+			"dependencies": {
+				"libs": {
+					"ui.tech": {}
+				}
+			}
+		}
+	}, null, 4);
+
+	const {fsWriteFileStub, consoleLogStub} = t.context;
+	const {createManifest} = mock.reRequire("../../../lib/framework/create");
+
+	await createManifest({
+		namespace: "fancy.app",
+		project,
+		savePath: "webappPath"
+	});
+
+	t.is(fsWriteFileStub.callCount, 1, "Write function should not or once be called");
+	t.deepEqual(fsWriteFileStub.getCall(0).args[0], "webappPath/manifest.json",
+		"Write function should be called with expected path as argument");
+	t.deepEqual(fsWriteFileStub.getCall(0).args[1], expectedOutput,
+		"Write function should be called with expected output as argument");
+	t.is(consoleLogStub.callCount, 1,
+		"console.log should be called " + 1 + " times");
+	t.deepEqual(consoleLogStub.getCall(0).args[0], "manifest.json created",
+		"console.log should be called with expected string");
+});
+
+test.serial("Return manifest message on create manifest, has dependencies and themelib", async (t) => {
+	const project = {
+		type: "application",
+		metadata: {
+			name: "test"
+		},
+		framework: {
+			libraries: [
+				{name: "ui.tech"},
+				{name: "themelib_ui"}
 			]
 		}
 	};

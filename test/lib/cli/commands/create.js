@@ -108,6 +108,7 @@ test.beforeEach((t) => {
 	t.context.createCollectionsForTreeStub = sinon.stub(ui5Fs.resourceFactory, "createCollectionsForTree");
 	t.context.byGlobStub = sinon.stub(ui5Fs.AbstractReader.prototype, "byGlob");
 	t.context.runStub = sinon.stub(Prompt.prototype, "run");
+	mock("../../../../lib/framework/add", sinon.stub());
 
 	t.context.consoleLogStub = sinon.stub(console, "log");
 });
@@ -314,7 +315,7 @@ test.serial("Rejects on add controller with invalid module", async (t) => {
 	});
 });
 
-test.serial("Add raw view", async (t) => {
+test.serial("Add raw view as root", async (t) => {
 	const {generateDependencyTreeStub, processProjectStub, createCollectionsForTreeStub} = t.context;
 
 	const tree = {
@@ -341,12 +342,14 @@ test.serial("Add raw view", async (t) => {
 			name: "test",
 			controller: false,
 			route: false,
+			root: true
 		},
 		expectedMessage: "Add new view",
 		expectedMetaInfo: {
 			controller: false,
 			moduleList: [],
 			namespaceList: [],
+			rootView: true,
 			route: false,
 			theme: undefined,
 			type: "view",
@@ -389,6 +392,7 @@ test.serial("Add default view", async (t) => {
 			controller: true,
 			moduleList: [],
 			namespaceList: [],
+			rootView: undefined,
 			route: false,
 			theme: undefined,
 			type: "view",
@@ -431,6 +435,7 @@ test.serial("Add default view with route", async (t) => {
 			controller: true,
 			moduleList: [],
 			namespaceList: [],
+			rootView: undefined,
 			route: true,
 			theme: undefined,
 			type: "view",
@@ -474,6 +479,7 @@ test.serial("Add to existing view an route", async (t) => {
 			moduleList: [],
 			namespaceList: [],
 			route: true,
+			rootView: undefined,
 			theme: undefined,
 			type: "view",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
@@ -519,12 +525,60 @@ test.serial("Add default view with valid namespace", async (t) => {
 			controller: true,
 			moduleList: [],
 			namespaceList: [{name: "sample"}],
+			rootView: undefined,
 			route: false,
 			theme: undefined,
 			type: "view",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
 		},
 		expectedConsoleLog: ["Add new view with corresponding controller"],
+		project: project
+	});
+});
+
+test.serial("Add default view with no namespace", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub,
+		createCollectionsForTreeStub} = t.context;
+
+	const tree = {
+		dependencies: [{id: "fake-dependency"}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+
+	generateDependencyTreeStub.resolves(tree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resource);
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "view"],
+			name: "test",
+			controller: false,
+			namespaces: ["sap.m"],
+			route: false,
+		},
+		expectedMessage: "Add new view",
+		expectedMetaInfo: {
+			controller: false,
+			moduleList: [],
+			namespaceList: [],
+			rootView: undefined,
+			route: false,
+			theme: undefined,
+			type: "view",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new view"],
 		project: project
 	});
 });
@@ -559,6 +613,7 @@ test.serial("Add controller", async (t) => {
 			controller: undefined,
 			moduleList: [],
 			namespaceList: [],
+			rootView: undefined,
 			route: undefined,
 			theme: undefined,
 			type: "controller",
@@ -602,6 +657,7 @@ test.serial("Add controller with valid modules", async (t) => {
 			controller: undefined,
 			moduleList: [{name: "sample"}],
 			namespaceList: [],
+			rootView: undefined,
 			route: undefined,
 			theme: undefined,
 			type: "controller",
@@ -643,6 +699,7 @@ test.serial("Add control", async (t) => {
 			moduleList: [],
 			namespaceList: [],
 			route: undefined,
+			rootView: undefined,
 			theme: undefined,
 			type: "control",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
@@ -686,6 +743,7 @@ test.serial("Add control with modules", async (t) => {
 			moduleList: [{name: "sample"}],
 			namespaceList: [],
 			route: undefined,
+			rootView: undefined,
 			theme: undefined,
 			type: "control",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
@@ -727,6 +785,7 @@ test.serial("Add component", async (t) => {
 			moduleList: [],
 			namespaceList: [],
 			route: undefined,
+			rootView: undefined,
 			theme: undefined,
 			type: "component",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
@@ -770,6 +829,7 @@ test.serial("Create bootstrap", async (t) => {
 			controller: false,
 			moduleList: [],
 			namespaceList: [],
+			rootView: undefined,
 			route: false,
 			theme: undefined,
 			type: "bootstrap",
@@ -807,7 +867,7 @@ test.serial("Create bootstrap with custom name and theme", async (t) => {
 			name: "test",
 			controller: false,
 			route: false,
-			theme: "fancy_theme"
+			theme: "sap_fancy_theme"
 		},
 		expectedMessage: "Create bootstrap for project",
 		expectedMetaInfo: {
@@ -815,6 +875,7 @@ test.serial("Create bootstrap with custom name and theme", async (t) => {
 			moduleList: [],
 			namespaceList: [],
 			route: false,
+			rootView: undefined,
 			theme: "sap_fancy_theme",
 			type: "bootstrap",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
@@ -863,6 +924,7 @@ test.serial("Add default view interactive with component selection", async (t) =
 			controller: true,
 			moduleList: [],
 			namespaceList: [],
+			rootView: undefined,
 			route: false,
 			theme: undefined,
 			type: "view",
@@ -910,6 +972,7 @@ test.serial("Add default view interactive without namespace selection", async (t
 			moduleList: [],
 			namespaceList: [],
 			route: false,
+			rootView: undefined,
 			theme: undefined,
 			type: "view",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
@@ -957,6 +1020,7 @@ test.serial("Add control interactive with component selection", async (t) => {
 			controller: undefined,
 			moduleList: [],
 			namespaceList: [],
+			rootView: undefined,
 			route: undefined,
 			theme: undefined,
 			type: "control",
@@ -990,7 +1054,7 @@ test.serial("Create bootstrap interactive", async (t) => {
 	processProjectStub.resolves(project);
 	createCollectionsForTreeStub.resolves(themelibraryCollection);
 	runStub.onCall(0).resolves("test");
-	runStub.onCall(1).resolves("fancy_theme");
+	runStub.onCall(1).resolves("sap_fancy_theme");
 
 	await assertCreateHandler(t, {
 		argv: {
@@ -1002,6 +1066,7 @@ test.serial("Create bootstrap interactive", async (t) => {
 			controller: undefined,
 			moduleList: [],
 			namespaceList: [],
+			rootView: undefined,
 			route: undefined,
 			theme: "sap_fancy_theme",
 			type: "bootstrap",
