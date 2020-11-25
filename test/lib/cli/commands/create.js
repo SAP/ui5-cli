@@ -913,6 +913,7 @@ test.serial("Add default view interactive with component selection", async (t) =
 	runStub.onCall(2).resolves(true);
 	runStub.onCall(3).resolves(false);
 	runStub.onCall(4).resolves([]);
+	runStub.onCall(5).resolves(false);
 
 	await assertCreateHandler(t, {
 		argv: {
@@ -924,7 +925,7 @@ test.serial("Add default view interactive with component selection", async (t) =
 			controller: true,
 			moduleList: [],
 			namespaceList: [],
-			rootView: undefined,
+			rootView: false,
 			route: false,
 			theme: undefined,
 			type: "view",
@@ -960,24 +961,25 @@ test.serial("Add default view interactive without namespace selection", async (t
 	runStub.onCall(0).resolves("test");
 	runStub.onCall(1).resolves(false);
 	runStub.onCall(2).resolves(false);
+	runStub.onCall(3).resolves(true);
 
 	await assertCreateHandler(t, {
 		argv: {
 			_: ["create", "view"],
 			interactive: true
 		},
-		expectedMessage: "Add new view with corresponding controller",
+		expectedMessage: "Add new view",
 		expectedMetaInfo: {
 			controller: false,
 			moduleList: [],
 			namespaceList: [],
 			route: false,
-			rootView: undefined,
+			rootView: true,
 			theme: undefined,
 			type: "view",
 			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
 		},
-		expectedConsoleLog: ["Add new view with corresponding controller"],
+		expectedConsoleLog: ["Add new view"],
 		project: project
 	});
 });
