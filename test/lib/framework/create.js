@@ -405,7 +405,7 @@ test.serial("Return view message on view created with controller and route", asy
 
 	const output =
 `<mvc:View
-	controllerName="xy.controller.Test"
+    controllerName="xy.controller.Test"
 	xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
