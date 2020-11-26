@@ -41,6 +41,7 @@ test.beforeEach((t) => {
 	t.context.fsMkDirStub = sinon.stub(fs, "mkdir").yieldsAsync(null);
 	t.context.fsReadFileStub = sinon.stub(fs, "readFile");
 	t.context.fsWriteFileStub = sinon.stub(fs, "writeFile").yieldsAsync(null);
+	t.context.fsReadDirStub = sinon.stub(fs, "readdir");
 
 	t.context.consoleLogStub = sinon.stub(console, "log");
 });
@@ -292,10 +293,10 @@ test.serial("Return message on existing control", async (t) => {
 });
 
 test.serial("Return message on existing bootstrap", async (t) => {
-	const {existsStub} = t.context;
+	const {fsReadDirStub} = t.context;
 	const project = {};
 
-	existsStub.withArgs("webappPath/test.html").resolves(true);
+	fsReadDirStub.yieldsAsync(null, ["test.html"]);
 
 	await assertCreate(t, {
 		name: "test",
@@ -781,7 +782,7 @@ test.serial("Return route message on route for existing view created, have routi
 });
 
 test.serial("Return bootstrap message on bootstrap created", async (t) => {
-	const {existsStub, fsReadFileStub} = t.context;
+	const {existsStub, fsReadFileStub, fsReadDirStub} = t.context;
 	const project = {
 		metadata: {
 			namespace: "xy"
@@ -821,6 +822,7 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 
 	existsStub.withArgs("webappPath/index.html").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
+	fsReadDirStub.yieldsAsync(null, []);
 	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("bootstrap"), "utf-8"));
 
