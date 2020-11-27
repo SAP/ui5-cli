@@ -347,6 +347,7 @@ test.serial("Add raw view as root", async (t) => {
 		expectedMessage: "Add new view",
 		expectedMetaInfo: {
 			controller: false,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			rootView: true,
@@ -390,6 +391,7 @@ test.serial("Add default view", async (t) => {
 		expectedMessage: "Add new view with corresponding controller",
 		expectedMetaInfo: {
 			controller: true,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			rootView: undefined,
@@ -433,6 +435,7 @@ test.serial("Add default view with route", async (t) => {
 		expectedMessage: "Add new view with corresponding controller and route to project",
 		expectedMetaInfo: {
 			controller: true,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			rootView: undefined,
@@ -476,6 +479,7 @@ test.serial("Add to existing view an route", async (t) => {
 		expectedMessage: "Add route to view",
 		expectedMetaInfo: {
 			controller: true,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			route: true,
@@ -523,6 +527,7 @@ test.serial("Add default view with valid namespace", async (t) => {
 		expectedMessage: "Add new view with corresponding controller",
 		expectedMetaInfo: {
 			controller: true,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [{name: "sample"}],
 			rootView: undefined,
@@ -570,6 +575,7 @@ test.serial("Add default view with no namespace", async (t) => {
 		expectedMessage: "Add new view",
 		expectedMetaInfo: {
 			controller: false,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			rootView: undefined,
@@ -611,6 +617,7 @@ test.serial("Add controller", async (t) => {
 		expectedMessage: "Add new controller",
 		expectedMetaInfo: {
 			controller: undefined,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			rootView: undefined,
@@ -655,6 +662,7 @@ test.serial("Add controller with valid modules", async (t) => {
 		expectedMessage: "Add new controller",
 		expectedMetaInfo: {
 			controller: undefined,
+			language: undefined,
 			moduleList: [{name: "sample"}],
 			namespaceList: [],
 			rootView: undefined,
@@ -696,6 +704,7 @@ test.serial("Add control", async (t) => {
 		expectedMessage: "Add new control",
 		expectedMetaInfo: {
 			controller: undefined,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			route: undefined,
@@ -740,6 +749,7 @@ test.serial("Add control with modules", async (t) => {
 		expectedMessage: "Add new control",
 		expectedMetaInfo: {
 			controller: undefined,
+			language: undefined,
 			moduleList: [{name: "sample"}],
 			namespaceList: [],
 			route: undefined,
@@ -782,6 +792,7 @@ test.serial("Add component", async (t) => {
 		expectedMessage: "Add new Component to project",
 		expectedMetaInfo: {
 			controller: undefined,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			route: undefined,
@@ -827,6 +838,7 @@ test.serial("Create bootstrap", async (t) => {
 		expectedMessage: "Create bootstrap for project",
 		expectedMetaInfo: {
 			controller: false,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			rootView: undefined,
@@ -873,6 +885,7 @@ test.serial("Create bootstrap with custom name and theme", async (t) => {
 		expectedMetaInfo: {
 			controller: false,
 			moduleList: [],
+			language: undefined,
 			namespaceList: [],
 			route: false,
 			rootView: undefined,
@@ -924,6 +937,7 @@ test.serial("Add default view interactive with component selection", async (t) =
 		expectedMetaInfo: {
 			controller: true,
 			moduleList: [],
+			language: undefined,
 			namespaceList: [],
 			rootView: false,
 			route: false,
@@ -972,6 +986,7 @@ test.serial("Add default view interactive without namespace selection", async (t
 		expectedMetaInfo: {
 			controller: false,
 			moduleList: [],
+			language: undefined,
 			namespaceList: [],
 			route: false,
 			rootView: true,
@@ -1021,6 +1036,7 @@ test.serial("Add control interactive with component selection", async (t) => {
 		expectedMetaInfo: {
 			controller: undefined,
 			moduleList: [],
+			language: undefined,
 			namespaceList: [],
 			rootView: undefined,
 			route: undefined,
@@ -1066,6 +1082,7 @@ test.serial("Create bootstrap interactive", async (t) => {
 		expectedMessage: "Create bootstrap for project",
 		expectedMetaInfo: {
 			controller: undefined,
+			language: undefined,
 			moduleList: [],
 			namespaceList: [],
 			rootView: undefined,

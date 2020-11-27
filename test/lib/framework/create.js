@@ -10,7 +10,7 @@ function getFixturePath(fixtureName) {
 }
 
 async function assertCreate(t, {name, metaInformation, project, expectedMessage, expectedPath,
-	expectedOutput, expectedCallCount}) {
+	expectedOutput, expectedManifest, expectedCallCount}) {
 	const {fsWriteFileStub} = t.context;
 	const {create} = mock.reRequire("../../../lib/framework/create");
 
@@ -18,6 +18,10 @@ async function assertCreate(t, {name, metaInformation, project, expectedMessage,
 
 	t.is(fsWriteFileStub.callCount, expectedCallCount, "Write function should not or once be called");
 	if (expectedCallCount != 0) {
+		if (expectedCallCount == 2) {
+			t.deepEqual(fsWriteFileStub.getCall(0).args[1], expectedManifest,
+				"Write function should be called with expected manifest as argument");
+		}
 		t.deepEqual(fsWriteFileStub.getCall(expectedCallCount-1).args[0], expectedPath,
 			"Write function should be called with expected path as argument");
 		t.deepEqual(fsWriteFileStub.getCall(expectedCallCount-1).args[1], expectedOutput,
@@ -412,6 +416,27 @@ test.serial("Return view message on view created with controller and route", asy
 	<Label text="Hello World!"/>
 </mvc:View>`;
 
+	const expectedManifest =
+`{
+    "sap.ui5": {
+        "routing": {
+            "routes": [
+                {
+                    "pattern": "test",
+                    "name": "test",
+                    "target": "test"
+                }
+            ],
+            "targets": {
+                "test": {
+                    "viewId": "test",
+                    "viewName": "Test"
+                }
+            }
+        }
+    }
+}`;
+
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath/controller/Test.controller.js").resolves(true);
 	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
@@ -432,6 +457,7 @@ test.serial("Return view message on view created with controller and route", asy
 		project: project,
 		expectedPath: "webappPath/view/Test.view.xml",
 		expectedOutput: output,
+		expectedManifest: expectedManifest,
 		expectedCallCount: 2
 	});
 });
@@ -458,6 +484,18 @@ test.serial("Return view message on view as root created", async (t) => {
 	<Label text="Hello World!"/>
 </mvc:View>`;
 
+	const expectedManifest =
+`{
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "xy.view.Test",
+            "type": "XML",
+            "async": true,
+            "id": "test"
+        }
+    }
+}`;
+
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
 	fsReadFileStub.yieldsAsync(null, fs.readFileSync(getFixturePath("view"), "utf-8"));
@@ -478,6 +516,7 @@ test.serial("Return view message on view as root created", async (t) => {
 		project: project,
 		expectedPath: "webappPath/view/Test.view.xml",
 		expectedOutput: output,
+		expectedManifest: expectedManifest,
 		expectedCallCount: 2
 	});
 });
@@ -658,6 +697,27 @@ test.serial("Return component message on custom component", async (t) => {
 	});
 });`;
 
+	const expectedManifest =
+`{
+    "_version": "1.1.0",
+    "sap.app": {
+        "id": "xy.test",
+        "type": "application",
+        "title": "test",
+        "applicationVersion": {
+            "version": "1.0.0"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5"
+    },
+    "sap.ui5": {
+        "dependencies": {
+            "libs": {}
+        }
+    }
+}`;
+
 	existsStub.withArgs("webappPath/test").onCall(0).resolves(false);
 	existsStub.withArgs("webappPath/test").onCall(1).resolves(true);
 	existsStub.withArgs("webappPath/test/Component.js").resolves(false);
@@ -674,6 +734,7 @@ test.serial("Return component message on custom component", async (t) => {
 		project: project,
 		expectedPath: "webappPath/test/Component.js",
 		expectedOutput: output,
+		expectedManifest: expectedManifest,
 		expectedCallCount: 2
 	});
 });
@@ -840,6 +901,132 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 		expectedPath: "webappPath/index.html",
 		expectedOutput: output,
 		expectedCallCount: 1
+	});
+});
+
+test.serial("Return i18n message on default i18n created", async (t) => {
+	const {existsStub, fsReadFileStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "my.app"
+		}
+	};
+
+	const manifest =
+`{
+    "sap.ui5": {
+
+    }
+}`;
+
+	const output =
+`# Add translations`;
+
+	const expectedManifest =
+`{
+    "sap.ui5": {
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "my.app.i18n.i18n",
+                    "supportedLocales": []
+                }
+            }
+        }
+    }
+}`;
+
+	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(false);
+	existsStub.withArgs("webappPath").resolves(true);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	existsStub.withArgs("webappPath/i18n").resolves(true);
+
+	await assertCreate(t, {
+		name: undefined,
+		expectedMessage: "Create default translation file for project",
+		metaInformation: {
+			route: false,
+			language: "",
+			controller: false,
+			theme: undefined,
+			type: "i18n",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/i18n/i18n.properties",
+		expectedOutput: output,
+		expectedManifest: expectedManifest,
+		expectedCallCount: 2
+	});
+});
+
+test.serial("Return i18n message on custom language i18n created", async (t) => {
+	const {existsStub, fsReadFileStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "xy"
+		}
+	};
+
+	const manifest =
+`{
+    "sap.ui5":{
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "xy.i18n.i18n",
+					"supportedLocales": []
+				}
+			}
+		}
+    }
+}`;
+
+	const output =
+`# Add translations`;
+
+	const expectedManifest =
+`{
+    "sap.ui5": {
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "xy.i18n.i18n",
+                    "supportedLocales": [
+                        "en"
+                    ],
+                    "fallbackLocale": "en"
+                }
+            }
+        }
+    }
+}`;
+
+	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(true);
+	existsStub.withArgs("webappPath/i18n/i18n_en.properties").resolves(false);
+	existsStub.withArgs("webappPath").resolves(true);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	existsStub.withArgs("webappPath/i18n").resolves(true);
+
+	await assertCreate(t, {
+		name: undefined,
+		expectedMessage: "Create EN translation file for project",
+		metaInformation: {
+			route: false,
+			language: "en",
+			controller: false,
+			theme: undefined,
+			type: "i18n",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/i18n/i18n_en.properties",
+		expectedOutput: output,
+		expectedManifest: expectedManifest,
+		expectedCallCount: 2
 	});
 });
 
