@@ -316,6 +316,28 @@ test.serial("Return message on existing bootstrap", async (t) => {
 	});
 });
 
+test.serial("Return i18n message on existing i18n", async (t) => {
+	const {existsStub} = t.context;
+	const project = {};
+
+	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(true);
+
+	await assertCreate(t, {
+		name: undefined,
+		expectedMessage: "Specific translation file for project already exists",
+		metaInformation: {
+			route: false,
+			language: undefined,
+			controller: false,
+			theme: undefined,
+			type: "i18n",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedCallCount: 0
+	});
+});
+
 test.serial("Return view message on view created", async (t) => {
 	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
@@ -904,7 +926,7 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 	});
 });
 
-test.serial("Return i18n message on default i18n created", async (t) => {
+test.serial("Return i18n message on default i18n created, no models", async (t) => {
 	const {existsStub, fsReadFileStub} = t.context;
 	const project = {
 		metadata: {
@@ -947,7 +969,66 @@ test.serial("Return i18n message on default i18n created", async (t) => {
 		expectedMessage: "Create default translation file for project",
 		metaInformation: {
 			route: false,
-			language: "",
+			language: undefined,
+			controller: false,
+			theme: undefined,
+			type: "i18n",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/i18n/i18n.properties",
+		expectedOutput: output,
+		expectedManifest: expectedManifest,
+		expectedCallCount: 2
+	});
+});
+
+test.serial("Return i18n message on default i18n created", async (t) => {
+	const {existsStub, fsReadFileStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "my.app"
+		}
+	};
+
+	const manifest =
+`{
+    "sap.ui5": {
+        "models": {
+
+		}
+    }
+}`;
+
+	const output =
+`# Add translations`;
+
+	const expectedManifest =
+`{
+    "sap.ui5": {
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "my.app.i18n.i18n",
+                    "supportedLocales": []
+                }
+            }
+        }
+    }
+}`;
+
+	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(false);
+	existsStub.withArgs("webappPath").resolves(true);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	existsStub.withArgs("webappPath/i18n").resolves(true);
+
+	await assertCreate(t, {
+		name: undefined,
+		expectedMessage: "Create default translation file for project",
+		metaInformation: {
+			route: false,
+			language: undefined,
 			controller: false,
 			theme: undefined,
 			type: "i18n",
@@ -999,6 +1080,77 @@ test.serial("Return i18n message on custom language i18n created", async (t) => 
                         "en"
                     ],
                     "fallbackLocale": "en"
+                }
+            }
+        }
+    }
+}`;
+
+	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(true);
+	existsStub.withArgs("webappPath/i18n/i18n_en.properties").resolves(false);
+	existsStub.withArgs("webappPath").resolves(true);
+	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
+	existsStub.withArgs("webappPath/i18n").resolves(true);
+
+	await assertCreate(t, {
+		name: undefined,
+		expectedMessage: "Create EN translation file for project",
+		metaInformation: {
+			route: false,
+			language: "en",
+			controller: false,
+			theme: undefined,
+			type: "i18n",
+			savePath: "webappPath"
+		},
+		project: project,
+		expectedPath: "webappPath/i18n/i18n_en.properties",
+		expectedOutput: output,
+		expectedManifest: expectedManifest,
+		expectedCallCount: 2
+	});
+});
+
+test.serial("Return i18n message on second custom language i18n created", async (t) => {
+	const {existsStub, fsReadFileStub} = t.context;
+	const project = {
+		metadata: {
+			namespace: "xy"
+		}
+	};
+
+	const manifest =
+`{
+    "sap.ui5":{
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "xy.i18n.i18n",
+					"supportedLocales": ["de"],
+					"fallbackLocale": "de"
+				}
+			}
+		}
+    }
+}`;
+
+	const output =
+`# Add translations`;
+
+	const expectedManifest =
+`{
+    "sap.ui5": {
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "xy.i18n.i18n",
+                    "supportedLocales": [
+                        "de",
+                        "en"
+                    ],
+                    "fallbackLocale": "de"
                 }
             }
         }
