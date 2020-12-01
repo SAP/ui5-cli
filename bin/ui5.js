@@ -1,23 +1,28 @@
 #!/usr/bin/env node
 
-(function() {
-	// The following block should be compatible to as many Node.js versions as possible
-	/* eslint-disable no-var */
-	var pkg = require("../package.json");
-	var semver = require("semver");
-	var nodeVersion = process.version;
-	/* eslint-enable no-var */
-	if (pkg.engines && pkg.engines.node && !semver.satisfies(nodeVersion, pkg.engines.node)) {
-		console.log("==================== UNSUPPORTED NODE.JS VERSION ====================");
-		console.log("You are using an unsupported version of Node.js");
-		console.log("Detected version " + nodeVersion + " but " + pkg.name + " requires " + pkg.engines.node);
-		console.log("");
-		console.log("=> Please upgrade to a supported version of Node.js to use this tool");
-		console.log("=====================================================================");
-		process.exit(1);
-		return; // required when stubbing process.exit in test code
+// The following block should be compatible to as many Node.js versions as possible
+/* eslint-disable no-var */
+var pkg = require("../package.json");
+var semver;
+try {
+	semver = require("semver");
+} catch (err) {
+	// SyntaxError indicates an outdated Node.js version
+	if (err.name !== "SyntaxError") {
+		throw err;
 	}
-
+}
+var nodeVersion = process.version;
+/* eslint-enable no-var */
+if (pkg.engines && pkg.engines.node && (!semver || !semver.satisfies(nodeVersion, pkg.engines.node))) {
+	console.log("==================== UNSUPPORTED NODE.JS VERSION ====================");
+	console.log("You are using an unsupported version of Node.js");
+	console.log("Detected version " + nodeVersion + " but " + pkg.name + " requires " + pkg.engines.node);
+	console.log("");
+	console.log("=> Please upgrade to a supported version of Node.js to use this tool");
+	console.log("=====================================================================");
+	process.exit(1);
+} else {
 	// Timeout is required to log info when importing from local installation
 	setTimeout(() => {
 		if (!process.env.UI5_CLI_NO_LOCAL) {
@@ -76,4 +81,4 @@
 		// The property needs to be accessed to initialize everything.
 		cli.argv;
 	}, 0);
-})();
+}
