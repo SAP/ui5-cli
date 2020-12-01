@@ -87,7 +87,7 @@ test.serial.cb("ui5 imports local installation when found (/w --verbose)", (t) =
 
 	setTimeout(() => {
 		t.is(consoleLogStub.callCount, 0, "console.log should not be called");
-		t.is(consoleInfoStub.callCount, 3, "console.log should be called 2 times");
+		t.is(consoleInfoStub.callCount, 3, "console.log should be called 3 times");
 
 		t.deepEqual(consoleInfoStub.getCall(0).args, [
 			"INFO: This project contains an individual @ui5/cli installation which will be used over the global one."]);
