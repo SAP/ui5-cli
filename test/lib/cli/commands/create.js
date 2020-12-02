@@ -1095,3 +1095,50 @@ test.serial("Create bootstrap interactive", async (t) => {
 		project: project
 	});
 });
+
+test.serial("Add translation interactive with component selection", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, runStub,
+		createCollectionsForTreeStub} = t.context;
+
+	const dependencyTree = {
+		dependencies: [{
+			id: "fake-dependency"
+		}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	runStub.onCall(0).resolves("Translation");
+	runStub.onCall(1).resolves("en");
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create"],
+			interactive: true
+		},
+		expectedMessage: "Create EN translation file for project",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			language: "en",
+			namespaceList: [],
+			rootView: undefined,
+			route: undefined,
+			theme: undefined,
+			type: "i18n",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Create EN translation file for project"],
+		project: project
+	});
+});
