@@ -5,7 +5,7 @@ sap.ui.define([
 	{{/each}}
 	{{else}}
 
- 	{{/if}}
+	{{/if}}
 ], function (UIComponent{{#if modules}}, {{#each modules}}{{#if @last}}{{module}}{{else}}{{module}}, {{/if}}{{/each}}{{/if}}) {
 	"use strict";
 	return UIComponent.extend("{{controllerName}}", {
@@ -13,7 +13,7 @@ sap.ui.define([
 			manifest: "json"
 		},
 		init : function () {
-        	UIComponent.prototype.init.apply(this, arguments);
-      	}
+			UIComponent.prototype.init.apply(this, arguments);
+		}
 	});
 });

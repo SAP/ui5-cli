@@ -116,7 +116,7 @@ test.serial("Reject process on create routing config, already exists", async (t)
 
 	const manifest =
 `{
-    "sap.ui5": {
+	"sap.ui5": {
 		"routing": {
 			"routes": [
 				{
@@ -132,8 +132,7 @@ test.serial("Reject process on create routing config, already exists", async (t)
 				}
 			}
 		}
-
-    }
+	}
 }`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
@@ -163,7 +162,7 @@ test.serial("Reject process on create routing config, target is missing", async 
 
 	const manifest =
 `{
-    "sap.ui5": {
+	"sap.ui5": {
 		"routing": {
 			"routes": [
 				{
@@ -173,7 +172,7 @@ test.serial("Reject process on create routing config, target is missing", async 
 				}
 			]
 		}
-    }
+	}
 }`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
@@ -349,7 +348,7 @@ test.serial("Return view message on view created", async (t) => {
 	const output =
 `<mvc:View
 	xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc">
+	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
 </mvc:View>`;
 
@@ -384,9 +383,9 @@ test.serial("Return view message on view created with controller", async (t) => 
 
 	const output =
 `<mvc:View
-    controllerName="xy.controller.Test"
+	controllerName="xy.controller.Test"
 	xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc">
+	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
 </mvc:View>`;
 
@@ -432,32 +431,31 @@ test.serial("Return view message on view created with controller and route", asy
 
 	const output =
 `<mvc:View
-    controllerName="xy.controller.Test"
+	controllerName="xy.controller.Test"
 	xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc">
+	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
 </mvc:View>`;
 
-	const expectedManifest =
-`{
-    "sap.ui5": {
-        "routing": {
-            "routes": [
-                {
-                    "pattern": "test",
-                    "name": "test",
-                    "target": "test"
-                }
-            ],
-            "targets": {
-                "test": {
-                    "viewId": "test",
-                    "viewName": "Test"
-                }
-            }
-        }
-    }
-}`;
+	const expectedManifest = JSON.stringify({
+		"sap.ui5": {
+			"routing": {
+				"routes": [
+					{
+						"pattern": "test",
+						"name": "test",
+						"target": "test"
+					}
+				],
+				"targets": {
+					"test": {
+						"viewId": "test",
+						"viewName": "Test"
+					}
+				}
+			}
+		}
+	}, null, "\t");
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath/controller/Test.controller.js").resolves(true);
@@ -502,21 +500,20 @@ test.serial("Return view message on view as root created", async (t) => {
 	const output =
 `<mvc:View
 	xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc">
+	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
 </mvc:View>`;
 
-	const expectedManifest =
-`{
-    "sap.ui5": {
-        "rootView": {
-            "viewName": "xy.view.Test",
-            "type": "XML",
-            "async": true,
-            "id": "test"
-        }
-    }
-}`;
+	const expectedManifest = JSON.stringify({
+		"sap.ui5": {
+			"rootView": {
+				"viewName": "xy.view.Test",
+				"type": "XML",
+				"async": true,
+				"id": "test"
+			}
+		}
+	}, null, "\t");
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
@@ -645,8 +642,8 @@ test.serial("Return component message on default component created", async (t) =
 			manifest: "json"
 		},
 		init : function () {
-        	UIComponent.prototype.init.apply(this, arguments);
-      	}
+			UIComponent.prototype.init.apply(this, arguments);
+		}
 	});
 });`;
 
@@ -714,31 +711,30 @@ test.serial("Return component message on custom component", async (t) => {
 			manifest: "json"
 		},
 		init : function () {
-        	UIComponent.prototype.init.apply(this, arguments);
-      	}
+			UIComponent.prototype.init.apply(this, arguments);
+		}
 	});
 });`;
 
-	const expectedManifest =
-`{
-    "_version": "1.1.0",
-    "sap.app": {
-        "id": "xy.test",
-        "type": "application",
-        "title": "test",
-        "applicationVersion": {
-            "version": "1.0.0"
-        }
-    },
-    "sap.ui": {
-        "technology": "UI5"
-    },
-    "sap.ui5": {
-        "dependencies": {
-            "libs": {}
-        }
-    }
-}`;
+	const expectedManifest = JSON.stringify({
+		"_version": "1.1.0",
+		"sap.app": {
+			"id": "xy.test",
+			"type": "application",
+			"title": "Test",
+			"applicationVersion": {
+				"version": "1.0.0"
+			}
+		},
+		"sap.ui": {
+			"technology": "UI5"
+		},
+		"sap.ui5": {
+			"dependencies": {
+				"libs": {}
+			}
+		}
+	}, null, "\t");
 
 	existsStub.withArgs("webappPath/test").onCall(0).resolves(false);
 	existsStub.withArgs("webappPath/test").onCall(1).resolves(true);
@@ -767,31 +763,30 @@ test.serial("Return route message on route for existing view created, no routing
 
 	const manifest =
 `{
-    "sap.ui5": {
+	"sap.ui5": {
 
-    }
+	}
 }`;
 
-	const expectedManifest =
-`{
-    "sap.ui5": {
-        "routing": {
-            "routes": [
-                {
-                    "pattern": "test",
-                    "name": "test",
-                    "target": "test"
-                }
-            ],
-            "targets": {
-                "test": {
-                    "viewId": "test",
-                    "viewName": "Test"
-                }
-            }
-        }
-    }
-}`;
+	const expectedManifest = JSON.stringify({
+		"sap.ui5": {
+			"routing": {
+				"routes": [
+					{
+						"pattern": "test",
+						"name": "test",
+						"target": "test"
+					}
+				],
+				"targets": {
+					"test": {
+						"viewId": "test",
+						"viewName": "Test"
+					}
+				}
+			}
+		}
+	}, null, "\t");
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(true);
 	fsReadFileStub.withArgs("webappPath/manifest.json", "utf8").yieldsAsync(null, manifest);
@@ -826,23 +821,23 @@ test.serial("Return route message on route for existing view created, have routi
 
 	const expectedManifest =
 `{
-    "sap.ui5": {
-        "routing": {
-            "routes": [
-                {
-                    "pattern": "test",
-                    "name": "test",
-                    "target": "test"
-                }
-            ],
-            "targets": {
-                "test": {
-                    "viewId": "test",
-                    "viewName": "Test"
-                }
-            }
-        }
-    }
+	"sap.ui5": {
+		"routing": {
+			"routes": [
+				{
+					"pattern": "test",
+					"name": "test",
+					"target": "test"
+				}
+			],
+			"targets": {
+				"test": {
+					"viewId": "test",
+					"viewName": "Test"
+				}
+			}
+		}
+	}
 }`;
 
 
@@ -874,9 +869,9 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 
 	const manifest =
 `{
-    "sap.app": {
+	"sap.app": {
 		"title": "test"
-    }
+	}
 }`;
 
 	const output =
@@ -946,17 +941,17 @@ test.serial("Return i18n message on default i18n created, no models", async (t) 
 
 	const expectedManifest =
 `{
-    "sap.ui5": {
-        "models": {
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "settings": {
-                    "bundleName": "my.app.i18n.i18n",
-                    "supportedLocales": []
-                }
-            }
-        }
-    }
+	"sap.ui5": {
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "my.app.i18n.i18n",
+					"supportedLocales": []
+				}
+			}
+		}
+	}
 }`;
 
 	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(false);
@@ -993,11 +988,11 @@ test.serial("Return i18n message on default i18n created", async (t) => {
 
 	const manifest =
 `{
-    "sap.ui5": {
-        "models": {
+	"sap.ui5": {
+		"models": {
 
 		}
-    }
+	}
 }`;
 
 	const output =
@@ -1005,17 +1000,17 @@ test.serial("Return i18n message on default i18n created", async (t) => {
 
 	const expectedManifest =
 `{
-    "sap.ui5": {
-        "models": {
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "settings": {
-                    "bundleName": "my.app.i18n.i18n",
-                    "supportedLocales": []
-                }
-            }
-        }
-    }
+	"sap.ui5": {
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "my.app.i18n.i18n",
+					"supportedLocales": []
+				}
+			}
+		}
+	}
 }`;
 
 	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(false);
@@ -1052,7 +1047,7 @@ test.serial("Return i18n message on custom language i18n created", async (t) => 
 
 	const manifest =
 `{
-    "sap.ui5":{
+	"sap.ui5":{
 		"models": {
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
@@ -1062,7 +1057,7 @@ test.serial("Return i18n message on custom language i18n created", async (t) => 
 				}
 			}
 		}
-    }
+	}
 }`;
 
 	const output =
@@ -1070,20 +1065,20 @@ test.serial("Return i18n message on custom language i18n created", async (t) => 
 
 	const expectedManifest =
 `{
-    "sap.ui5": {
-        "models": {
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "settings": {
-                    "bundleName": "xy.i18n.i18n",
-                    "supportedLocales": [
-                        "en"
-                    ],
-                    "fallbackLocale": "en"
-                }
-            }
-        }
-    }
+	"sap.ui5": {
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "xy.i18n.i18n",
+					"supportedLocales": [
+						"en"
+					],
+					"fallbackLocale": "en"
+				}
+			}
+		}
+	}
 }`;
 
 	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(true);
@@ -1121,7 +1116,7 @@ test.serial("Return i18n message on second custom language i18n created", async 
 
 	const manifest =
 `{
-    "sap.ui5":{
+	"sap.ui5":{
 		"models": {
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
@@ -1132,7 +1127,7 @@ test.serial("Return i18n message on second custom language i18n created", async 
 				}
 			}
 		}
-    }
+	}
 }`;
 
 	const output =
@@ -1140,21 +1135,21 @@ test.serial("Return i18n message on second custom language i18n created", async 
 
 	const expectedManifest =
 `{
-    "sap.ui5": {
-        "models": {
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "settings": {
-                    "bundleName": "xy.i18n.i18n",
-                    "supportedLocales": [
-                        "de",
-                        "en"
-                    ],
-                    "fallbackLocale": "de"
-                }
-            }
-        }
-    }
+	"sap.ui5": {
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "xy.i18n.i18n",
+					"supportedLocales": [
+						"de",
+						"en"
+					],
+					"fallbackLocale": "de"
+				}
+			}
+		}
+	}
 }`;
 
 	existsStub.withArgs("webappPath/i18n/i18n.properties").resolves(true);
@@ -1200,7 +1195,7 @@ test.serial("Return manifest message on create manifest, has dependencies", asyn
 		"sap.app": {
 			"id": "fancy.app",
 			"type": "application",
-			"title": "test",
+			"title": "Test",
 			"applicationVersion": {
 				"version": "1.0.0"
 			}
@@ -1215,7 +1210,7 @@ test.serial("Return manifest message on create manifest, has dependencies", asyn
 				}
 			}
 		}
-	}, null, 4);
+	}, null, "\t");
 
 	const {fsWriteFileStub, consoleLogStub} = t.context;
 	const {createManifest} = mock.reRequire("../../../lib/framework/create");
@@ -1256,7 +1251,7 @@ test.serial("Return manifest message on create manifest, has dependencies and th
 		"sap.app": {
 			"id": "fancy.app",
 			"type": "application",
-			"title": "test",
+			"title": "Test",
 			"applicationVersion": {
 				"version": "1.0.0"
 			}
@@ -1271,7 +1266,7 @@ test.serial("Return manifest message on create manifest, has dependencies and th
 				}
 			}
 		}
-	}, null, 4);
+	}, null, "\t");
 
 	const {fsWriteFileStub, consoleLogStub} = t.context;
 	const {createManifest} = mock.reRequire("../../../lib/framework/create");
@@ -1308,7 +1303,7 @@ test.serial("Return manifest message on create manifest, no dependencies", async
 		"sap.app": {
 			"id": "fancy.app",
 			"type": "application",
-			"title": "test",
+			"title": "Test",
 			"applicationVersion": {
 				"version": "1.0.0"
 			}
@@ -1321,7 +1316,7 @@ test.serial("Return manifest message on create manifest, no dependencies", async
 				"libs": {}
 			}
 		}
-	}, null, 4);
+	}, null, "\t");
 
 	const {fsWriteFileStub, consoleLogStub} = t.context;
 	const {createManifest} = mock.reRequire("../../../lib/framework/create");
