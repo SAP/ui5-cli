@@ -988,6 +988,9 @@ test.serial("Return i18n message on default i18n created", async (t) => {
 
 	const manifest =
 `{
+	"sap.app": {
+		"title": "App"
+	},
 	"sap.ui5": {
 		"models": {
 
@@ -996,10 +999,16 @@ test.serial("Return i18n message on default i18n created", async (t) => {
 }`;
 
 	const output =
-`# Add translations`;
+`# App Descriptor
+appTitle=App
+`;
 
 	const expectedManifest =
 `{
+	"sap.app": {
+		"title": "{{appTitle}}",
+		"i18n": "i18n/i18n.properties"
+	},
 	"sap.ui5": {
 		"models": {
 			"i18n": {
