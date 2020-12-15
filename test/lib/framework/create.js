@@ -1056,6 +1056,9 @@ test.serial("Return i18n message on custom language i18n created", async (t) => 
 
 	const manifest =
 `{
+	"sap.app": {
+
+	},
 	"sap.ui5":{
 		"models": {
 			"i18n": {
@@ -1074,6 +1077,7 @@ test.serial("Return i18n message on custom language i18n created", async (t) => 
 
 	const expectedManifest =
 `{
+	"sap.app": {},
 	"sap.ui5": {
 		"models": {
 			"i18n": {
