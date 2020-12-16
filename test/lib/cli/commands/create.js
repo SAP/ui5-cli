@@ -1049,6 +1049,54 @@ test.serial("Add control interactive with component selection", async (t) => {
 	});
 });
 
+test.serial("Add controller interactive", async (t) => {
+	const {generateDependencyTreeStub, processProjectStub, byGlobStub, runStub,
+		createCollectionsForTreeStub} = t.context;
+
+	const dependencyTree = {
+		dependencies: [{
+			id: "fake-dependency"
+		}]
+	};
+	const project = {
+		type: "application",
+		resources: {
+			configuration: {
+				paths: {
+					webapp: "app"
+				}
+			}
+		}
+	};
+	const resourceEmpty = [];
+	generateDependencyTreeStub.resolves(dependencyTree);
+	processProjectStub.resolves(project);
+	createCollectionsForTreeStub.resolves(libraryCollection);
+	byGlobStub.resolves(resourceEmpty);
+	runStub.onCall(0).resolves("test");
+
+	await assertCreateHandler(t, {
+		argv: {
+			_: ["create", "controller"],
+			interactive: true
+		},
+		expectedMessage: "Add new controller to project",
+		expectedMetaInfo: {
+			controller: undefined,
+			moduleList: [],
+			language: undefined,
+			namespaceList: [],
+			rootView: undefined,
+			route: undefined,
+			theme: undefined,
+			type: "controller",
+			savePath: path.join(__dirname, "..", "..", "..", "..", "app")
+		},
+		expectedConsoleLog: ["Add new controller to project"],
+		project: project
+	});
+});
+
 test.serial("Create bootstrap interactive", async (t) => {
 	const {generateDependencyTreeStub, processProjectStub, runStub,
 		createCollectionsForTreeStub} = t.context;
