@@ -350,7 +350,8 @@ test.serial("Return view message on view created", async (t) => {
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
-</mvc:View>`;
+</mvc:View>
+`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
@@ -387,7 +388,8 @@ test.serial("Return view message on view created with controller", async (t) => 
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
-</mvc:View>`;
+</mvc:View>
+`;
 
 	existsStub.withArgs("webappPath/view/Test.view.xml").resolves(false);
 	existsStub.withArgs("webappPath/controller/Test.controller.js").resolves(true);
@@ -435,7 +437,8 @@ test.serial("Return view message on view created with controller and route", asy
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
-</mvc:View>`;
+</mvc:View>
+`;
 
 	const expectedManifest = JSON.stringify({
 		"sap.ui5": {
@@ -502,7 +505,8 @@ test.serial("Return view message on view as root created", async (t) => {
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 	<Label text="Hello World!"/>
-</mvc:View>`;
+</mvc:View>
+`;
 
 	const expectedManifest = JSON.stringify({
 		"sap.ui5": {
@@ -602,7 +606,8 @@ test.serial("Return control message on control created", async (t) => {
 		renderer : function (oRenderManager, oControl) {
 		}
 	});
-});`;
+});
+`;
 
 	existsStub.withArgs("webappPath/control/Test.control.js").resolves(false);
 	existsStub.withArgs("webappPath/control/Test.js").resolves(false);
@@ -645,7 +650,8 @@ test.serial("Return component message on default component created", async (t) =
 			UIComponent.prototype.init.apply(this, arguments);
 		}
 	});
-});`;
+});
+`;
 
 	existsStub.withArgs("webappPath/Component.js").resolves(false);
 	existsStub.withArgs("webappPath/manifest.json").resolves(true);
@@ -714,7 +720,8 @@ test.serial("Return component message on custom component", async (t) => {
 			UIComponent.prototype.init.apply(this, arguments);
 		}
 	});
-});`;
+});
+`;
 
 	const expectedManifest = JSON.stringify({
 		"_version": "1.1.0",
@@ -896,7 +903,8 @@ test.serial("Return bootstrap message on bootstrap created", async (t) => {
 <body class="sapUiBody" id="content">
 	<div data-sap-ui-component data-name="xy" data-id="container" data-settings='{"id" : "xy"}'></div>
 </body>
-</html>`;
+</html>
+`;
 
 	existsStub.withArgs("webappPath/index.html").resolves(false);
 	existsStub.withArgs("webappPath").resolves(true);
@@ -937,7 +945,8 @@ test.serial("Return i18n message on default i18n created, no models", async (t) 
 }`;
 
 	const output =
-`# Add translations`;
+`# Add translations
+`;
 
 	const expectedManifest =
 `{
@@ -1073,7 +1082,8 @@ test.serial("Return i18n message on custom language i18n created", async (t) => 
 }`;
 
 	const output =
-`# Add translations`;
+`# Add translations
+`;
 
 	const expectedManifest =
 `{
@@ -1144,7 +1154,8 @@ test.serial("Return i18n message on second custom language i18n created", async 
 }`;
 
 	const output =
-`# Add translations`;
+`# Add translations
+`;
 
 	const expectedManifest =
 `{
