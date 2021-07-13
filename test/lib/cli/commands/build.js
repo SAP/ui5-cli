@@ -40,7 +40,7 @@ test.beforeEach((t) => {
 	t.context.log = {
 		warn: sinon.stub()
 	};
-	sinon.stub(logger, "getLogger").withArgs("cli:commands:build").returns(t.context.log);
+	sinon.stub(logger, "getLogger").withArgs("cli:utils:buildHelper").returns(t.context.log);
 	mock.reRequire("../../../../lib/utils/buildHelper"); // rerequire buildHelper to ensure usage of stubbed logger
 	t.context.build = mock.reRequire("../../../../lib/cli/commands/build");
 });
@@ -134,7 +134,8 @@ test.serial("ui5 build --framework-version 1.99", async (t) => {
 });
 
 async function assertIncludeDependency(t, {
-	treeDeps, includeDeps, includeDepsRegExp, includeDepsTree, excludeDeps, expectedBuilderArgs
+	treeDeps, includeDeps, includeDepsRegExp, includeDepsTree, excludeDeps, excludeDepsRegExp, excludeDepsTree,
+	expectedBuilderArgs
 }) {
 	const tree = Object.assign({metadata: {name: "Sample"}}, treeDeps);
 	const _args = Object.assign({}, args); // copy default args to ensure it is not modified
@@ -144,6 +145,8 @@ async function assertIncludeDependency(t, {
 	_args["include-dependency-regexp"] = includeDepsRegExp;
 	_args["include-dependency-tree"] = includeDepsTree;
 	_args["exclude-dependency"] = excludeDeps;
+	_args["exclude-dependency-regexp"] = excludeDepsRegExp;
+	_args["exclude-dependency-tree"] = excludeDepsTree;
 	await t.context.build.handler(_args);
 	t.deepEqual(builderStub.getCall(0).args[0],
 		Object.assign({}, defaultBuilderArgs, {tree: tree}, expectedBuilderArgs),
@@ -168,25 +171,61 @@ test.serial("ui5 build --include-dependency", async (t) => {
 	});
 });
 
-test.serial("ui5 build (dependency included via ui5.yaml)", async (t) => {
-	await assertIncludeDependency(t, {
-		treeDeps: {
-			dependencies: [{
-				metadata: {
-					name: "sap.ui.core"
+[{
+	title: "no excludes",
+	excludeDepsRegExp: [],
+	excludeDepsTree: [],
+	expectedBuilderArgs: {
+		buildDependencies: true,
+		includedDependencies: ["a", /regexp/, "b1", "c"],
+		excludedDependencies: ["*"]
+	}
+}, {
+	title: "overridden by excludes",
+	excludeDepsRegExp: ["regexp"],
+	excludeDepsTree: ["b1"],
+	expectedBuilderArgs: {
+		buildDependencies: true,
+		includedDependencies: ["a"],
+		excludedDependencies: [/regexp/, "b1", "c", "*"]
+	}
+}].forEach((fixture) => {
+	test.serial(`ui5 build (dependency included via ui5.yaml); ${fixture.title}`, async (t) => {
+		await assertIncludeDependency(t, {
+			treeDeps: {
+				dependencies: [{
+					metadata: {
+						name: "a"
+					},
+					dependencies: [{
+						metadata: {
+							name: "b0"
+						},
+						dependencies: []
+					}, {
+						metadata: {
+							name: "b1"
+						},
+						dependencies: [{
+							metadata: {
+								name: "c"
+							},
+							dependencies: []
+						}]
+					}]
+				}],
+				builder: {
+					settings: {
+						includeDependency: ["a"],
+						includeDependencyRegExp: ["regexp"],
+						includeDependencyTree: ["b1"],
+					}
 				}
-			}],
-			builder: {
-				settings: {
-					includeDependency: ["sap.ui.core"]
-				}
-			}
-		},
-		expectedBuilderArgs: {
-			buildDependencies: true,
-			includedDependencies: ["sap.ui.core"],
-			excludedDependencies: ["*"]
-		}
+			},
+			excludeDepsRegExp: fixture.excludeDepsRegExp,
+			excludeDepsTree: fixture.excludeDepsTree,
+			expectedBuilderArgs: fixture.expectedBuilderArgs
+		});
 	});
 });
 
@@ -242,6 +281,101 @@ test.serial("ui5 build --include-dependency-tree", async (t) => {
 	});
 });
 
+test.serial("ui5 build include/exclude tree (two subtrees, sharing a transitive dependency)", async (t) => {
+	await assertIncludeDependency(t, {
+		treeDeps: {
+			dependencies: [{
+				metadata: {
+					name: "a0"
+				},
+				dependencies: [{
+					metadata: {
+						name: "b0"
+					},
+					dependencies: []
+				}, {
+					metadata: {
+						name: "b1"
+					},
+					dependencies: [{
+						metadata: {
+							name: "c"
+						},
+						dependencies: []
+					}]
+				}]
+			}, {
+				metadata: {
+					name: "a1"
+				},
+				dependencies: [{
+					metadata: {
+						name: "b0"
+					},
+					dependencies: []
+				}, {
+					metadata: {
+						name: "b1"
+					},
+					dependencies: [{
+						metadata: {
+							name: "c"
+						},
+						dependencies: []
+					}]
+				}]
+			}]
+		},
+		includeDepsTree: ["a0"],
+		excludeDepsTree: ["a1"],
+		expectedBuilderArgs: {
+			buildDependencies: true,
+			includedDependencies: ["a0", "b0", "b1", "c"],
+			excludedDependencies: ["a1", "*"]
+		}
+	});
+});
+
+test.serial("ui5 build --include-dependency --include-dependency-tree (select a transitive dependency)", async (t) => {
+	await assertIncludeDependency(t, {
+		treeDeps: {
+			dependencies: [{
+				metadata: {
+					name: "a"
+				},
+				dependencies: [{
+					metadata: {
+						name: "b0"
+					},
+					dependencies: [{
+						metadata: {
+							name: "b0.c"
+						},
+						dependencies: []
+					}]
+				}, {
+					metadata: {
+						name: "b1"
+					},
+					dependencies: [{
+						metadata: {
+							name: "b1.c"
+						},
+						dependencies: []
+					}]
+				}]
+			}]
+		},
+		includeDeps: ["b0"],
+		includeDepsTree: ["b1"],
+		expectedBuilderArgs: {
+			buildDependencies: true,
+			includedDependencies: ["b0", "b1", "b1.c"],
+			excludedDependencies: ["*"]
+		}
+	});
+});
+
 test.serial("ui5 build --include-dependency=* --exclude-dependency=sap.ui.core", async (t) => {
 	await assertIncludeDependency(t, {
 		treeDeps: {
@@ -287,6 +421,41 @@ test.serial("ui5 build --include-dependency-tree=a --exclude-dependency=a", asyn
 			buildDependencies: true,
 			includedDependencies: ["b0", "b1"],
 			excludedDependencies: ["a", "*"]
+		}
+	});
+});
+
+test.serial("ui5 build --include-dependency-tree include/exclude tree has a lower priority", async (t) => {
+	await assertIncludeDependency(t, {
+		treeDeps: {
+			dependencies: [{
+				metadata: {
+					name: "a"
+				},
+				dependencies: [{
+					metadata: {
+						name: "b0"
+					},
+					dependencies: []
+				}, {
+					metadata: {
+						name: "b1"
+					},
+					dependencies: [{
+						metadata: {
+							name: "c"
+						},
+						dependencies: []
+					}]
+				}]
+			}]
+		},
+		includeDepsTree: ["a"],
+		excludeDepsRegExp: ["^b.$"],
+		expectedBuilderArgs: {
+			buildDependencies: true,
+			includedDependencies: ["a", "c"],
+			excludedDependencies: [/^b.$/, "*"]
 		}
 	});
 });
