@@ -148,7 +148,7 @@ test.serial("createDependencyList: handleSubtree (select dependency within the s
 test.serial("createDependencyList: illegal call", (t) => {
 	const {createDependencyList} = t.context.buildHelper;
 	const error = t.throws(() => {
-		createDependencyList({tree: {}, dependencies: ["a"], dependenciesRegExp: ["b"], handleSubtree: true})
+		createDependencyList({tree: {}, dependencies: ["a"], dependenciesRegExp: ["b"], handleSubtree: true});
 	});
 
 	t.is(error.message, `RegExp's should not be appended to list of sub-dependencies`,
