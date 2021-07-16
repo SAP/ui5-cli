@@ -483,6 +483,7 @@ test.serial("ui5 build --include-dependency (dependency not found)", async (t) =
 		includeDeps: ["sap.ui.core"]
 	});
 	t.is(log.warn.callCount, 1, "log.warn should be called once");
-	t.deepEqual(log.warn.getCall(0).args, ["Could not find dependency 'sap.ui.core' for 'Sample'."],
+	t.deepEqual(log.warn.getCall(0).args,
+		["Could not find dependency 'sap.ui.core' in 'Sample' - dependency filter is ignored"],
 		"logger.warn should be called with expected string");
 });
