@@ -16,8 +16,8 @@ test.afterEach.always((t) => {
 	mock.stopAll();
 });
 
-test.serial("createDependencyList", (t) => {
-	const {createDependencyList} = t.context.buildHelper;
+test.serial("getFlattenedDependencyTree", (t) => {
+	const {getFlattenedDependencyTree} = t.context.buildHelper;
 	const tree = {
 		metadata: {
 			name: "Sample"
@@ -51,128 +51,187 @@ test.serial("createDependencyList", (t) => {
 			metadata: {
 				name: "a1"
 			},
-			dependencies: []
-		}]
-	};
-	const deps = ["*", "a0", "a1", "b", "b", "d1", "unknown"];
-	const depsRegExp = ["^abc$"];
-
-	t.deepEqual(createDependencyList({tree: tree, dependencies: deps, dependenciesRegExp: depsRegExp}),
-		["*", "a0", "a1", "b", "d1", /^abc$/]);
-	t.is(t.context.log.warn.callCount, 1, "log.warn should be called once");
-	t.deepEqual(t.context.log.warn.getCall(0).args, ["Could not find dependency 'unknown' for 'Sample'."],
-		"logger.warn should be called with expected string");
-});
-
-test.serial("createDependencyList: handleSubtree", (t) => {
-	const {createDependencyList} = t.context.buildHelper;
-	const tree = {
-		metadata: {
-			name: "Sample"
-		},
-		dependencies: [{
-			metadata: {
-				name: "a"
-			},
 			dependencies: [{
 				metadata: {
-					name: "b"
+					name: "c"
 				},
 				dependencies: [{
 					metadata: {
-						name: "c"
+						name: "d0"
 					},
-					dependencies: [{
-						metadata: {
-							name: "d0"
-						},
-						dependencies: []
-					}, {
-						metadata: {
-							name: "d1"
-						},
-						dependencies: []
-					}]
+					dependencies: []
+				}, {
+					metadata: {
+						name: "d1"
+					},
+					dependencies: []
 				}]
 			}]
 		}]
 	};
-	const deps = ["a", "x"];
 
-	t.deepEqual(createDependencyList({tree: tree, dependencies: deps, handleSubtree: true}),
-		["a", "b", "c", "d0", "d1"]);
-	t.is(t.context.log.warn.callCount, 1, "log.warn should be called once");
-	t.deepEqual(t.context.log.warn.getCall(0).args, ["Could not find dependency 'x' for 'Sample'."],
-		"logger.warn should be called with expected string");
-});
-
-test.serial("createDependencyList: handleSubtree (select dependency within the subtree)", (t) => {
-	const {createDependencyList} = t.context.buildHelper;
-	const tree = {
-		metadata: {
-			name: "Sample"
-		},
-		dependencies: [{
-			metadata: {
-				name: "a"
-			},
-			dependencies: [{
-				metadata: {
-					name: "b"
-				},
-				dependencies: [{
-					metadata: {
-						name: "c"
-					},
-					dependencies: [{
-						metadata: {
-							name: "d0"
-						},
-						dependencies: []
-					}, {
-						metadata: {
-							name: "d1"
-						},
-						dependencies: []
-					}]
-				}]
-			}]
-		}]
-	};
-	const deps = ["b"];
-
-	t.deepEqual(createDependencyList({tree: tree, dependencies: deps, handleSubtree: true}),
-		["b", "c", "d0", "d1"]);
-});
-
-test.serial("createDependencyList: illegal call", (t) => {
-	const {createDependencyList} = t.context.buildHelper;
-	const error = t.throws(() => {
-		createDependencyList({tree: {}, dependencies: ["a"], dependenciesRegExp: ["b"], handleSubtree: true});
+	t.deepEqual(getFlattenedDependencyTree(tree), {
+		a0: ["b", "c", "d0", "d1"],
+		a1: ["c", "d0", "d1"],
+		b: ["c", "d0", "d1"],
+		c: ["d0", "d1"],
+		d0: [],
+		d1: []
 	});
-
-	t.is(error.message, `RegExp's should not be appended to list of sub-dependencies`,
-		"Threw with expected error message");
 });
 
-test.serial("mergeDependencyLists", (t) => {
-	const {mergeDependencyLists} = t.context.buildHelper;
-	const targetDependencyList = ["a"];
-	const dependencyList = ["a", "b", "c", "d"];
-	const excludeList = ["c"];
+function assertCreateDependencyLists(t, {
+	includeDependency, includeDependencyRegExp, includeDependencyTree,
+	excludeDependency, excludeDependencyRegExp, excludeDependencyTree,
+	defaultIncludeDependency, defaultIncludeDependencyRegExp, defaultIncludeDependencyTree,
+	expectedIncludedDependencies, expectedExcludedDependencies
+}) {
+	const {createDependencyLists} = t.context.buildHelper;
+	const tree = {
+		metadata: {
+			name: "Sample"
+		},
+		dependencies: [{
+			metadata: {
+				name: "a0"
+			},
+			dependencies: [{
+				metadata: {
+					name: "b0"
+				},
+				dependencies: []
+			}, {
+				metadata: {
+					name: "b1"
+				},
+				dependencies: [{
+					metadata: {
+						name: "c"
+					},
+					dependencies: []
+				}]
+			}]
+		}, {
+			metadata: {
+				name: "a1"
+			},
+			dependencies: [{
+				metadata: {
+					name: "b0"
+				},
+				dependencies: []
+			}, {
+				metadata: {
+					name: "b1"
+				},
+				dependencies: [{
+					metadata: {
+						name: "c"
+					},
+					dependencies: []
+				}]
+			}, {
+				metadata: {
+					name: "b2"
+				},
+				dependencies: []
+			}]
+		}, {
+			metadata: {
+				name: "a2"
+			},
+			dependencies: [{
+				metadata: {
+					name: "b3"
+				},
+				dependencies: []
+			}]
+		}]
+	};
 
-	mergeDependencyLists(targetDependencyList, dependencyList, excludeList);
-	t.deepEqual(targetDependencyList, ["a", "b", "d"]);
+	const {includedDependencies, excludedDependencies} = createDependencyLists({
+		tree: tree,
+		includeDependency: includeDependency,
+		includeDependencyRegExp: includeDependencyRegExp,
+		includeDependencyTree: includeDependencyTree,
+		excludeDependency: excludeDependency,
+		excludeDependencyRegExp: excludeDependencyRegExp,
+		excludeDependencyTree: excludeDependencyTree,
+		defaultIncludeDependency: defaultIncludeDependency,
+		defaultIncludeDependencyRegExp: defaultIncludeDependencyRegExp,
+		defaultIncludeDependencyTree: defaultIncludeDependencyTree
+	});
+	t.deepEqual(includedDependencies, expectedIncludedDependencies);
+	t.deepEqual(excludedDependencies, expectedExcludedDependencies);
+}
+
+test.serial("createDependencyLists: only includes", (t) => {
+	assertCreateDependencyLists(t, {
+		includeDependency: ["a1", "b2"],
+		includeDependencyRegExp: ["^b0$"],
+		includeDependencyTree: ["a2"],
+		expectedIncludedDependencies: ["a1", "b2", "b0", "a2", "b3"],
+		expectedExcludedDependencies: []
+	});
 });
 
-test.serial("mergeDependencyLists: RegExp", (t) => {
-	const {mergeDependencyLists} = t.context.buildHelper;
-	const targetDependencyList = [/a/];
-	const dependencyList = [/a/, "a", "b", "c", "d", /e+$/];
-	const excludeList = [/c/, /e+$/];
+test.serial("createDependencyLists: only excludes", (t) => {
+	assertCreateDependencyLists(t, {
+		excludeDependency: ["a1", "b2"],
+		excludeDependencyRegExp: ["^b0$"],
+		excludeDependencyTree: ["a2"],
+		expectedIncludedDependencies: [],
+		expectedExcludedDependencies: ["a1", "b2", "b0", "a2", "b3"]
+	});
+});
 
-	mergeDependencyLists(targetDependencyList, dependencyList, excludeList);
-	t.deepEqual(targetDependencyList, [/a/, "a", "b", "d"]);
+test.serial("createDependencyLists: includeDependencyTree has lower priority than excludes", (t) => {
+	assertCreateDependencyLists(t, {
+		includeDependencyTree: ["a1"],
+		excludeDependency: ["a1"],
+		excludeDependencyRegExp: ["^b[0-2]$"],
+		expectedIncludedDependencies: ["c"],
+		expectedExcludedDependencies: ["a1", "b0", "b1", "b2"]
+	});
+});
+
+test.serial("createDependencyLists: excludeDependencyTree has lower priority than includes", (t) => {
+	assertCreateDependencyLists(t, {
+		includeDependency: ["a1"],
+		includeDependencyRegExp: ["^b[0-2]$"],
+		excludeDependencyTree: ["a1"],
+		expectedIncludedDependencies: ["a1", "b0", "b1", "b2"],
+		expectedExcludedDependencies: ["c"]
+	});
+});
+
+test.serial("createDependencyLists: includeDependencyTree has higher priority than excludeDependencyTree", (t) => {
+	assertCreateDependencyLists(t, {
+		includeDependencyTree: ["a1"],
+		excludeDependencyTree: ["a1"],
+		expectedIncludedDependencies: ["a1", "b0", "b1", "c", "b2"],
+		expectedExcludedDependencies: []
+	});
+});
+
+test.serial("createDependencyLists: defaultIncludeDependency/RegExp has lower priority than excludes", (t) => {
+	assertCreateDependencyLists(t, {
+		defaultIncludeDependency: ["a1", "b2", "c"],
+		defaultIncludeDependencyRegExp: ["^b0$"],
+		excludeDependency: ["a1"],
+		excludeDependencyRegExp: ["^b.$"],
+		expectedIncludedDependencies: ["c"],
+		expectedExcludedDependencies: ["a1", "b0", "b1", "b2", "b3"]
+	});
+});
+
+test.serial("createDependencyLists: defaultIncludeDependencyTree has lower priority than excludes", (t) => {
+	assertCreateDependencyLists(t, {
+		defaultIncludeDependencyTree: ["a1"],
+		excludeDependencyTree: ["b1"],
+		expectedIncludedDependencies: ["a1", "b0", "b2"],
+		expectedExcludedDependencies: ["b1", "c"]
+	});
 });
 
 test.serial("alignWithBuilderApi: * is added to excludedDependencies", (t) => {

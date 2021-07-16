@@ -18,7 +18,8 @@ const defaultBuilderArgs = {
 	tree: {
 		metadata: {
 			name: "Sample"
-		}
+		},
+		dependencies: []
 	},
 	destPath: "./dist",
 	buildDependencies: undefined,
@@ -52,10 +53,10 @@ test.afterEach.always((t) => {
 
 test.serial("ui5 build (default) ", async (t) => {
 	normalizerStub.resolves({
-		metadata:
-		{
+		metadata: {
 			name: "Sample"
-		}
+		},
+		dependencies: []
 	});
 	args._ = ["build"];
 	await t.context.build.handler(args);
@@ -64,10 +65,10 @@ test.serial("ui5 build (default) ", async (t) => {
 
 test.serial("ui5 build dev", async (t) => {
 	normalizerStub.resolves({
-		metadata:
-		{
+		metadata: {
 			name: "Sample"
-		}
+		},
+		dependencies: []
 	});
 	args._ = ["build", "dev"];
 	await t.context.build.handler(args);
@@ -80,10 +81,10 @@ test.serial("ui5 build dev", async (t) => {
 
 test.serial("ui5 build self-contained", async (t) => {
 	normalizerStub.resolves({
-		metadata:
-		{
+		metadata: {
 			name: "Sample"
-		}
+		},
+		dependencies: []
 	});
 	args._ = ["build", "self-contained"];
 	await t.context.build.handler(args);
@@ -96,10 +97,10 @@ test.serial("ui5 build self-contained", async (t) => {
 
 test.serial("ui5 build jsdoc", async (t) => {
 	normalizerStub.resolves({
-		metadata:
-		{
+		metadata: {
 			name: "Sample"
-		}
+		},
+		dependencies: []
 	});
 	args._ = ["build", "jsdoc"];
 	await t.context.build.handler(args);
@@ -112,10 +113,10 @@ test.serial("ui5 build jsdoc", async (t) => {
 
 test.serial("ui5 build --framework-version 1.99", async (t) => {
 	normalizerStub.resolves({
-		metadata:
-		{
+		metadata: {
 			name: "Sample"
-		}
+		},
+		dependencies: []
 	});
 
 	args._ = ["build"];
@@ -159,7 +160,8 @@ test.serial("ui5 build --include-dependency", async (t) => {
 			dependencies: [{
 				metadata: {
 					name: "sap.ui.core"
-				}
+				},
+				dependencies: []
 			}]
 		},
 		includeDeps: ["sap.ui.core"],
@@ -177,17 +179,17 @@ test.serial("ui5 build --include-dependency", async (t) => {
 	excludeDepsTree: [],
 	expectedBuilderArgs: {
 		buildDependencies: true,
-		includedDependencies: ["a", /regexp/, "b1", "c"],
+		includedDependencies: ["a", "b0", "b1", "c"],
 		excludedDependencies: ["*"]
 	}
 }, {
 	title: "overridden by excludes",
-	excludeDepsRegExp: ["regexp"],
+	excludeDepsRegExp: ["^b0$"],
 	excludeDepsTree: ["b1"],
 	expectedBuilderArgs: {
 		buildDependencies: true,
 		includedDependencies: ["a"],
-		excludedDependencies: [/regexp/, "b1", "c", "*"]
+		excludedDependencies: ["b0", "b1", "c", "*"]
 	}
 }].forEach((fixture) => {
 	test.serial(`ui5 build (dependency included via ui5.yaml); ${fixture.title}`, async (t) => {
@@ -217,7 +219,7 @@ test.serial("ui5 build --include-dependency", async (t) => {
 				builder: {
 					settings: {
 						includeDependency: ["a"],
-						includeDependencyRegExp: ["regexp"],
+						includeDependencyRegExp: ["^b0$"],
 						includeDependencyTree: ["b1"],
 					}
 				}
@@ -235,13 +237,24 @@ test.serial("ui5 build --include-dependency-regexp", async (t) => {
 			dependencies: [{
 				metadata: {
 					name: "sap.ui.core"
-				}
+				},
+				dependencies: []
+			}, {
+				metadata: {
+					name: "sap.m"
+				},
+				dependencies: []
+			}, {
+				metadata: {
+					name: "sap.f"
+				},
+				dependencies: []
 			}]
 		},
 		includeDepsRegExp: ["^sap.[mf]$"],
 		expectedBuilderArgs: {
 			buildDependencies: true,
-			includedDependencies: [/^sap.[mf]$/],
+			includedDependencies: ["sap.m", "sap.f"],
 			excludedDependencies: ["*"]
 		}
 	});
@@ -382,7 +395,8 @@ test.serial("ui5 build --include-dependency=* --exclude-dependency=sap.ui.core",
 			dependencies: [{
 				metadata: {
 					name: "sap.ui.core"
-				}
+				},
+				dependencies: []
 			}]
 		},
 		includeDeps: ["*"],
@@ -455,7 +469,7 @@ test.serial("ui5 build --include-dependency-tree include/exclude tree has a lowe
 		expectedBuilderArgs: {
 			buildDependencies: true,
 			includedDependencies: ["a", "c"],
-			excludedDependencies: [/^b.$/, "*"]
+			excludedDependencies: ["b0", "b1", "*"]
 		}
 	});
 });
