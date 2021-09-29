@@ -110,8 +110,7 @@ test.serial.cb("ui5 logs warning when using pre-release Node.js version", (t) =>
 	const importLocalStub = sinon.stub().returns(true);
 	mock("import-local", importLocalStub);
 
-	const sandbox = sinon.createSandbox();
-	sandbox.stub(process, "version").value("v17.0.0-v8-canary202108258414d1aed8");
+	sinon.stub(process, "version").value("v17.0.0-v8-canary202108258414d1aed8");
 
 	mock.reRequire("../../bin/ui5");
 
@@ -142,8 +141,6 @@ test.serial.cb("ui5 logs warning when using pre-release Node.js version", (t) =>
 			path.resolve(__dirname, "..", "..", "bin", "ui5.js")
 		], "import-local should be called with bin/ui5.js filename");
 
-		consoleLogStub.restore();
-		sandbox.restore();
 		t.end();
 	}, 0);
 });
