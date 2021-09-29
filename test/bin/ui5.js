@@ -116,7 +116,7 @@ test.serial.cb("ui5 logs warning when using pre-release Node.js version", (t) =>
 	mock.reRequire("../../bin/ui5");
 
 	setTimeout(() => {
-		t.is(consoleLogStub.callCount, 8, "console.log should be called 8 times");
+		t.is(consoleLogStub.callCount, 9, "console.log should be called 8 times");
 
 		t.is(consoleLogStub.getCall(0).args[0],
 			"====================== UNSTABLE NODE.JS VERSION =====================");
@@ -131,8 +131,10 @@ test.serial.cb("ui5 logs warning when using pre-release Node.js version", (t) =>
 		t.is(consoleLogStub.getCall(5).args[0],
 			"   behavior. For productive use please consider using a stable");
 		t.is(consoleLogStub.getCall(6).args[0],
-			"   version of Node.js!");
+			"   version of Node.js! For the release policy of Node.js, see");
 		t.is(consoleLogStub.getCall(7).args[0],
+			"   https://nodejs.org/en/about/releases");
+		t.is(consoleLogStub.getCall(8).args[0],
 			"=====================================================================");
 
 		t.is(importLocalStub.callCount, 1, "import-local should be called once");

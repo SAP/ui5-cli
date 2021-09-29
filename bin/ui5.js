@@ -33,7 +33,8 @@ if (
 		console.log("");
 		console.log("=> Please note that an unstable version might cause unexpected");
 		console.log("   behavior. For productive use please consider using a stable");
-		console.log("   version of Node.js!");
+		console.log("   version of Node.js! For the release policy of Node.js, see");
+		console.log("   https://nodejs.org/en/about/releases");
 		console.log("=====================================================================");
 	}
 	// Timeout is required to log info when importing from local installation
