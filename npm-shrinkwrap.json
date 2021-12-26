@@ -1484,9 +1484,9 @@
 			}
 		},
 		"caniuse-lite": {
-			"version": "1.0.30001291",
-			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001291.tgz",
-			"integrity": "sha512-roMV5V0HNGgJ88s42eE70sstqGW/gwFndosYrikHthw98N5tLnOTxFqMLQjZVRxTWFlJ4rn+MsgXrR7MDPY4jA==",
+			"version": "1.0.30001292",
+			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001292.tgz",
+			"integrity": "sha512-jnT4Tq0Q4ma+6nncYQVe7d73kmDmE9C3OGTx3MvW7lBM/eY1S1DZTMBON7dqV481RhNiS5OxD7k9JQvmDOTirw==",
 			"dev": true
 		},
 		"catharsis": {
@@ -2517,9 +2517,9 @@
 			"integrity": "sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0="
 		},
 		"electron-to-chromium": {
-			"version": "1.4.24",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.24.tgz",
-			"integrity": "sha512-erwx5r69B/WFfFuF2jcNN0817BfDBdC4765kQ6WltOMuwsimlQo3JTEq0Cle+wpHralwdeX3OfAtw/mHxPK0Wg==",
+			"version": "1.4.28",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.28.tgz",
+			"integrity": "sha512-Gzbf0wUtKfyPaqf0Plz+Ctinf9eQIzxEqBHwSvbGfeOm9GMNdLxyu1dNiCUfM+x6r4BE0xUJNh3Nmg9gfAtTmg==",
 			"dev": true
 		},
 		"emittery": {
@@ -2886,9 +2886,9 @@
 			"dev": true
 		},
 		"eslint-plugin-jsdoc": {
-			"version": "37.2.8",
-			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-37.2.8.tgz",
-			"integrity": "sha512-XyIj639UGbHzCv0alpVhMoRr64eBE3ZLp4+DuBVceuG8lOthXxo62p50yPd3gOlCOdgR9pqvFCJ+PH8vF32d0A==",
+			"version": "37.4.0",
+			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-37.4.0.tgz",
+			"integrity": "sha512-XWKMMHFq7eUdC8XMzuQSskevJvlHTDSAJm/2qtEZ7+qhZTZ0YjeqWaUn7KGdrmxLNqtWwtJ67LdIPgrYUZ5EoA==",
 			"dev": true,
 			"requires": {
 				"@es-joy/jsdoccomment": "0.13.0",
@@ -3698,9 +3698,9 @@
 			"integrity": "sha1-xg7taebY/bazEEofy8ocGS3FtQE="
 		},
 		"ignore": {
-			"version": "5.1.9",
-			"resolved": "https://registry.npmjs.org/ignore/-/ignore-5.1.9.tgz",
-			"integrity": "sha512-2zeMQpbKz5dhZ9IwL0gbxSW5w0NK/MSAMtNuhgIHEPmaU3vPdKPL0UdvUCXs5SS4JAwsBxysK5sFMW8ocFiVjQ=="
+			"version": "5.2.0",
+			"resolved": "https://registry.npmjs.org/ignore/-/ignore-5.2.0.tgz",
+			"integrity": "sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ=="
 		},
 		"ignore-by-default": {
 			"version": "2.0.0",
@@ -4090,9 +4090,9 @@
 			}
 		},
 		"istanbul-reports": {
-			"version": "3.1.1",
-			"resolved": "https://registry.npmjs.org/istanbul-reports/-/istanbul-reports-3.1.1.tgz",
-			"integrity": "sha512-q1kvhAXWSsXfMjCdNHNPKZZv94OlspKnoGv+R9RGbnqOOQ0VbNfLFgQDVgi7hHenKsndGq3/o0OBdzDXthWcNw==",
+			"version": "3.1.2",
+			"resolved": "https://registry.npmjs.org/istanbul-reports/-/istanbul-reports-3.1.2.tgz",
+			"integrity": "sha512-0gHxuT1NNC0aEIL1zbJ+MTgPbbHhU77eJPuU35WKA7TgXiSNlCAx4PENoMrH0Or6M2H80TaZcWKhM0IK6V8gRw==",
 			"dev": true,
 			"requires": {
 				"html-escaper": "^2.0.0",
@@ -6223,9 +6223,9 @@
 			"integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
 		},
 		"sass": {
-			"version": "1.45.0",
-			"resolved": "https://registry.npmjs.org/sass/-/sass-1.45.0.tgz",
-			"integrity": "sha512-ONy5bjppoohtNkFJRqdz1gscXamMzN3wQy1YH9qO2FiNpgjLhpz/IPRGg0PpCjyz/pWfCOaNEaiEGCcjOFAjqw==",
+			"version": "1.45.1",
+			"resolved": "https://registry.npmjs.org/sass/-/sass-1.45.1.tgz",
+			"integrity": "sha512-pwPRiq29UR0o4X3fiQyCtrESldXvUQAAE0QmcJTpsI4kuHHcLzZ54M1oNBVIXybQv8QF2zfkpFcTxp8ta97dUA==",
 			"dev": true,
 			"requires": {
 				"chokidar": ">=3.0.0 <4.0.0",
