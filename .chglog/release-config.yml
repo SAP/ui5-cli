@@ -3,6 +3,7 @@ template: RELEASE.tpl.md
 info:
   repository_url: https://github.com/SAP/ui5-cli
 options:
+  tag_filter_pattern: '^v[012]' # For this branch, ignore versions above v2
   commits:
     filters:
       Type:
