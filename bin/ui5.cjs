@@ -77,6 +77,10 @@ const ui5 = {
 	},
 
 	async invokeCLI(pkg) {
+		if (process.env.UI5_CLI_PROFILE) {
+			const profile = await import("../lib/utils/profile.js");
+			await profile.start();
+		}
 		const {default: cli} = await import("../lib/cli/cli.js");
 		await cli(pkg);
 	},
@@ -88,7 +92,8 @@ const ui5 = {
 		} else {
 			const localInstallationInvoked = await ui5.invokeLocalInstallation(pkg);
 			if (!localInstallationInvoked) {
-				await ui5.invokeCLI(pkg);
+				const exitCode = await ui5.invokeCLI(pkg);
+				process.exit(exitCode);
 			}
 		}
 	}
