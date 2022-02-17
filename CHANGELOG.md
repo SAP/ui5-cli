@@ -2,10 +2,13 @@
 All notable changes to this project will be documented in this file.  
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-A list of unreleased changes can be found [here](https://github.com/SAP/ui5-cli/compare/v2.14.4...HEAD).
+A list of unreleased changes can be found [here](https://github.com/SAP/ui5-cli/compare/v2.14.5...HEAD).
+
+<a name="v2.14.5"></a>
+## [v2.14.5] - 2022-02-13
 
 <a name="v2.14.4"></a>
-## [v2.14.4] - 2022-01-23
+## [v2.14.4] - 2022-01-24
 
 <a name="v2.14.3"></a>
 ## [v2.14.3] - 2022-01-19
@@ -714,6 +717,7 @@ Only Node.js v10 or higher is supported.
 <a name="v0.0.1"></a>
 ## v0.0.1 - 2018-06-06
 
+[v2.14.5]: https://github.com/SAP/ui5-cli/compare/v2.14.4...v2.14.5
 [v2.14.4]: https://github.com/SAP/ui5-cli/compare/v2.14.3...v2.14.4
 [v2.14.3]: https://github.com/SAP/ui5-cli/compare/v2.14.2...v2.14.3
 [v2.14.2]: https://github.com/SAP/ui5-cli/compare/v2.14.1...v2.14.2
