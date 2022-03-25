@@ -32,7 +32,7 @@ const defaultBuilderArgs = {
 	devExcludeProject: undefined,
 	includedTasks: undefined,
 	excludedTasks: undefined,
-	cssVariables: false
+	cssVariables: undefined
 };
 
 test.beforeEach((t) => {
@@ -498,7 +498,7 @@ test.serial("ui5 build --experimental-css-variables", async (t) => {
 		dependencies: []
 	});
 	args._ = ["build"];
-	args["experimental-css-variables"] = undefined;
+	args["experimental-css-variables"] = true;
 	await t.context.build.handler(args);
 	t.deepEqual(
 		builderStub.getCall(0).args[0],
