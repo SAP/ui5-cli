@@ -40,7 +40,7 @@ test.serial("Use with name and version (OpenUI5)", async (t) => {
 	} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -67,7 +67,7 @@ test.serial("Use with name and version (OpenUI5)", async (t) => {
 	}, "useFramework should return expected result object");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 1, "getFrameworkResolverStub should be called once");
@@ -80,6 +80,7 @@ test.serial("Use with name and version (OpenUI5)", async (t) => {
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "OpenUI5",
@@ -96,7 +97,7 @@ test.serial("Use with name and version (SAPUI5)", async (t) => {
 	} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -123,7 +124,7 @@ test.serial("Use with name and version (SAPUI5)", async (t) => {
 	}, "useFramework should return expected result object");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 1, "getFrameworkResolverStub should be called once");
@@ -136,6 +137,7 @@ test.serial("Use with name and version (SAPUI5)", async (t) => {
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "SAPUI5",
@@ -152,7 +154,7 @@ test.serial("Use with version only (OpenUI5)", async (t) => {
 	} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -180,7 +182,7 @@ test.serial("Use with version only (OpenUI5)", async (t) => {
 	}, "useFramework should return expected result object");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 1, "getFrameworkResolverStub should be called once");
@@ -193,6 +195,7 @@ test.serial("Use with version only (OpenUI5)", async (t) => {
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "OpenUI5",
@@ -209,7 +212,7 @@ test.serial("Use with version only (SAPUI5)", async (t) => {
 	} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -237,7 +240,7 @@ test.serial("Use with version only (SAPUI5)", async (t) => {
 	}, "useFramework should return expected result object");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 1, "getFrameworkResolverStub should be called once");
@@ -250,6 +253,7 @@ test.serial("Use with version only (SAPUI5)", async (t) => {
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "SAPUI5",
@@ -266,7 +270,7 @@ test.serial("Use with name only (no existing framework configuration)", async (t
 	} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -292,7 +296,7 @@ test.serial("Use with name only (no existing framework configuration)", async (t
 	}, "useFramework should return expected result object");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 0, "getFrameworkResolverStub should not be called");
@@ -301,6 +305,7 @@ test.serial("Use with name only (no existing framework configuration)", async (t
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "SAPUI5"
@@ -316,7 +321,7 @@ test.serial("Use with name only (existing framework configuration)", async (t) =
 	} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -345,7 +350,7 @@ test.serial("Use with name only (existing framework configuration)", async (t) =
 	}, "useFramework should return expected result object");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 1, "getFrameworkResolverStub should be called once");
@@ -358,6 +363,7 @@ test.serial("Use with name only (existing framework configuration)", async (t) =
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "SAPUI5",
@@ -414,6 +420,7 @@ test.serial("Use with projectGraphOptions.config", async (t) => {
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: "/path/to/ui5.yaml",
 		data: {
 			framework: {
 				name: "SAPUI5",
@@ -428,7 +435,7 @@ test.serial("Use with version only (no framework name)", async (t) => {
 		resolveVersionStub, getFrameworkResolverStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -450,7 +457,7 @@ test.serial("Use with version only (no framework name)", async (t) => {
 	t.is(error.message, "No framework configuration defined. Make sure to also provide the framework name.");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 0, "getFrameworkResolverStub should not be called");
@@ -464,7 +471,7 @@ test.serial("Use with invalid name", async (t) => {
 		resolveVersionStub, getFrameworkResolverStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -486,7 +493,7 @@ test.serial("Use with invalid name", async (t) => {
 	t.is(error.message, "Invalid framework name: Foo");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 0, "getFrameworkResolverStub should not be called");
@@ -500,7 +507,7 @@ test.serial("Use with specVersion 1.0", async (t) => {
 		resolveVersionStub, getFrameworkResolverStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -523,7 +530,7 @@ test.serial("Use with specVersion 1.0", async (t) => {
 		`ui5 use command requires specVersion "2.0" or higher. Project my-project uses specVersion "1.0"`);
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 0, "getFrameworkResolverStub should not be called");
@@ -543,7 +550,7 @@ test.serial("Use with name and version (YAML update fails)", async (t) => {
 	updateYamlStub.rejects(yamlUpdateError);
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -570,7 +577,7 @@ test.serial("Use with name and version (YAML update fails)", async (t) => {
 	}, "useFramework should return expected result object");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 1, "getFrameworkResolverStub should be called once");
@@ -583,6 +590,7 @@ test.serial("Use with name and version (YAML update fails)", async (t) => {
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "OpenUI5",
@@ -601,7 +609,7 @@ test.serial("Use with name and version (YAML update fails with unexpected error)
 	updateYamlStub.rejects(new Error("Some unexpected error"));
 
 	const projectGraphOptions = {
-		"fakeProjectGraphOptions": true
+		fakeProjectGraphOptions: true
 	};
 
 	const project = createMockProject({
@@ -624,7 +632,7 @@ test.serial("Use with name and version (YAML update fails with unexpected error)
 	t.is(error.message, "Some unexpected error");
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
-	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{"fakeProjectGraphOptions": true}],
+	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
 	t.is(getFrameworkResolverStub.callCount, 1, "getFrameworkResolverStub should be called once");
@@ -637,6 +645,7 @@ test.serial("Use with name and version (YAML update fails with unexpected error)
 	t.is(updateYamlStub.callCount, 1, "updateYaml should be called once");
 	t.deepEqual(updateYamlStub.getCall(0).args, [{
 		project,
+		configPathOverride: undefined,
 		data: {
 			framework: {
 				name: "OpenUI5",
