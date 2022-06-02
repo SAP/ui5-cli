@@ -1,6 +1,5 @@
 const test = require("ava");
 const sinon = require("sinon");
-const mock = require("mock-require");
 
 function getDefaultArgv() {
 	// This has been taken from the actual argv object yargs provides
@@ -85,7 +84,6 @@ test.beforeEach((t) => {
 
 test.afterEach.always((t) => {
 	sinon.restore();
-	mock.stopAll();
 });
 
 test.serial("ui5 build (default) ", async (t) => {
