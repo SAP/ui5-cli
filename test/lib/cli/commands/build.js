@@ -1,11 +1,6 @@
 const test = require("ava");
 const sinon = require("sinon");
 const mock = require("mock-require");
-const normalizer = require("@ui5/project").normalizer;
-const builder = require("@ui5/builder").builder;
-const logger = require("@ui5/logger");
-let normalizerStub = null;
-let builderStub = null;
 
 const args = {
 	_: [],
@@ -14,37 +9,84 @@ const args = {
 	t8r: "npm",
 	translator: "npm"
 };
-const defaultBuilderArgs = {
-	tree: {
-		metadata: {
-			name: "Sample"
+
+function getDefaultArgv() {
+	return {
+		"_": ["build"],
+		"loglevel": "info",
+		"log-level": "info",
+		"logLevel": "info",
+		"x-perf": false,
+		"xPerf": false,
+		"include-all-dependencies": false,
+		"all": false,
+		"a": false,
+		"includeAllDependencies": false,
+		"dest": "./dist",
+		"clean-dest": false,
+		"cleanDest": false,
+		"experimental-css-variables": false,
+		"experimentalCssVariables": false,
+		"$0": "ui5"
+	};
+}
+
+function getDefaultBuilderArgs() {
+	return {
+		destPath: "./dist",
+		cleanDest: false,
+		complexDependencyIncludes: {
+			includeAllDependencies: false,
+			includeDependency: undefined,
+			includeDependencyRegExp: undefined,
+			includeDependencyTree: undefined,
+			excludeDependency: undefined,
+			excludeDependencyRegExp: undefined,
+			excludeDependencyTree: undefined,
+			defaultIncludeDependency: undefined,
+			defaultIncludeDependencyRegExp: undefined,
+			defaultIncludeDependencyTree: undefined
 		},
-		dependencies: []
-	},
-	destPath: "./dist",
-	buildDependencies: undefined,
-	includedDependencies: [],
-	excludedDependencies: [],
-	cleanDest: undefined,
-	dev: false,
-	selfContained: false,
-	jsdoc: false,
-	devExcludeProject: undefined,
-	includedTasks: undefined,
-	excludedTasks: undefined,
-	cssVariables: undefined
-};
+		archive: false,
+		selfContained: false,
+		jsdoc: false,
+		includedTasks: undefined,
+		excludedTasks: undefined,
+		cssVariables: false
+	};
+}
 
 test.beforeEach((t) => {
-	normalizerStub = sinon.stub(normalizer, "generateProjectTree");
-	builderStub = sinon.stub(builder, "build").returns(Promise.resolve());
-	sinon.stub(logger, "setShowProgress");
-	t.context.log = {
-		warn: sinon.stub()
+	const project = require("@ui5/project");
+
+	t.context.argv = getDefaultArgv();
+	t.context.expectedBuilderArgs = getDefaultBuilderArgs();
+
+	sinon.stub(project.generateProjectGraph, "usingStaticFile").resolves();
+	sinon.stub(project.generateProjectGraph, "usingNodePackageDependencies").resolves();
+	t.context.generateProjectGraph = project.generateProjectGraph;
+
+	t.context.builder = sinon.stub().resolves();
+
+	// NOTE: project.builder needs to be re-defined via defineProperty.
+	// Sinon is unable to create a stub for the property because of the lazy-loading
+	// mechanism in @ui5/project index.js
+	Object.defineProperty(project, "builder", {
+		get() {
+			return t.context.builder;
+		}
+	});
+
+	// Create basic mocking objects
+	const fakeGraph = {
+		getRoot: sinon.stub().returns({
+			getBuilderSettings: sinon.stub().returns(undefined)
+		})
 	};
-	sinon.stub(logger, "getLogger").withArgs("cli:utils:buildHelper").returns(t.context.log);
-	mock.reRequire("../../../../lib/utils/buildHelper"); // rerequire buildHelper to ensure usage of stubbed logger
-	t.context.build = mock.reRequire("../../../../lib/cli/commands/build");
+	t.context.generateProjectGraph.usingNodePackageDependencies.resolves(fakeGraph);
+	t.context.expectedBuilderArgs.graph = fakeGraph;
+
+	t.context.build = require("../../../../lib/cli/commands/build");
 });
 
 test.afterEach.always((t) => {
@@ -53,85 +95,48 @@ test.afterEach.always((t) => {
 });
 
 test.serial("ui5 build (default) ", async (t) => {
-	normalizerStub.resolves({
-		metadata: {
-			name: "Sample"
-		},
-		dependencies: []
-	});
-	args._ = ["build"];
-	await t.context.build.handler(args);
-	t.deepEqual(builderStub.getCall(0).args[0], defaultBuilderArgs, "default build triggered with expected arguments");
-});
+	const {build, argv, builder, expectedBuilderArgs} = t.context;
 
-test.serial("ui5 build dev", async (t) => {
-	normalizerStub.resolves({
-		metadata: {
-			name: "Sample"
-		},
-		dependencies: []
-	});
-	args._ = ["build", "dev"];
-	await t.context.build.handler(args);
-	t.deepEqual(
-		builderStub.getCall(0).args[0],
-		Object.assign({}, defaultBuilderArgs, {dev: true}),
-		"Dev build called with expected arguments"
-	);
+	await build.handler(argv);
+
+	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "default build triggered with expected arguments");
 });
 
 test.serial("ui5 build self-contained", async (t) => {
-	normalizerStub.resolves({
-		metadata: {
-			name: "Sample"
-		},
-		dependencies: []
-	});
-	args._ = ["build", "self-contained"];
-	await t.context.build.handler(args);
-	t.deepEqual(
-		builderStub.getCall(0).args[0],
-		Object.assign({}, defaultBuilderArgs, {selfContained: true}),
-		"Self-contained build called with expected arguments"
-	);
+	const {build, argv, builder, expectedBuilderArgs} = t.context;
+
+	argv._.push("self-contained");
+
+	await build.handler(argv);
+
+	expectedBuilderArgs.selfContained = true;
+	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "Self-contained build called with expected arguments");
 });
 
 test.serial("ui5 build jsdoc", async (t) => {
-	normalizerStub.resolves({
-		metadata: {
-			name: "Sample"
-		},
-		dependencies: []
-	});
-	args._ = ["build", "jsdoc"];
-	await t.context.build.handler(args);
-	t.deepEqual(
-		builderStub.getCall(0).args[0],
-		Object.assign({}, defaultBuilderArgs, {jsdoc: true}),
-		"JSDoc build called with expected arguments"
-	);
+	const {build, argv, builder, expectedBuilderArgs} = t.context;
+
+	argv._.push("jsdoc");
+
+	await build.handler(argv);
+
+	expectedBuilderArgs.jsdoc = true;
+	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "JSDoc build called with expected arguments");
 });
 
 test.serial("ui5 build --framework-version 1.99", async (t) => {
-	normalizerStub.resolves({
-		metadata: {
-			name: "Sample"
-		},
-		dependencies: []
-	});
+	const {build, argv, generateProjectGraph} = t.context;
 
-	args._ = ["build"];
-	args.frameworkVersion = "1.99.0";
-	await t.context.build.handler(args);
+	argv.frameworkVersion = "1.99.0";
+
+	await build.handler(argv);
+
 	t.deepEqual(
-		normalizerStub.getCall(0).args[0],
+		generateProjectGraph.usingNodePackageDependencies.getCall(0).args[0],
 		{
-			configPath: undefined,
-			translatorName: "npm",
-			frameworkOptions: {
-				versionOverride: "1.99.0"
-			}
-		}, "generateProjectTree got called with expected arguments"
+			rootConfigPath: undefined,
+			versionOverride: "1.99.0"
+		}, "generateProjectGraph.usingNodePackageDependencies got called with expected arguments"
 	);
 });
 
