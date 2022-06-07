@@ -35,6 +35,12 @@ test.beforeEach((t) => {
 	};
 	t.context.generateProjectGraph.usingNodePackageDependencies.resolves(fakeGraph);
 
+	t.context.consoleOutput = "";
+	t.context.consoleLog = sinon.stub(console, "log").callsFake((message) => {
+		// NOTE: This fake impl only supports one string arg passed to console.log
+		t.context.consoleOutput += message + "\n";
+	});
+
 	t.context.tree = require("../../../../lib/cli/commands/tree");
 });
 test.afterEach.always((t) => {
@@ -48,6 +54,7 @@ test.serial("ui5 tree (Without dependencies)", async (t) => {
 		await fn({
 			project: {
 				getName: sinon.stub().returns("project1"),
+				getNamespace: sinon.stub().returns("test/project1"),
 				getVersion: sinon.stub().returns("1.0.0"),
 				getType: sinon.stub().returns("application"),
 				getPath: sinon.stub().returns("/home/project1")
@@ -58,7 +65,67 @@ test.serial("ui5 tree (Without dependencies)", async (t) => {
 
 	await tree.handler(argv);
 
+	t.is(t.context.consoleOutput,
+		`Dependencies (1):
+╰─ project1 test/project1 (1.0.0, application) /home/project1
+
+Extensions (0):
+None
+`);
+
 	t.pass();
+});
+
+test.serial("ui5 tree", async (t) => {
+	const {argv, tree, traverseBreadthFirst} = t.context;
+
+	traverseBreadthFirst.callsFake(async (fn) => {
+		await fn({
+			project: {
+				getName: sinon.stub().returns("project1"),
+				getNamespace: sinon.stub().returns("test/project1"),
+				getVersion: sinon.stub().returns("1.0.0"),
+				getType: sinon.stub().returns("application"),
+				getPath: sinon.stub().returns("/home/project1")
+			},
+			getDependencies: sinon.stub().returns([{
+				getName: sinon.stub().returns("dependency2")
+			}])
+		});
+		await fn({
+			project: {
+				getName: sinon.stub().returns("dependency2"),
+				getNamespace: sinon.stub().returns("test/dependency2"),
+				getVersion: sinon.stub().returns("2.0.0"),
+				getType: sinon.stub().returns("library"),
+				getPath: sinon.stub().returns("/home/dependency2")
+			},
+			getDependencies: sinon.stub().returns([{
+				getName: sinon.stub().returns("dependency1")
+			}])
+		});
+		await fn({
+			project: {
+				getName: sinon.stub().returns("dependency1"),
+				getVersion: sinon.stub().returns("1.1.1"),
+				getType: sinon.stub().returns("library"),
+				getPath: sinon.stub().returns("/home/dependency1")
+			},
+			getDependencies: sinon.stub().returns([])
+		});
+	});
+
+	await tree.handler(argv);
+
+	t.is(t.context.consoleOutput,
+		`Dependencies (3):
+╰─ project1 test/project1 (1.0.0, application) /home/project1
+    ╰─ dependency2 test/dependency2 (2.0.0, library) /home/dependency2
+        ╰─ dependency1 (1.1.1, library) /home/dependency1
+
+Extensions (0):
+None
+`);
 });
 
 test.serial("ui5 tree (creates project graph dependency tree before output)", async (t) => {
