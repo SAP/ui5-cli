@@ -20,7 +20,6 @@
 				"js-yaml": "^4.1.0",
 				"open": "^7.4.2",
 				"semver": "^7.3.5",
-				"treeify": "^1.0.1",
 				"update-notifier": "^5.1.0",
 				"yargs": "^16.2.0"
 			},
