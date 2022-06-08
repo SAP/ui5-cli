@@ -19,6 +19,7 @@
 				"import-local": "^3.1.0",
 				"js-yaml": "^4.1.0",
 				"open": "^7.4.2",
+				"pretty-hrtime": "^1.0.3",
 				"semver": "^7.3.5",
 				"update-notifier": "^5.1.0",
 				"yargs": "^16.2.0"
@@ -7298,7 +7299,7 @@
 		"node_modules/pretty-hrtime": {
 			"version": "1.0.3",
 			"resolved": "https://registry.npmjs.org/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz",
-			"integrity": "sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=",
+			"integrity": "sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==",
 			"engines": {
 				"node": ">= 0.8"
 			}
@@ -15359,7 +15360,7 @@
 		"pretty-hrtime": {
 			"version": "1.0.3",
 			"resolved": "https://registry.npmjs.org/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz",
-			"integrity": "sha1-t+PqQkNaTJsnWdmeDyAesZWALuE="
+			"integrity": "sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A=="
 		},
 		"pretty-ms": {
 			"version": "7.0.1",
