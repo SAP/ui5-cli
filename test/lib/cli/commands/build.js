@@ -14,6 +14,8 @@ function getDefaultArgv() {
 		"all": false,
 		"a": false,
 		"includeAllDependencies": false,
+		"create-build-description": false,
+		"createBuildDescription": false,
 		"dest": "./dist",
 		"clean-dest": false,
 		"cleanDest": false,
@@ -39,7 +41,7 @@ function getDefaultBuilderArgs() {
 			defaultIncludeDependencyRegExp: undefined,
 			defaultIncludeDependencyTree: undefined
 		},
-		archive: false,
+		createBuildDescription: false,
 		selfContained: false,
 		jsdoc: false,
 		includedTasks: undefined,
@@ -116,17 +118,6 @@ test.serial("ui5 build jsdoc", async (t) => {
 	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "JSDoc build called with expected arguments");
 });
 
-test.serial("ui5 build archive", async (t) => {
-	const {build, argv, builder, expectedBuilderArgs} = t.context;
-
-	argv._.push("archive");
-
-	await build.handler(argv);
-
-	expectedBuilderArgs.archive = true;
-	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "archive build called with expected arguments");
-});
-
 test.serial("ui5 build --framework-version 1.99", async (t) => {
 	const {build, argv, generateProjectGraph} = t.context;
 
@@ -141,6 +132,17 @@ test.serial("ui5 build --framework-version 1.99", async (t) => {
 			versionOverride: "1.99.0"
 		}, "generateProjectGraph.usingNodePackageDependencies got called with expected arguments"
 	);
+});
+
+test.serial("ui5 build --createBuildDescription", async (t) => {
+	const {build, argv, builder, expectedBuilderArgs} = t.context;
+
+	argv["create-build-description"] = true;
+
+	await build.handler(argv);
+
+	expectedBuilderArgs.createBuildDescription = true;
+	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "default build triggered with expected arguments");
 });
 
 test.serial("ui5 build (Include/Exclude dependency options)", async (t) => {
