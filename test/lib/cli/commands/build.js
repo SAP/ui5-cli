@@ -14,8 +14,8 @@ function getDefaultArgv() {
 		"all": false,
 		"a": false,
 		"includeAllDependencies": false,
-		"create-build-description": false,
-		"createBuildDescription": false,
+		"create-build-manifest": false,
+		"createBuildManifest": false,
 		"dest": "./dist",
 		"clean-dest": false,
 		"cleanDest": false,
@@ -41,7 +41,7 @@ function getDefaultBuilderArgs() {
 			defaultIncludeDependencyRegExp: undefined,
 			defaultIncludeDependencyTree: undefined
 		},
-		createBuildDescription: false,
+		createBuildManifest: false,
 		selfContained: false,
 		jsdoc: false,
 		includedTasks: undefined,
@@ -134,14 +134,14 @@ test.serial("ui5 build --framework-version 1.99", async (t) => {
 	);
 });
 
-test.serial("ui5 build --createBuildDescription", async (t) => {
+test.serial("ui5 build --createBuildManifest", async (t) => {
 	const {build, argv, builder, expectedBuilderArgs} = t.context;
 
-	argv["create-build-description"] = true;
+	argv["create-build-manifest"] = true;
 
 	await build.handler(argv);
 
-	expectedBuilderArgs.createBuildDescription = true;
+	expectedBuilderArgs.createBuildManifest = true;
 	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "default build triggered with expected arguments");
 });
 
