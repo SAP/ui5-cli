@@ -2,16 +2,17 @@
 
 // The following block should be compatible to as many Node.js versions as possible
 /* eslint-disable no-var */
-var pkg = require("../package.json");
-var semver;
-try {
-	semver = require("semver");
-} catch (err) {
-	// SyntaxError indicates an outdated Node.js version
-	if (err.name !== "SyntaxError") {
-		throw err;
-	}
-}
+
+/*	Importing JSON modules is an experimental feature:
+	import pkg from "../package.json" assert { type: "json" };
+	Therefore we use the CJS way:
+*/
+import {createRequire} from "node:module";
+const requireJson = createRequire(import.meta.url);
+const pkg = requireJson("../package.json");
+
+import semver from "semver";
+
 var nodeVersion = process.version;
 /* eslint-enable no-var */
 if (
@@ -38,12 +39,12 @@ if (
 		console.log("=====================================================================");
 	}
 	// Timeout is required to log info when importing from local installation
-	setTimeout(() => {
+	setTimeout(async () => {
 		if (!process.env.UI5_CLI_NO_LOCAL) {
-			const importLocal = require("import-local");
+			const {default: importLocal} = await import("import-local");
 			// Prefer a local installation of @ui5/cli.
 			// This will invoke the local CLI, so no further action required
-			if (importLocal(__filename)) {
+			if (importLocal(import.meta.url)) {
 				if (process.argv.includes("--verbose")) {
 					console.info(`INFO: This project contains an individual ${pkg.name} installation which ` +
 					"will be used over the global one.");
@@ -56,43 +57,7 @@ if (
 				return;
 			}
 		}
-
-		const updateNotifier = require("update-notifier");
-		updateNotifier({
-			pkg,
-			updateCheckInterval: 1000 * 60 * 60 * 24, // 1 day
-			shouldNotifyInNpmScript: true
-		}).notify();
-		// Remove --no-update-notifier from argv as it's not known to yargs, but we still want to support using it
-		const NO_UPDATE_NOTIFIER = "--no-update-notifier";
-		if (process.argv.includes(NO_UPDATE_NOTIFIER)) {
-			process.argv = process.argv.filter((v) => v !== NO_UPDATE_NOTIFIER);
-		}
-
-		const cli = require("yargs");
-
-		cli.parserConfiguration({
-			"parse-numbers": false
-		});
-
-		// Explicitly set CLI version as the yargs default might
-		// be wrong in case a local CLI installation is used
-		// Also add CLI location
-		const version = `${pkg.version} (from ${__filename})`;
-		require("../lib/cli/version").set(version);
-		cli.version(version);
-
-		// Explicitly set script name to prevent windows from displaying "ui5.js"
-		cli.scriptName("ui5");
-
-		// CLI modules
-		cli.commandDir("../lib/cli/commands");
-
-		// Format terminal output to full available width
-		cli.wrap(cli.terminalWidth());
-
-		// yargs registers a get method on the argv property.
-		// The property needs to be accessed to initialize everything.
-		cli.argv;
+		const {default: cli} = await import("../lib/cli/cli.js");
+		await cli(pkg);
 	}, 0);
 }

@@ -19,7 +19,8 @@
 	"bin": {
 		"ui5": "./bin/ui5.js"
 	},
-	"main": "index.js",
+	"type": "module",
+	"exports": "./index.js",
 	"engines": {
 		"node": ">= 16.13.2",
 		"npm": ">= 8"
@@ -120,11 +121,11 @@
 		"open": "^7.4.2",
 		"pretty-hrtime": "^1.0.3",
 		"semver": "^7.3.5",
-		"update-notifier": "^5.1.0",
-		"yargs": "^16.2.0"
+		"update-notifier": "^6.0.2",
+		"yargs": "^17.5.1"
 	},
 	"devDependencies": {
-		"ava": "^3.15.0",
+		"ava": "^4.3.1",
 		"chokidar-cli": "^3.0.0",
 		"cross-env": "^7.0.3",
 		"depcheck": "^1.4.3",
