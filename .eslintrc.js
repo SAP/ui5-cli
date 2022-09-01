@@ -73,5 +73,15 @@ module.exports = {
 			}
 		}
 	},
-	"root": true
+	"root": true,
+	"overrides": [
+		{
+			"files": [
+				"lib/cli/update-notifier.js"
+			],
+			"parserOptions": {
+				"ecmaVersion": 2020 // minimum version required for dynamic import
+			}
+		}
+	]
 };
