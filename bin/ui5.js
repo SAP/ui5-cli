@@ -66,9 +66,11 @@ if (
 			process.env.NODE_ENV === "test" ||
 			process.argv.includes(NO_UPDATE_NOTIFIER);
 
-		// Update notifier requires dynamic imports
+		// Update notifier requires dynamic imports (ES Module) and therefore is loaded via a separate file
 		if (
 			!disableUpdateNotifier &&
+
+			// Node.js versions supporting ES modules
 			semver.satisfies(nodeVersion, "^12.20 || ^14.14 || >= 16.0", {includePrerelease: true})
 		) {
 			const updateNotifier = require("../lib/cli/update-notifier");
