@@ -38,7 +38,7 @@ if (
 		console.log("=====================================================================");
 	}
 	// Timeout is required to log info when importing from local installation
-	setTimeout(() => {
+	setTimeout(async () => {
 		if (!process.env.UI5_CLI_NO_LOCAL) {
 			const importLocal = require("import-local");
 			// Prefer a local installation of @ui5/cli.
@@ -57,14 +57,26 @@ if (
 			}
 		}
 
-		const updateNotifier = require("update-notifier");
-		updateNotifier({
-			pkg,
-			updateCheckInterval: 1000 * 60 * 60 * 24, // 1 day
-			shouldNotifyInNpmScript: true
-		}).notify();
-		// Remove --no-update-notifier from argv as it's not known to yargs, but we still want to support using it
+		// Only import update-notifier when it's not disabled
+		// See https://github.com/yeoman/update-notifier/blob/3046d0f61a57f8270291b6ab271f8a12df8421a6/update-notifier.js#L57-L60
+		// The "is-ci" check is not executed, but will be checked by update-notifier itself then
 		const NO_UPDATE_NOTIFIER = "--no-update-notifier";
+		const disableUpdateNotifier =
+			"NO_UPDATE_NOTIFIER" in process.env ||
+			process.env.NODE_ENV === "test" ||
+			process.argv.includes(NO_UPDATE_NOTIFIER);
+
+		// Update notifier requires dynamic imports (ES Module) and therefore is loaded via a separate file
+		if (
+			!disableUpdateNotifier &&
+
+			// Node.js versions supporting ES modules
+			semver.satisfies(nodeVersion, "^12.20 || ^14.14 || >= 16.0", {includePrerelease: true})
+		) {
+			const updateNotifier = require("../lib/cli/update-notifier");
+			await updateNotifier({pkg});
+		}
+		// Remove --no-update-notifier from argv as it's not known to yargs, but we still want to support using it
 		if (process.argv.includes(NO_UPDATE_NOTIFIER)) {
 			process.argv = process.argv.filter((v) => v !== NO_UPDATE_NOTIFIER);
 		}
