@@ -1,8 +1,7 @@
-const test = require("ava");
-const sinon = require("sinon");
-const mock = require("mock-require");
-
-const addCommand = require("../../../../lib/cli/commands/add");
+import test from "ava";
+import sinon from "sinon";
+import esmock from "esmock";
+import addCommand from "../../../../lib/cli/commands/add";
 
 async function assertAddHandler(t, {argv, expectedLibraries, expectedConsoleLog}) {
 	const frameworkAddStub = sinon.stub().resolves({
@@ -60,7 +59,6 @@ test.beforeEach((t) => {
 });
 
 test.afterEach.always(() => {
-	mock.stopAll();
 	sinon.restore();
 });
 

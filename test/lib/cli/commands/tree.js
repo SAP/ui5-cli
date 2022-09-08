@@ -1,5 +1,5 @@
-const test = require("ava");
-const sinon = require("sinon");
+import test from "ava";
+import sinon from "sinon";
 
 function getDefaultArgv() {
 	// This has been taken from the actual argv object yargs provides

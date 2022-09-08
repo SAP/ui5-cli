@@ -1,8 +1,8 @@
-const test = require("ava");
-const path = require("path");
-const ui5Cli = require("../../../");
-const sinon = require("sinon");
-const mock = require("mock-require");
+import test from "ava";
+import path from "path";
+import ui5Cli from "../../../";
+import sinon from "sinon";
+import esmock from "esmock";
 const init = ui5Cli.init;
 
 function getFixturePath(fixtureName) {
@@ -11,7 +11,6 @@ function getFixturePath(fixtureName) {
 
 test.afterEach.always(() => {
 	sinon.restore();
-	mock.stopAll();
 });
 
 test("Init for application", async (t) => {

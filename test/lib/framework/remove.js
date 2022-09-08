@@ -1,9 +1,8 @@
-const test = require("ava");
-const sinon = require("sinon");
-const mock = require("mock-require");
-const log = require("@ui5/logger");
-
-const utils = require("../../../lib/framework/utils");
+import test from "ava";
+import sinon from "sinon";
+import esmock from "esmock";
+import log from "@ui5/logger";
+import utils from "../../../lib/framework/utils";
 
 let removeFramework;
 
@@ -35,7 +34,6 @@ test.beforeEach((t) => {
 });
 
 test.afterEach.always(() => {
-	mock.stopAll();
 	sinon.restore();
 });
 

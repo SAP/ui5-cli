@@ -1,8 +1,7 @@
-const test = require("ava");
-const sinon = require("sinon");
-const mock = require("mock-require");
-
-const useCommand = require("../../../../lib/cli/commands/use");
+import test from "ava";
+import sinon from "sinon";
+import esmock from "esmock";
+import useCommand from "../../../../lib/cli/commands/use";
 
 async function assertUseHandler(t, {argv, expectedFrameworkOptions}) {
 	const frameworkUseStub = sinon.stub().resolves({
@@ -58,7 +57,6 @@ test.beforeEach((t) => {
 });
 
 test.afterEach.always(() => {
-	mock.stopAll();
 	sinon.restore();
 });
 

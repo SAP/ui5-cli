@@ -1,12 +1,8 @@
-/* eslint-disable ava/no-unknown-modifiers */
-/* Test modifier `cb` was deprecated with ava version
-3 and removed with ava version 4. Therefore, tests using `cb` has to be rewritten, when upgrade to ava version 4 */
-
-const test = require("ava");
-const path = require("path");
-const execa = require("execa");
-const sinon = require("sinon");
-const pkg = require("../../../../package.json");
+import test from "ava";
+import path from "path";
+import execa from "execa";
+import sinon from "sinon";
+import pkg from "../../../../package.json";
 const ui5Cli = path.join(__dirname, "..", "..", "..", "..", "bin", "ui5.js");
 const ui5 = (args, options = {}) => execa(ui5Cli, args, options);
 

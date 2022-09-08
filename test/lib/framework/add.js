@@ -1,8 +1,7 @@
-const test = require("ava");
-const sinon = require("sinon");
-const mock = require("mock-require");
-
-const utils = require("../../../lib/framework/utils");
+import test from "ava";
+import sinon from "sinon";
+import esmock from "esmock";
+import utils from "../../../lib/framework/utils";
 
 let addFramework;
 
@@ -33,7 +32,6 @@ test.beforeEach((t) => {
 });
 
 test.afterEach.always(() => {
-	mock.stopAll();
 	sinon.restore();
 });
 

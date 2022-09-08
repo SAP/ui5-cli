@@ -1,19 +1,15 @@
 #!/usr/bin/env node
 
 // The following block should be compatible to as many Node.js versions as possible
-/* eslint-disable no-var */
-
-/*	Importing JSON modules is an experimental feature:
-	import pkg from "../package.json" assert { type: "json" };
-	Therefore we use the CJS way:
-*/
-import {createRequire} from "node:module";
-const requireJson = createRequire(import.meta.url);
-const pkg = requireJson("../package.json");
-
+// so that the message for unsupported Node.js versions can be displayed
 import semver from "semver";
+import {fileURLToPath} from "url";
+import {readFileSync} from "fs";
 
-var nodeVersion = process.version;
+const pkgJsonPath = fileURLToPath(new URL("../package.json", import.meta.url));
+const pkg = JSON.parse(readFileSync(pkgJsonPath));
+
+const nodeVersion = process.version;
 /* eslint-enable no-var */
 if (
 	pkg.engines && pkg.engines.node &&

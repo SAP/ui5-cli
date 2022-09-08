@@ -1,9 +1,8 @@
-const test = require("ava");
-const sinon = require("sinon");
-const mock = require("mock-require");
-
-const fs = require("fs");
-const path = require("path");
+import test from "ava";
+import sinon from "sinon";
+import esmock from "esmock";
+import fs from "fs";
+import path from "path";
 
 let updateYaml;
 
@@ -15,7 +14,6 @@ test.beforeEach((t) => {
 });
 
 test.afterEach.always(() => {
-	mock.stopAll();
 	sinon.restore();
 });
 

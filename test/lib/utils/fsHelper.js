@@ -1,11 +1,10 @@
-const test = require("ava");
-const sinon = require("sinon");
-const mock = require("mock-require");
-const {exists, pathsExist} = require("../../../lib/utils/fsHelper");
+import test from "ava";
+import sinon from "sinon";
+import esmock from "esmock";
+import {exists, pathsExist} from "../../../lib/utils/fsHelper";
 
 test.afterEach.always(() => {
 	sinon.restore();
-	mock.stopAll();
 });
 
 test("Returns true if directory or file exists", async (t) => {

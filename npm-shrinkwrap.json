@@ -28,7 +28,7 @@
 				"ui5": "bin/ui5.js"
 			},
 			"devDependencies": {
-				"ava": "^4.3.1",
+				"ava": "^4.3.3",
 				"chokidar-cli": "^3.0.0",
 				"cross-env": "^7.0.3",
 				"depcheck": "^1.4.3",
@@ -37,9 +37,9 @@
 				"eslint-config-google": "^0.14.0",
 				"eslint-plugin-ava": "^13.0.2",
 				"eslint-plugin-jsdoc": "^37.6.3",
+				"esmock": "^2.0.0",
 				"execa": "^5.1.1",
 				"jsdoc": "^3.6.7",
-				"mock-require": "^3.0.3",
 				"nyc": "^15.1.0",
 				"open-cli": "^6.0.1",
 				"rimraf": "^3.0.2",
@@ -3822,6 +3822,17 @@
 			},
 			"funding": {
 				"url": "https://github.com/sponsors/sindresorhus"
+			}
+		},
+		"node_modules/esmock": {
+			"version": "2.0.6",
+			"resolved": "https://registry.npmjs.org/esmock/-/esmock-2.0.6.tgz",
+			"integrity": "sha512-2EY6isqPxZ9xm/nPz7DE5u/M5Nt3Xq4WUTOT5Dv9sfaqim6HZ6hitpEEfrSKAryA1JsnF/YljSRo2MZCtx0LTw==",
+			"dependencies": {
+				"resolvewithplus": "^1.0.2"
+			},
+			"engines": {
+				"node": ">=14.16.0"
 			}
 		},
 		"node_modules/espree": {
@@ -8330,6 +8341,14 @@
 			"integrity": "sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==",
 			"engines": {
 				"node": ">=8"
+			}
+		},
+		"node_modules/resolvewithplus": {
+			"version": "1.0.2",
+			"resolved": "https://registry.npmjs.org/resolvewithplus/-/resolvewithplus-1.0.2.tgz",
+			"integrity": "sha512-UNvTSqWpe1lhKvXb+Qo97Q/dFUtA0kDuUG/gO7S+P9H/xYZ+A9pwlAbY6Dqp2tgAeQNdHmQG5MdNL6d9/FWo6Q==",
+			"engines": {
+				"node": ">=12.16.0"
 			}
 		},
 		"node_modules/responselike": {
@@ -13138,6 +13157,14 @@
 			"resolved": "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-3.3.0.tgz",
 			"integrity": "sha512-mQ+suqKJVyeuwGYHAdjMFqjCyfl8+Ldnxuyp3ldiMBFKkvytrXUZWaiPCEav8qDHKty44bD+qV1IP4T+w+xXRA=="
 		},
+		"esmock": {
+			"version": "2.0.6",
+			"resolved": "https://registry.npmjs.org/esmock/-/esmock-2.0.6.tgz",
+			"integrity": "sha512-2EY6isqPxZ9xm/nPz7DE5u/M5Nt3Xq4WUTOT5Dv9sfaqim6HZ6hitpEEfrSKAryA1JsnF/YljSRo2MZCtx0LTw==",
+			"requires": {
+				"resolvewithplus": "^1.0.2"
+			}
+		},
 		"espree": {
 			"version": "9.4.0",
 			"resolved": "https://registry.npmjs.org/espree/-/espree-9.4.0.tgz",
@@ -15098,8 +15125,7 @@
 			"integrity": "sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw=="
 		},
 		"mock-require": {
-			"version": "3.0.3",
-			"resolved": "https://registry.npmjs.org/mock-require/-/mock-require-3.0.3.tgz",
+			"version": "https://registry.npmjs.org/mock-require/-/mock-require-3.0.3.tgz",
 			"integrity": "sha512-lLzfLHcyc10MKQnNUCv7dMcoY/2Qxd6wJfbqCcVk3LDb8An4hF6ohk5AztrvgKhJCqj36uyzi/p5se+tvyD+Wg==",
 			"dev": true,
 			"requires": {
@@ -16554,6 +16580,11 @@
 			"version": "5.0.0",
 			"resolved": "https://registry.npmjs.org/resolve-from/-/resolve-from-5.0.0.tgz",
 			"integrity": "sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw=="
+		},
+		"resolvewithplus": {
+			"version": "1.0.2",
+			"resolved": "https://registry.npmjs.org/resolvewithplus/-/resolvewithplus-1.0.2.tgz",
+			"integrity": "sha512-UNvTSqWpe1lhKvXb+Qo97Q/dFUtA0kDuUG/gO7S+P9H/xYZ+A9pwlAbY6Dqp2tgAeQNdHmQG5MdNL6d9/FWo6Q=="
 		},
 		"responselike": {
 			"version": "3.0.0",

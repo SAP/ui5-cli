@@ -1,7 +1,7 @@
-const test = require("ava");
-const sinon = require("sinon");
-const loggerMiddleware = require("../../../../lib/cli/middlewares/logger");
-const logger = require("@ui5/logger");
+import test from "ava";
+import sinon from "sinon";
+import loggerMiddleware from "../../../../lib/cli/middlewares/logger";
+import logger from "@ui5/logger";
 
 test.serial("sets log level of log middleware", (t) => {
 	sinon.stub(logger, "setLevel");
@@ -20,9 +20,9 @@ test.serial("retrieves logger middleware if verbose or loglevel are set", (t) =>
 	t.deepEqual(Object.keys(loggerInstance), Object.keys(logger), "Logger is used as middleware");
 });
 
-const path = require("path");
-const execa = require("execa");
-const pkg = require("../../../../package.json");
+import path from "path";
+import execa from "execa";
+import pkg from "../../../../package.json";
 const ui5Cli = path.join(__dirname, "..", "..", "..", "..", "bin", "ui5.js");
 const ui5 = (args, options = {}) => execa(ui5Cli, args, options);
 

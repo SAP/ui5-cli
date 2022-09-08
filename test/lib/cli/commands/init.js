@@ -1,15 +1,14 @@
-const test = require("ava");
-const sinon = require("sinon");
-const initCommand = require("../../../../lib/cli/commands/init");
-const fsHelper = require("../../../../lib/utils/fsHelper");
-const init = require("../../../../lib/init/init");
-const mock = require("mock-require");
-const jsYaml = require("js-yaml");
-const fs = require("fs");
+import test from "ava";
+import sinon from "sinon";
+import initCommand from "../../../../lib/cli/commands/init";
+import fsHelper from "../../../../lib/utils/fsHelper";
+import init from "../../../../lib/init/init";
+import esmock from "esmock";
+import jsYaml from "js-yaml";
+import fs from "fs";
 
 test.afterEach.always((t) => {
 	sinon.restore();
-	mock.stopAll();
 });
 
 test.serial("Writes ui5.yaml to fs", async (t) => {

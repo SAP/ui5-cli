@@ -1,7 +1,7 @@
-const test = require("ava");
-const sinon = require("sinon");
-const baseMiddleware = require("../../../../lib/cli/middlewares/base");
-const logger = require("../../../../lib/cli/middlewares/logger");
+import test from "ava";
+import sinon from "sinon";
+import baseMiddleware from "../../../../lib/cli/middlewares/base";
+import logger from "../../../../lib/cli/middlewares/logger";
 
 test.beforeEach("Stubbing modules before execution", (t) => {
 	sinon.stub(logger, "init");

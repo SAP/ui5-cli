@@ -1,8 +1,7 @@
-const test = require("ava");
-const sinon = require("sinon");
-const mock = require("mock-require");
-
-const removeCommand = require("../../../../lib/cli/commands/remove");
+import test from "ava";
+import sinon from "sinon";
+import esmock from "esmock";
+import removeCommand from "../../../../lib/cli/commands/remove";
 
 async function assertRemoveHandler(t, {argv, expectedLibraries, expectedConsoleLog}) {
 	const frameworkRemoveStub = sinon.stub().resolves({
@@ -60,7 +59,6 @@ test.beforeEach((t) => {
 });
 
 test.afterEach.always(() => {
-	mock.stopAll();
 	sinon.restore();
 });
 
