@@ -1,12 +1,11 @@
 import test from "ava";
-import path from "path";
-import ui5Cli from "../../../";
+import init from "../../../lib/init/init.js";
+import {fileURLToPath} from "node:url";
 import sinon from "sinon";
 import esmock from "esmock";
-const init = ui5Cli.init;
 
 function getFixturePath(fixtureName) {
-	return path.join(__dirname, "..", "..", "fixtures", "init", fixtureName);
+	return fileURLToPath(new URL("../../fixtures/init/" + fixtureName, import.meta.url));
 }
 
 test.afterEach.always(() => {
@@ -99,11 +98,13 @@ test("Init for invalid project (Missing 'name' in package.json)", async (t) => {
 });
 
 test.serial("Init with default arguments (throws fs.readFile error)", async (t) => {
-	sinon.stub(require("fs"), "readFile")
-		.withArgs("package.json", "utf8").callsArgWith(2, new Error("Some error from fs.readFile"));
-
-	const {init} = mock.reRequire("../../../lib/init/init");
-
+	const fsReadFileStub = sinon.stub().withArgs("package.json", "utf8")
+		.rejects(new Error("Some error from fs.readFile"));
+	const init = await esmock("../../../lib/init/init", {
+		"node:fs/promises": {
+			readFile: fsReadFileStub
+		}
+	});
 	await t.throwsAsync(init(), {
 		message: "Some error from fs.readFile"
 	});

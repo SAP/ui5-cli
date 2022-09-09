@@ -1,7 +1,7 @@
+import init from "./lib/init/init.js";
+
 /**
  * @module @ui5/cli
  * @private
  */
-module.exports = {
-	init: require("./lib/init/init").init
-};
+export default {init};
