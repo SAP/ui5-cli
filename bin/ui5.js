@@ -13,7 +13,7 @@ const nodeVersion = process.version;
 /* eslint-enable no-var */
 if (
 	pkg.engines && pkg.engines.node &&
-	(!semver || !semver.satisfies(nodeVersion, pkg.engines.node, {includePrerelease: true}))
+	!semver.satisfies(nodeVersion, pkg.engines.node, {includePrerelease: true})
 ) {
 	console.log("==================== UNSUPPORTED NODE.JS VERSION ====================");
 	console.log("You are using an unsupported version of Node.js");
@@ -23,7 +23,7 @@ if (
 	console.log("=====================================================================");
 	process.exit(1);
 } else {
-	if (semver && semver.prerelease(nodeVersion)) {
+	if (semver.prerelease(nodeVersion)) {
 		console.log("====================== UNSTABLE NODE.JS VERSION =====================");
 		console.log("You are using an unstable version of Node.js");
 		console.log("Detected Node.js version " + nodeVersion);
@@ -40,7 +40,7 @@ if (
 			const {default: importLocal} = await import("import-local");
 			// Prefer a local installation of @ui5/cli.
 			// This will invoke the local CLI, so no further action required
-			if (importLocal(import.meta.url)) {
+			if (importLocal(fileURLToPath(import.meta.url))) {
 				if (process.argv.includes("--verbose")) {
 					console.info(`INFO: This project contains an individual ${pkg.name} installation which ` +
 					"will be used over the global one.");

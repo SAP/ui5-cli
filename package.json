@@ -29,13 +29,13 @@
 		"test": "npm run lint && npm run jsdoc-generate && npm run coverage && npm run depcheck",
 		"test-azure": "npm run coverage-xunit",
 		"lint": "eslint ./",
-		"unit": "rimraf test/tmp && ava --node-arguments=\"--loader=esmock\"",
-		"unit-verbose": "rimraf test/tmp && cross-env UI5_LOG_LVL=verbose ava --node-arguments=\"--loader=esmock\" --verbose --serial",
-		"unit-watch": "rimraf test/tmp && ava --node-arguments=\"--loader=esmock\" --watch",
-		"unit-nyan": "rimraf test/tmp && ava --node-arguments=\"--loader=esmock\" --tap | tnyan",
-		"unit-xunit": "rimraf test/tmp && ava --node-arguments=\"--loader=esmock\" --tap | tap-xunit --dontUseCommentsAsTestNames=true > test-results.xml",
-		"unit-inspect": "cross-env UI5_LOG_LVL=verbose ava --node-arguments=\"--loader=esmock\" debug --break",
-		"coverage": "nyc npm run unit",
+		"unit": "rimraf test/tmp && ava",
+		"unit-verbose": "rimraf test/tmp && cross-env UI5_LOG_LVL=verbose ava --verbose --serial",
+		"unit-watch": "npm run unit -- --watch",
+		"unit-nyan": "npm run unit -- --tap | tnyan",
+		"unit-xunit": "rimraf test/tmp && ava --node-arguments=\"--experimental-loader=@istanbuljs/esm-loader-hook\" --tap | tap-xunit --dontUseCommentsAsTestNames=true > test-results.xml",
+		"unit-inspect": "cross-env UI5_LOG_LVL=verbose ava debug --break",
+		"coverage": "rimraf test/tmp && nyc ava --node-arguments=\"--experimental-loader=@istanbuljs/esm-loader-hook\"",
 		"coverage-xunit": "nyc --reporter=text --reporter=text-summary --reporter=cobertura npm run unit-xunit",
 		"jsdoc": "npm run jsdoc-generate && open-cli jsdocs/index.html",
 		"jsdoc-generate": "jsdoc -c ./jsdoc.json -t $(node -p 'path.dirname(require.resolve(\"docdash\"))') ./lib/ || (echo 'Error during JSDoc generation! Check log.' && exit 1)",
@@ -61,6 +61,10 @@
 		"files": [
 			"test/bin/**/*.js",
 			"test/lib/**/*.js"
+		],
+		"nodeArguments": [
+			"--loader=esmock",
+			"--no-warnings"
 		]
 	},
 	"nyc": {
@@ -75,8 +79,7 @@
 			"jsdocs/**",
 			"coverage/**",
 			"test/**",
-			".eslintrc.js",
-			"jsdoc-plugin.js"
+			".eslintrc.cjs"
 		],
 		"check-coverage": true,
 		"statements": 80,
@@ -125,6 +128,7 @@
 		"yargs": "^17.5.1"
 	},
 	"devDependencies": {
+		"@istanbuljs/esm-loader-hook": "^0.2.0",
 		"ava": "^4.3.3",
 		"chokidar-cli": "^3.0.0",
 		"cross-env": "^7.0.3",
