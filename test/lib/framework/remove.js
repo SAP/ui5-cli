@@ -1,10 +1,6 @@
 import test from "ava";
 import sinon from "sinon";
 import esmock from "esmock";
-import log from "@ui5/logger";
-import utils from "../../../lib/framework/utils";
-
-let removeFramework;
 
 function createMockProject(attr) {
 	return {
@@ -17,28 +13,33 @@ function createMockProject(attr) {
 	};
 }
 
-test.beforeEach((t) => {
-	t.context.getRootProjectConfigurationStub = sinon.stub(utils, "getRootProjectConfiguration");
+test.beforeEach(async (t) => {
+	t.context.getRootProjectConfigurationStub = sinon.stub();
 
 	t.context.updateYamlStub = sinon.stub();
 
 	t.context.logWarnStub = sinon.stub();
-	sinon.stub(log, "getLogger").returns({
-		warn: t.context.logWarnStub
+
+	t.context.removeFramework = await esmock.p("../../../lib/framework/remove", {
+		"../../../lib/framework/updateYaml.js": t.context.updateYamlStub,
+		"../../../lib/framework/utils.js": {
+			getRootProjectConfiguration: t.context.getRootProjectConfigurationStub
+		},
+		"@ui5/logger": {
+			getLogger: sinon.stub().returns({
+				warn: t.context.logWarnStub
+			})
+		}
 	});
-
-
-	mock("../../../lib/framework/updateYaml", t.context.updateYamlStub);
-
-	removeFramework = mock.reRequire("../../../lib/framework/remove");
 });
 
-test.afterEach.always(() => {
+test.afterEach.always((t) => {
 	sinon.restore();
+	esmock.purge(t.context.removeFramework);
 });
 
 test.serial("Remove with existing libraries in config", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
 		fakeProjectGraphOptions: true
@@ -81,7 +82,7 @@ test.serial("Remove with existing libraries in config", async (t) => {
 });
 
 test.serial("Remove with 2 existing libraries in config", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
 		fakeProjectGraphOptions: true
@@ -128,7 +129,7 @@ test.serial("Remove with 2 existing libraries in config", async (t) => {
 
 
 test.serial("Remove with non-existing library in config", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub, logWarnStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub, logWarnStub} = t.context;
 
 	const projectGraphOptions = {
 		fakeProjectGraphOptions: true
@@ -181,7 +182,7 @@ test.serial("Remove with non-existing library in config", async (t) => {
 });
 
 test.serial("Remove with specVersion 1.0", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
 		fakeProjectGraphOptions: true
@@ -210,7 +211,7 @@ test.serial("Remove with specVersion 1.0", async (t) => {
 });
 
 test.serial("Remove without framework configuration", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
 		fakeProjectGraphOptions: true
@@ -238,7 +239,7 @@ test.serial("Remove without framework configuration", async (t) => {
 });
 
 test.serial("Remove without framework version configuration", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
 		fakeProjectGraphOptions: true
@@ -267,7 +268,7 @@ test.serial("Remove without framework version configuration", async (t) => {
 });
 
 test.serial("Remove with failing YAML update", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const yamlUpdateError = new Error("Failed to update YAML file");
 	yamlUpdateError.name = "FrameworkUpdateYamlFailed";
@@ -315,7 +316,7 @@ test.serial("Remove with failing YAML update", async (t) => {
 });
 
 test.serial("Remove with failing YAML update (unexpected error)", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	updateYamlStub.rejects(new Error("Some unexpected error"));
 
@@ -361,7 +362,7 @@ test.serial("Remove with failing YAML update (unexpected error)", async (t) => {
 });
 
 test.serial("Remove with projectGraphOptions.config", async (t) => {
-	const {getRootProjectConfigurationStub,	updateYamlStub} = t.context;
+	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
 		config: "/path/to/ui5.yaml"

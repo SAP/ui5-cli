@@ -33,8 +33,9 @@ test.beforeEach(async (t) => {
 	});
 });
 
-test.afterEach.always(() => {
+test.afterEach.always((t) => {
 	sinon.restore();
+	esmock.purge(t.context.addFramework);
 });
 
 test.serial("Add without existing libraries in config", async (t) => {
