@@ -20,7 +20,7 @@ test.beforeEach(async (t) => {
 
 	t.context.logWarnStub = sinon.stub();
 
-	t.context.removeFramework = await esmock.p("../../../lib/framework/remove", {
+	t.context.removeFramework = await esmock.p("../../../lib/framework/remove.js", {
 		"../../../lib/framework/updateYaml.js": t.context.updateYamlStub,
 		"../../../lib/framework/utils.js": {
 			getRootProjectConfiguration: t.context.getRootProjectConfigurationStub

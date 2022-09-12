@@ -68,7 +68,7 @@ test.serial("ui5 imports local installation when found", async (t) => {
 	});
 
 	// esmock.p is needed as import-local is loaded via dynamic import
-	await esmock.p("../../bin/ui5", {
+	await esmock.p("../../bin/ui5.js", {
 		"import-local": {default: importLocalStub}
 	});
 
@@ -103,7 +103,7 @@ test.serial("ui5 imports local installation when found (/w --verbose)", async (t
 	});
 
 	// esmock.p is needed as import-local is loaded via dynamic import
-	await esmock.p("../../bin/ui5", {
+	await esmock.p("../../bin/ui5.js", {
 		"import-local": {default: importLocalStub}
 	});
 
@@ -141,7 +141,7 @@ test.serial("ui5 logs warning when using pre-release Node.js version", async (t)
 	});
 
 	// esmock.p is needed as import-local is loaded via dynamic import
-	await esmock.p("../../bin/ui5", {
+	await esmock.p("../../bin/ui5.js", {
 		"import-local": {default: importLocalStub}
 	});
 
