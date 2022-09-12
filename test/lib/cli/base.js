@@ -6,10 +6,10 @@ import chalk from "chalk";
 import {fileURLToPath} from "url";
 import {readFileSync} from "fs";
 
-const pkgJsonPath = fileURLToPath(new URL("../../../../package.json", import.meta.url));
+const pkgJsonPath = fileURLToPath(new URL("../../../package.json", import.meta.url));
 const pkg = JSON.parse(readFileSync(pkgJsonPath));
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ui5Cli = path.join(__dirname, "..", "..", "..", "..", "bin", "ui5.js");
+const ui5Cli = path.join(__dirname, "..", "..", "..", "bin", "ui5.js");
 const ui5 = (args, options = {}) => execa(ui5Cli, args, options);
 
 test.beforeEach((t) => {
@@ -46,7 +46,7 @@ test.serial("Exception error handling", async (t) => {
 	// This test depends on the init command throwing on projects that already have a ui5.yaml
 
 	const err = await t.throwsAsync(ui5(["init"], {
-		cwd: path.join(__dirname, "..", "..", "..", "fixtures", "init", "application")
+		cwd: path.join(__dirname, "..", "..", "fixtures", "init", "application")
 	}));
 
 	const stdoutLines = err.stdout.split("\n");
@@ -64,7 +64,7 @@ test.serial("Exception error handling with verbose logging", async (t) => {
 	// This test depends on the init command throwing on projects that already have a ui5.yaml
 
 	const err = await t.throwsAsync(ui5(["init", "--verbose"], {
-		cwd: path.join(__dirname, "..", "..", "..", "fixtures", "init", "application")
+		cwd: path.join(__dirname, "..", "..", "fixtures", "init", "application")
 	}));
 
 	const stdoutLines = err.stdout.split("\n");
@@ -100,7 +100,7 @@ test.serial.skip("Unexpected error handling", async (t) => {
 		});
 	});
 
-	const {default: base} = await import("../../../../lib/cli/base.js");
+	const {default: base} = await import("../../lib/cli/base.js");
 	const {default: yargs} = await import("yargs");
 
 	const cli = yargs();
