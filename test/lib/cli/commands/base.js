@@ -125,7 +125,7 @@ test.serial.skip("Unexpected error handling", async (t) => {
 	t.deepEqual(consoleLogStub.getCall(3).args, [chalk.underline("Error Message:")], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(4).args,
 		["Cannot do this"], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(6).args, [chalk.underline("Stack:")], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(6).args, [chalk.underline("Stack Trace:")], "Correct error log");
 	t.is(consoleLogStub.getCall(7).args.length, 1);
 	t.true(consoleLogStub.getCall(7).args[0]
 		.startsWith("TypeError: Cannot do this"), "Correct error log");
