@@ -54,6 +54,10 @@ if (
 			}
 		}
 		const {default: cli} = await import("../lib/cli/cli.js");
-		await cli(pkg);
+		await cli(pkg).catch((err) => {
+			console.log("Fatal Error: Unable to initialize UI5 CLI");
+			console.log(err);
+			process.exit(1);
+		});
 	}, 0);
 }
