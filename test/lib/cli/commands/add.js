@@ -2,10 +2,10 @@ import test from "ava";
 import sinon from "sinon";
 import esmock from "esmock";
 
-async function createMock({context}, yamlUpdated = true) {
-	context.frameworkAddStub = sinon.stub().resolves({yamlUpdated});
-	context.addCommand = await esmock.p("../../../../lib/cli/commands/add.js", {
-		"../../../../lib/framework/add.js": context.frameworkAddStub
+async function createMock(t, yamlUpdated = true) {
+	t.context.frameworkAddStub = sinon.stub().resolves({yamlUpdated});
+	t.context.addCommand = await esmock.p("../../../../lib/cli/commands/add.js", {
+		"../../../../lib/framework/add.js": t.context.frameworkAddStub
 	});
 }
 
