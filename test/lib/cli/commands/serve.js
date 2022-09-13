@@ -1,6 +1,7 @@
 import test from "ava";
 import sinon from "sinon";
 import esmock from "esmock";
+import chalk from "chalk";
 
 function getDefaultArgv() {
 	// This has been taken from the actual argv object yargs provides
@@ -26,26 +27,19 @@ function getDefaultArgv() {
 	};
 }
 
-test.beforeEach((t) => {
-	const server = require("@ui5/server");
-	const project = require("@ui5/project");
-
+test.beforeEach(async (t) => {
 	t.context.argv = getDefaultArgv();
 
-	t.context.server = server.server;
-	sinon.stub(t.context.server, "serve").returns({
-		h2: false,
-		port: 8080
-	});
+	t.context.server = {
+		serve: sinon.stub().returns({
+			h2: false,
+			port: 8080
+		})
+	};
+	t.context.sslUtil = {
+		getSslCertificate: sinon.stub().resolves()
+	};
 
-	t.context.sslUtil = server.sslUtil;
-	sinon.stub(t.context.sslUtil, "getSslCertificate");
-
-	sinon.stub(project.generateProjectGraph, "usingStaticFile").resolves();
-	sinon.stub(project.generateProjectGraph, "usingNodePackageDependencies").resolves();
-	t.context.generateProjectGraph = project.generateProjectGraph;
-
-	// Create basic mocking objects
 	t.context.getServerSettings = sinon.stub().returns({});
 	t.context.fakeGraph = {
 		getRoot: () => {
@@ -54,8 +48,12 @@ test.beforeEach((t) => {
 			};
 		}
 	};
-	t.context.generateProjectGraph.usingStaticFile.resolves(t.context.fakeGraph);
-	t.context.generateProjectGraph.usingNodePackageDependencies.resolves(t.context.fakeGraph);
+
+	t.context.generateProjectGraph = {
+		usingStaticFile: sinon.stub().resolves(t.context.fakeGraph),
+		usingNodePackageDependencies: sinon.stub().resolves(t.context.fakeGraph)
+	};
+
 
 	t.context.consoleOutput = "";
 	t.context.consoleLog = sinon.stub(console, "log").callsFake((message) => {
@@ -64,13 +62,22 @@ test.beforeEach((t) => {
 	});
 
 	t.context.open = sinon.stub();
-	mock("open", t.context.open);
 
-	t.context.serve = mock.reRequire("../../../../lib/cli/commands/serve");
+	t.context.serve = await esmock.p("../../../../lib/cli/commands/serve.js", {
+		"@ui5/server": {
+			server: t.context.server,
+			sslUtil: t.context.sslUtil
+		},
+		"@ui5/project": {
+			generateProjectGraph: t.context.generateProjectGraph
+		},
+		"open": t.context.open
+	});
 });
 
 test.afterEach.always((t) => {
 	sinon.restore();
+	esmock.purge(t.context.serve);
 });
 
 test.serial("ui5 serve: default", async (t) => {
@@ -169,12 +176,12 @@ test.serial("ui5 serve --accept-remote-connections", async (t) => {
 	]);
 
 	t.is(t.context.consoleOutput, `
-⚠️  This server is accepting connections from all hosts on your network
-Please Note:
-* This server is intended for development purposes only. Do not use it in production.
-* Vulnerable (custom-)middleware can pose a threat to your system when exposed to the network
-* The use of proxy-middleware with preconfigured credentials might enable unauthorized access to a target \
-system for third parties on your network
+${chalk.bold("⚠️  This server is accepting connections from all hosts on your network")}
+${chalk.dim.underline("Please Note:")}
+${chalk.bold.dim("* This server is intended for development purposes only. Do not use it in production.")}
+${chalk.dim("* Vulnerable (custom-)middleware can pose a threat to your system when exposed to the network")}
+${chalk.dim("* The use of proxy-middleware with preconfigured credentials might enable unauthorized access " +
+	"to a target system for third parties on your network")}
 
 Server started
 URL: http://localhost:8080
