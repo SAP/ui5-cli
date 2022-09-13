@@ -1,5 +1,6 @@
 import test from "ava";
 import sinon from "sinon";
+import esmock from "esmock";
 
 function getDefaultArgv() {
 	// This has been taken from the actual argv object yargs provides
@@ -50,19 +51,11 @@ function getDefaultBuilderArgs() {
 	};
 }
 
-test.beforeEach((t) => {
-	const project = require("@ui5/project");
-
+test.beforeEach(async (t) => {
 	t.context.argv = getDefaultArgv();
 	t.context.expectedBuilderArgs = getDefaultBuilderArgs();
 
-	sinon.stub(project.generateProjectGraph, "usingStaticFile").resolves();
-	sinon.stub(project.generateProjectGraph, "usingNodePackageDependencies").resolves();
-	t.context.generateProjectGraph = project.generateProjectGraph;
-
 	t.context.builder = sinon.stub().resolves();
-
-	// Create basic mocking objects
 	t.context.getBuilderSettings = sinon.stub().returns(undefined);
 	const fakeGraph = {
 		getRoot: sinon.stub().returns({
@@ -70,14 +63,25 @@ test.beforeEach((t) => {
 		}),
 		build: t.context.builder
 	};
-	t.context.generateProjectGraph.usingNodePackageDependencies.resolves(fakeGraph);
 	t.context.expectedBuilderArgs.graph = fakeGraph;
+	t.context.ProjectGraphStub = sinon.stub().resolves(fakeGraph);
+	t.context.generateProjectGraphUsingNodePackageDependenciesStub = sinon.stub().resolves(fakeGraph);
 
-	t.context.build = require("../../../../lib/cli/commands/build");
+	t.context.build = await esmock.p("../../../../lib/cli/commands/build.js", {
+		"@ui5/project": {
+			generateProjectGraph: {
+				usingNodePackageDependencies: t.context.generateProjectGraphUsingNodePackageDependenciesStub
+			},
+			graph: {
+				ProjectGraph: t.context.ProjectGraphStub
+			}
+		}
+	});
 });
 
 test.afterEach.always((t) => {
 	sinon.restore();
+	esmock.purge(t.context.project);
 });
 
 test.serial("ui5 build (default) ", async (t) => {
@@ -111,14 +115,14 @@ test.serial("ui5 build jsdoc", async (t) => {
 });
 
 test.serial("ui5 build --framework-version 1.99", async (t) => {
-	const {build, argv, generateProjectGraph} = t.context;
+	const {build, argv, generateProjectGraphUsingNodePackageDependenciesStub} = t.context;
 
 	argv.frameworkVersion = "1.99.0";
 
 	await build.handler(argv);
 
 	t.deepEqual(
-		generateProjectGraph.usingNodePackageDependencies.getCall(0).args[0],
+		generateProjectGraphUsingNodePackageDependenciesStub.getCall(0).args[0],
 		{
 			rootConfigPath: undefined,
 			versionOverride: "1.99.0"
