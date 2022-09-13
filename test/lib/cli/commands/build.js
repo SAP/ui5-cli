@@ -81,7 +81,7 @@ test.beforeEach(async (t) => {
 
 test.afterEach.always((t) => {
 	sinon.restore();
-	esmock.purge(t.context.project);
+	esmock.purge(t.context.build);
 });
 
 test.serial("ui5 build (default) ", async (t) => {
