@@ -82,41 +82,37 @@ test.serial("Exception error handling with verbose logging", async (t) => {
 	t.is(err.exitCode, 1, "Process was exited with code 1");
 });
 
-// TODO: Test succeeds but ava complains about an Unhandled rejection regarding the TypeError("Cannot do this")
-// Its unclear where this happens and how it can be solved.
-// yargs seems to add a .catch handler to the handler promise and then calls our .fail callback which does not
-// re-throw the error.
-// It has been tested manually with the CLI, and the console log output looked as expected.
-test.serial.skip("Unexpected error handling", async (t) => {
+test.serial("Unexpected error handling", async (t) => {
 	const {consoleLogStub} = t.context;
 
 	const processExit = new Promise((resolve) => {
 		const processExitStub = sinon.stub(process, "exit");
 		processExitStub.callsFake((errorCode) => {
 			processExitStub.restore();
-			setTimeout(() => {
-				resolve(errorCode);
-			});
+			resolve(errorCode);
 		});
 	});
 
-	const {default: base} = await import("../../lib/cli/base.js");
+	const {default: base} = await import("../../../lib/cli/base.js");
 	const {default: yargs} = await import("yargs");
 
 	const cli = yargs();
 
 	base(cli);
 
+	const typeError = new TypeError("Cannot do this");
+
 	cli.command({
 		command: "foo",
 		describe: "This task fails with a TypeError",
 		handler: async function() {
-			process.stdout.write("handler called ");
-			throw new TypeError("Cannot do this");
+			throw typeError;
 		}
 	});
 
-	cli.parse(["foo"]);
+	await t.throwsAsync(cli.parse(["foo"]), {
+		is: typeError
+	});
 
 	const errorCode = await processExit;
 
