@@ -1,7 +1,6 @@
 import test from "ava";
 import sinon from "sinon";
 import esmock from "esmock";
-import {fileURLToPath} from "url";
 
 test.beforeEach((t) => {
 	t.context.consoleLogStub = sinon.stub(console, "log");
