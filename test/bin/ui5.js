@@ -4,16 +4,21 @@ import esmock from "esmock";
 import {fileURLToPath} from "url";
 
 test.beforeEach((t) => {
+	t.context.consoleLogStub = sinon.stub(console, "log");
+	t.context.consoleInfoStub = sinon.stub(console, "info");
 	t.context.originalArgv = process.argv;
 });
 
 test.afterEach.always((t) => {
 	process.argv = t.context.originalArgv;
 	sinon.restore();
+	if (t.context.ui5) {
+		esmock.purge(t.context.ui5);
+	}
 });
 
 test.serial("ui5 fails when using unsupported Node.js version", async (t) => {
-	const consoleLogStub = sinon.stub(console, "log");
+	const {consoleLogStub} = t.context;
 
 	const processExit = new Promise((resolve) => {
 		const processExitStub = sinon.stub(process, "exit");
@@ -54,8 +59,7 @@ test.serial("ui5 fails when using unsupported Node.js version", async (t) => {
 });
 
 test.serial("ui5 imports local installation when found", async (t) => {
-	const consoleLogStub = sinon.stub(console, "log");
-	const consoleInfoStub = sinon.stub(console, "info");
+	const {consoleLogStub, consoleInfoStub} = t.context;
 
 	const importLocalStub = sinon.stub();
 
@@ -68,7 +72,7 @@ test.serial("ui5 imports local installation when found", async (t) => {
 	});
 
 	// esmock.p is needed as import-local is loaded via dynamic import
-	await esmock.p("../../bin/ui5.js", {
+	t.context.ui5 = await esmock.p("../../bin/ui5.js", {
 		"import-local": {default: importLocalStub}
 	});
 
@@ -87,9 +91,7 @@ test.serial("ui5 imports local installation when found", async (t) => {
 });
 
 test.serial("ui5 imports local installation when found (/w --verbose)", async (t) => {
-	const consoleLogStub = sinon.stub(console, "log");
-	const consoleInfoStub = sinon.stub(console, "info");
-
+	const {consoleLogStub, consoleInfoStub} = t.context;
 	const importLocalStub = sinon.stub();
 
 	process.argv = [...process.argv, "--verbose"];
@@ -103,7 +105,7 @@ test.serial("ui5 imports local installation when found (/w --verbose)", async (t
 	});
 
 	// esmock.p is needed as import-local is loaded via dynamic import
-	await esmock.p("../../bin/ui5.js", {
+	t.context.ui5 = await esmock.p("../../bin/ui5.js", {
 		"import-local": {default: importLocalStub}
 	});
 
@@ -126,7 +128,7 @@ test.serial("ui5 imports local installation when found (/w --verbose)", async (t
 });
 
 test.serial("ui5 logs warning when using pre-release Node.js version", async (t) => {
-	const consoleLogStub = sinon.stub(console, "log");
+	const {consoleLogStub} = t.context;
 
 	const importLocalStub = sinon.stub();
 
@@ -141,7 +143,7 @@ test.serial("ui5 logs warning when using pre-release Node.js version", async (t)
 	});
 
 	// esmock.p is needed as import-local is loaded via dynamic import
-	await esmock.p("../../bin/ui5.js", {
+	t.context.ui5 = await esmock.p("../../bin/ui5.js", {
 		"import-local": {default: importLocalStub}
 	});
 
@@ -187,11 +189,11 @@ test.serial("ui5 executes lib/cli/cli.js", async (t) => {
 		name: "ui5-cli-test",
 		version: "0.0.0",
 		engines: {
-			node: "^16"
+			node: ">= 16"
 		}
 	};
 
-	await esmock.p("../../bin/ui5.js", {
+	t.context.ui5 = await esmock.p("../../bin/ui5.js", {
 		"import-local": sinon.stub().returns(false),
 		"fs": {
 			readFileSync: sinon.stub().returns(JSON.stringify(fakePkg))
@@ -206,7 +208,7 @@ test.serial("ui5 executes lib/cli/cli.js", async (t) => {
 });
 
 test.serial("ui5 handles lib/cli/cli.js exceptions", async (t) => {
-	const consoleLogStub = sinon.stub(console, "log");
+	const {consoleLogStub} = t.context;
 
 	const processExit = new Promise((resolve) => {
 		const processExitStub = sinon.stub(process, "exit");
@@ -225,11 +227,11 @@ test.serial("ui5 handles lib/cli/cli.js exceptions", async (t) => {
 		name: "ui5-cli-test",
 		version: "0.0.0",
 		engines: {
-			node: "^16"
+			node: ">= 16"
 		}
 	};
 
-	await esmock.p("../../bin/ui5.js", {
+	t.context.ui5 = await esmock.p("../../bin/ui5.js", {
 		"import-local": sinon.stub().returns(false),
 		"fs": {
 			readFileSync: sinon.stub().returns(JSON.stringify(fakePkg))
