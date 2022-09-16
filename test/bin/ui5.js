@@ -173,3 +173,76 @@ test.serial("ui5 logs warning when using pre-release Node.js version", async (t)
 		fileURLToPath(new URL("../../bin/ui5.js", import.meta.url))
 	], "import-local should be called with bin/ui5.js filename");
 });
+
+test.serial("ui5 executes lib/cli/cli.js", async (t) => {
+	const cliStub = sinon.stub();
+
+	const cliExecutedPromise = new Promise((resolve) => {
+		cliStub.callsFake(async () => {
+			resolve();
+		});
+	});
+
+	const fakePkg = {
+		name: "ui5-cli-test",
+		version: "0.0.0",
+		engines: {
+			node: "^16"
+		}
+	};
+
+	await esmock.p("../../bin/ui5.js", {
+		"import-local": sinon.stub().returns(false),
+		"fs": {
+			readFileSync: sinon.stub().returns(JSON.stringify(fakePkg))
+		},
+		"../../lib/cli/cli.js": cliStub
+	});
+
+	await cliExecutedPromise;
+
+	t.is(cliStub.callCount, 1, "cli should be called once");
+	t.deepEqual(cliStub.getCall(0).args, [fakePkg], "cliStub should be called with package.json object");
+});
+
+test.serial("ui5 handles lib/cli/cli.js exceptions", async (t) => {
+	const consoleLogStub = sinon.stub(console, "log");
+
+	const processExit = new Promise((resolve) => {
+		const processExitStub = sinon.stub(process, "exit");
+		processExitStub.callsFake((errorCode) => {
+			processExitStub.restore();
+			resolve(errorCode);
+		});
+	});
+
+	const fakeError = new Error("Test CLI Error!");
+	const cliStub = sinon.stub().callsFake(async () => {
+		throw fakeError;
+	});
+
+	const fakePkg = {
+		name: "ui5-cli-test",
+		version: "0.0.0",
+		engines: {
+			node: "^16"
+		}
+	};
+
+	await esmock.p("../../bin/ui5.js", {
+		"import-local": sinon.stub().returns(false),
+		"fs": {
+			readFileSync: sinon.stub().returns(JSON.stringify(fakePkg))
+		},
+		"../../lib/cli/cli.js": cliStub
+	});
+
+	const errorCode = await processExit;
+
+	t.is(errorCode, 1, "Should exit with error code 1");
+	t.is(consoleLogStub.callCount, 2, "console.log should be called 2 times");
+
+	t.deepEqual(consoleLogStub.getCall(0).args,
+		["Fatal Error: Unable to initialize UI5 CLI"]);
+	t.deepEqual(consoleLogStub.getCall(1).args, [fakeError]);
+});
