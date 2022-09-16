@@ -8,7 +8,7 @@ import yargs from "yargs";
 import {fileURLToPath} from "url";
 import {readFileSync} from "fs";
 
-const pkgJsonPath = fileURLToPath(new URL("../../../package.json", import.meta.url));
+const pkgJsonPath = new URL("../../../package.json", import.meta.url);
 const pkg = JSON.parse(readFileSync(pkgJsonPath));
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ui5Cli = path.join(__dirname, "..", "..", "..", "bin", "ui5.js");

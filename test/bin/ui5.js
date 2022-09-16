@@ -85,9 +85,10 @@ test.serial("ui5 imports local installation when found", async (t) => {
 	t.deepEqual(consoleInfoStub.getCall(1).args, [""]);
 
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
-	t.deepEqual(importLocalStub.getCall(0).args, [
-		fileURLToPath(new URL("../../bin/ui5.js", import.meta.url))
-	], "import-local should be called with bin/ui5.js filename");
+	t.is(importLocalStub.getCall(0).args.length, 1);
+	const importLocalUrl = new URL(importLocalStub.getCall(0).args[0]);
+	t.is(importLocalUrl.pathname, new URL("../../bin/ui5.js", import.meta.url).pathname,
+		"import-local should be called with bin/ui5.js filename");
 });
 
 test.serial("ui5 imports local installation when found (/w --verbose)", async (t) => {
@@ -122,9 +123,10 @@ test.serial("ui5 imports local installation when found (/w --verbose)", async (t
 	t.deepEqual(consoleInfoStub.getCall(2).args, [""]);
 
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
-	t.deepEqual(importLocalStub.getCall(0).args, [
-		fileURLToPath(new URL("../../bin/ui5.js", import.meta.url))
-	], "import-local should be called with bin/ui5.js filename");
+	t.is(importLocalStub.getCall(0).args.length, 1);
+	const importLocalUrl = new URL(importLocalStub.getCall(0).args[0]);
+	t.is(importLocalUrl.pathname, new URL("../../bin/ui5.js", import.meta.url).pathname,
+		"import-local should be called with bin/ui5.js filename");
 });
 
 test.serial("ui5 logs warning when using pre-release Node.js version", async (t) => {
@@ -171,9 +173,10 @@ test.serial("ui5 logs warning when using pre-release Node.js version", async (t)
 		"=====================================================================");
 
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
-	t.deepEqual(importLocalStub.getCall(0).args, [
-		fileURLToPath(new URL("../../bin/ui5.js", import.meta.url))
-	], "import-local should be called with bin/ui5.js filename");
+	t.is(importLocalStub.getCall(0).args.length, 1);
+	const importLocalUrl = new URL(importLocalStub.getCall(0).args[0]);
+	t.is(importLocalUrl.pathname, new URL("../../bin/ui5.js", import.meta.url).pathname,
+		"import-local should be called with bin/ui5.js filename");
 });
 
 test.serial("ui5 executes lib/cli/cli.js", async (t) => {

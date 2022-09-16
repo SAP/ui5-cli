@@ -3,10 +3,9 @@
 // The following block should be compatible to as many Node.js versions as possible
 // so that the message for unsupported Node.js versions can be displayed
 import semver from "semver";
-import {fileURLToPath} from "url";
 import {readFileSync} from "fs";
 
-const pkgJsonPath = fileURLToPath(new URL("../package.json", import.meta.url));
+const pkgJsonPath = new URL("../package.json", import.meta.url);
 const pkg = JSON.parse(readFileSync(pkgJsonPath));
 
 const nodeVersion = process.version;
@@ -40,7 +39,7 @@ if (
 			const {default: importLocal} = await import("import-local");
 			// Prefer a local installation of @ui5/cli.
 			// This will invoke the local CLI, so no further action required
-			if (importLocal(fileURLToPath(import.meta.url))) {
+			if (importLocal(import.meta.url)) {
 				if (process.argv.includes("--verbose")) {
 					console.info(`INFO: This project contains an individual ${pkg.name} installation which ` +
 					"will be used over the global one.");
