@@ -2,7 +2,9 @@ import test from "ava";
 import path from "path";
 import execa from "execa";
 import sinon from "sinon";
+import esmock from "esmock";
 import chalk from "chalk";
+import yargs from "yargs";
 import {fileURLToPath} from "url";
 import {readFileSync} from "fs";
 
@@ -12,11 +14,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ui5Cli = path.join(__dirname, "..", "..", "..", "bin", "ui5.js");
 const ui5 = (args, options = {}) => execa(ui5Cli, args, options);
 
-test.beforeEach((t) => {
+test.beforeEach(async (t) => {
 	t.context.consoleLogStub = sinon.stub(console, "log");
+
+	t.context.loggerIsLevelEnabled = sinon.stub();
+	t.context.loggerIsLevelEnabled.withArgs("error").returns(true);
+	t.context.loggerIsLevelEnabled.withArgs("verbose").returns(false);
+
+	t.context.base = await esmock("../../../lib/cli/base.js", {
+		"@ui5/logger": {
+			isLevelEnabled: t.context.loggerIsLevelEnabled
+		}
+	});
 });
 
-test.afterEach.always(() => {
+test.afterEach.always((t) => {
 	sinon.restore();
 });
 
@@ -31,55 +43,171 @@ test.serial("ui5 -v", async (t) => {
 });
 
 test.serial("Yargs error handling", async (t) => {
-	const err = await t.throwsAsync(ui5(["invalidcomands"]));
+	const {consoleLogStub} = t.context;
 
-	const stdoutLines = err.stdout.split("\n");
-	t.is(stdoutLines[0], "Command Failed:", "Correct first log line");
-	// Error message itself originates from yargs and is therefore not asserted
-	t.is(stdoutLines[stdoutLines.length - 1], `See 'ui5 --help' or 'ui5 build --help' for help`,
-		"Correct last log line");
+	const processExit = new Promise((resolve) => {
+		const processExitStub = sinon.stub(process, "exit");
+		processExitStub.callsFake((errorCode) => {
+			processExitStub.restore();
+			resolve(errorCode);
+		});
+	});
 
-	t.is(err.exitCode, 1, "Process was exited with code 1");
+	const {default: base} = await import("../../../lib/cli/base.js");
+
+	const cli = yargs();
+
+	base(cli);
+
+	cli.command({
+		command: "foo",
+		describe: "This is a task",
+		handler: async function() {}
+	});
+
+	await cli.parseAsync(["invalid"]);
+
+	const errorCode = await processExit;
+
+	t.is(errorCode, 1, "Should exit with error code 1");
+	t.is(consoleLogStub.callCount, 4);
+	t.deepEqual(consoleLogStub.getCall(0).args, [chalk.bold.yellow("Command Failed:")], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(1).args, ["Unknown argument: invalid"], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(2).args, [""], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(3).args, [
+		chalk.dim(`See 'ui5 --help' or 'ui5 build --help' for help`)
+	], "Correct error log");
 });
 
+
 test.serial("Exception error handling", async (t) => {
-	// This test depends on the init command throwing on projects that already have a ui5.yaml
+	const {base, consoleLogStub} = t.context;
 
-	const err = await t.throwsAsync(ui5(["init"], {
-		cwd: path.join(__dirname, "..", "..", "fixtures", "init", "application")
-	}));
+	const processExit = new Promise((resolve) => {
+		const processExitStub = sinon.stub(process, "exit");
+		processExitStub.callsFake((errorCode) => {
+			processExitStub.restore();
+			resolve(errorCode);
+		});
+	});
 
-	const stdoutLines = err.stdout.split("\n");
-	t.is(stdoutLines[1], "⚠️  Process Failed With Error", "Correct error log");
-	t.is(stdoutLines[3], "Error Message:", "Correct error log");
-	t.is(stdoutLines[4], "Initialization not possible: ui5.yaml already exists", "Correct error log");
-	t.is(stdoutLines[stdoutLines.length - 1],
-		"For details, execute the same command again with an additional '--verbose' parameter",
-		"Correct last log line");
+	const cli = yargs();
 
-	t.is(err.exitCode, 1, "Process was exited with code 1");
+	base(cli);
+
+	const error = new Error("Some error from foo command");
+
+	cli.command({
+		command: "foo",
+		describe: "This task fails with an error",
+		handler: async function() {
+			throw error;
+		}
+	});
+
+	await t.throwsAsync(cli.parse(["foo"]), {
+		is: error
+	});
+
+	const errorCode = await processExit;
+
+	t.is(errorCode, 1, "Should exit with error code 1");
+	t.is(consoleLogStub.callCount, 7);
+	t.deepEqual(consoleLogStub.getCall(1).args, [chalk.bold.red("⚠️  Process Failed With Error")], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(3).args, [chalk.underline("Error Message:")], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(4).args,
+		["Some error from foo command"], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(6).args, [chalk.dim(
+		`For details, execute the same command again with an additional '--verbose' parameter`)], "Correct error log");
+});
+
+test.serial("Exception error handling without logging (silent)", async (t) => {
+	const {base, consoleLogStub, loggerIsLevelEnabled} = t.context;
+
+	loggerIsLevelEnabled.withArgs("error").returns(false);
+
+	const processExit = new Promise((resolve) => {
+		const processExitStub = sinon.stub(process, "exit");
+		processExitStub.callsFake((errorCode) => {
+			processExitStub.restore();
+			resolve(errorCode);
+		});
+	});
+
+	const cli = yargs();
+
+	base(cli);
+
+	const error = new Error("Some error from foo command");
+
+	cli.command({
+		command: "foo",
+		describe: "This task fails with an error",
+		handler: async function() {
+			throw error;
+		}
+	});
+
+	await t.throwsAsync(cli.parse(["foo"]), {
+		is: error
+	});
+
+	const errorCode = await processExit;
+
+	t.is(errorCode, 1, "Should exit with error code 1");
+	t.is(consoleLogStub.callCount, 0);
 });
 
 test.serial("Exception error handling with verbose logging", async (t) => {
-	// This test depends on the init command throwing on projects that already have a ui5.yaml
+	const {base, consoleLogStub, loggerIsLevelEnabled} = t.context;
 
-	const err = await t.throwsAsync(ui5(["init", "--verbose"], {
-		cwd: path.join(__dirname, "..", "..", "fixtures", "init", "application")
-	}));
+	loggerIsLevelEnabled.withArgs("verbose").returns(true);
 
-	const stdoutLines = err.stdout.split("\n");
-	t.is(stdoutLines[1], "⚠️  Process Failed With Error", "Correct error log");
-	t.is(stdoutLines[3], "Error Message:", "Correct error log");
-	t.is(stdoutLines[4], "Initialization not possible: ui5.yaml already exists", "Correct error log");
-	t.is(stdoutLines[6], "Stack Trace:", "Correct error log");
-	t.is(stdoutLines[7], "Error: Initialization not possible: ui5.yaml already exists", "Correct error log");
+	const processExit = new Promise((resolve) => {
+		const processExitStub = sinon.stub(process, "exit");
+		processExitStub.callsFake((errorCode) => {
+			processExitStub.restore();
+			resolve(errorCode);
+		});
+	});
 
-	t.deepEqual(stdoutLines[stdoutLines.length - 1],
-		"If you think this is an issue of the UI5 Tooling, you might " +
-		"report it using the following URL: https://github.com/SAP/ui5-tooling/issues/new/choose",
+	const cli = yargs();
+
+	base(cli);
+
+	const error = new Error("Some error from foo command");
+
+	cli.command({
+		command: "foo",
+		describe: "This task fails with an error",
+		handler: async function() {
+			throw error;
+		}
+	});
+
+	await t.throwsAsync(cli.parse(["foo"]), {
+		is: error
+	});
+
+	const errorCode = await processExit;
+
+	t.is(errorCode, 1, "Should exit with error code 1");
+	t.is(consoleLogStub.callCount, 10);
+	t.deepEqual(consoleLogStub.getCall(1).args, [chalk.bold.red("⚠️  Process Failed With Error")], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(3).args, [chalk.underline("Error Message:")], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(4).args,
+		["Some error from foo command"], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(6).args, [chalk.underline("Stack Trace:")], "Correct error log");
+	t.is(consoleLogStub.getCall(7).args.length, 1);
+	t.true(consoleLogStub.getCall(7).args[0]
+		.startsWith("Error: Some error from foo command"), "Correct error log");
+
+	t.deepEqual(consoleLogStub.getCall(consoleLogStub.callCount - 1).args,
+		[chalk.dim(
+			`If you think this is an issue of the UI5 Tooling, you might report it using the ` +
+			`following URL: `) +
+			chalk.dim.bold.underline(`https://github.com/SAP/ui5-tooling/issues/new/choose`)],
 		"Correct last log line");
-
-	t.is(err.exitCode, 1, "Process was exited with code 1");
 });
 
 test.serial("Unexpected error handling", async (t) => {
@@ -94,7 +222,6 @@ test.serial("Unexpected error handling", async (t) => {
 	});
 
 	const {default: base} = await import("../../../lib/cli/base.js");
-	const {default: yargs} = await import("yargs");
 
 	const cli = yargs();
 
@@ -117,6 +244,7 @@ test.serial("Unexpected error handling", async (t) => {
 	const errorCode = await processExit;
 
 	t.is(errorCode, 1, "Should exit with error code 1");
+	t.is(consoleLogStub.callCount, 10);
 	t.deepEqual(consoleLogStub.getCall(1).args, [chalk.bold.red("⚠️  Process Failed With Error")], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(3).args, [chalk.underline("Error Message:")], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(4).args,
