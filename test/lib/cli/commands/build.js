@@ -66,11 +66,13 @@ test.beforeEach(async (t) => {
 	t.context.expectedBuilderArgs.graph = fakeGraph;
 	t.context.ProjectGraphStub = sinon.stub().resolves(fakeGraph);
 	t.context.generateProjectGraphUsingNodePackageDependenciesStub = sinon.stub().resolves(fakeGraph);
+	t.context.generateProjectGraphUsingStaticFileStub = sinon.stub().resolves(fakeGraph);
 
 	t.context.build = await esmock.p("../../../../lib/cli/commands/build.js", {
 		"@ui5/project": {
 			generateProjectGraph: {
-				usingNodePackageDependencies: t.context.generateProjectGraphUsingNodePackageDependenciesStub
+				usingNodePackageDependencies: t.context.generateProjectGraphUsingNodePackageDependenciesStub,
+				usingStaticFile: t.context.generateProjectGraphUsingStaticFileStub
 			},
 			graph: {
 				ProjectGraph: t.context.ProjectGraphStub
@@ -114,7 +116,7 @@ test.serial("ui5 build jsdoc", async (t) => {
 	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "JSDoc build called with expected arguments");
 });
 
-test.serial("ui5 build --framework-version 1.99", async (t) => {
+test.serial("ui5 build --framework-version", async (t) => {
 	const {build, argv, generateProjectGraphUsingNodePackageDependenciesStub} = t.context;
 
 	argv.frameworkVersion = "1.99.0";
@@ -127,6 +129,76 @@ test.serial("ui5 build --framework-version 1.99", async (t) => {
 			rootConfigPath: undefined,
 			versionOverride: "1.99.0"
 		}, "generateProjectGraph.usingNodePackageDependencies got called with expected arguments"
+	);
+});
+
+test.serial("ui5 build --config", async (t) => {
+	const {build, argv, generateProjectGraphUsingNodePackageDependenciesStub} = t.context;
+
+	argv.config = "ui5-test.yaml";
+
+	await build.handler(argv);
+
+	t.deepEqual(
+		generateProjectGraphUsingNodePackageDependenciesStub.getCall(0).args[0],
+		{
+			rootConfigPath: "ui5-test.yaml",
+			versionOverride: undefined
+		}, "generateProjectGraph.usingNodePackageDependencies got called with expected arguments"
+	);
+});
+
+test.serial("ui5 build --dependency-definition", async (t) => {
+	const {build, argv, generateProjectGraphUsingStaticFileStub} = t.context;
+
+	argv.dependencyDefinition = "dependencies.yaml";
+
+	await build.handler(argv);
+
+	t.deepEqual(
+		generateProjectGraphUsingStaticFileStub.getCall(0).args[0],
+		{
+			filePath: "dependencies.yaml",
+			rootConfigPath: undefined,
+			versionOverride: undefined
+		}, "generateProjectGraph.usingStaticFile got called with expected arguments"
+	);
+});
+
+test.serial("ui5 build --dependency-definition --config", async (t) => {
+	const {build, argv, generateProjectGraphUsingStaticFileStub} = t.context;
+
+	argv.dependencyDefinition = "dependencies.yaml";
+	argv.config = "ui5-test.yaml";
+
+	await build.handler(argv);
+
+	t.deepEqual(
+		generateProjectGraphUsingStaticFileStub.getCall(0).args[0],
+		{
+			filePath: "dependencies.yaml",
+			rootConfigPath: "ui5-test.yaml",
+			versionOverride: undefined
+		}, "generateProjectGraph.usingStaticFile got called with expected arguments"
+	);
+});
+
+test.serial("ui5 build --dependency-definition --config --framework-version", async (t) => {
+	const {build, argv, generateProjectGraphUsingStaticFileStub} = t.context;
+
+	argv.dependencyDefinition = "dependencies.yaml";
+	argv.config = "ui5-test.yaml";
+	argv.frameworkVersion = "1.99.0";
+
+	await build.handler(argv);
+
+	t.deepEqual(
+		generateProjectGraphUsingStaticFileStub.getCall(0).args[0],
+		{
+			filePath: "dependencies.yaml",
+			rootConfigPath: "ui5-test.yaml",
+			versionOverride: "1.99.0"
+		}, "generateProjectGraph.usingStaticFile got called with expected arguments"
 	);
 });
 
