@@ -1,12 +1,12 @@
 import test from "ava";
-import path from "path";
+import path from "node:path";
 import execa from "execa";
 import sinon from "sinon";
 import esmock from "esmock";
 import chalk from "chalk";
 import yargs from "yargs";
-import {fileURLToPath} from "url";
-import {readFileSync} from "fs";
+import {fileURLToPath} from "node:url";
+import {readFileSync} from "node:fs";
 
 const pkgJsonPath = new URL("../../../package.json", import.meta.url);
 const pkg = JSON.parse(readFileSync(pkgJsonPath));

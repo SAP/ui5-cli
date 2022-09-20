@@ -11,7 +11,7 @@ test.serial("sets log level of log middleware", async (t) => {
 });
 
 test.serial("disable middleware if invalig arguments are given", async (t) => {
-	const usedMiddleware = await initLogger({}) === null;
+	const usedMiddleware = (await initLogger({})) === null;
 	t.is(usedMiddleware, true, "Logger is not used as middleware");
 });
 

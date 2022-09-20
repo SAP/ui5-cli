@@ -1,7 +1,7 @@
 import test from "ava";
 import sinon from "sinon";
 import esmock from "esmock";
-import {fileURLToPath} from "url";
+import {fileURLToPath} from "node:url";
 
 test.beforeEach(async (t) => {
 	t.context.updateNotifierNotify = sinon.stub();
