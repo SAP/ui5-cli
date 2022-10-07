@@ -6,7 +6,7 @@ test.afterEach.always((t) => {
 	sinon.restore();
 });
 
-test.serial("Retrieves version from package.json", async (t) => {
+test.serial("Retrieves version from package.json", (t) => {
 	const builderVersion = versions.getVersion("../../../test/fixtures/@ui5/builder");
 	const serverVersion = versions.getVersion("../../../test/fixtures/@ui5/server");
 	const fsVersion = versions.getVersion("../../../test/fixtures/@ui5/fs");
@@ -20,7 +20,7 @@ test.serial("Retrieves version from package.json", async (t) => {
 	t.is(loggerVersion, "0.2.2", "retrieved correct version for logger");
 });
 
-test.serial("Error: returns not installed if version was not found", async (t) => {
+test.serial("Error: returns not installed if version was not found", (t) => {
 	t.is(versions.getVersion("not/existing/path"), "===(not installed)", "No version found");
 });
 

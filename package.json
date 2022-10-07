@@ -20,7 +20,9 @@
 		"ui5": "./bin/ui5.js"
 	},
 	"type": "module",
-	"exports": "./index.js",
+	"exports": {
+		"./package.json": "./package.json"
+	},
 	"engines": {
 		"node": ">= 16.13.2",
 		"npm": ">= 8"
@@ -79,7 +81,8 @@
 			"jsdocs/**",
 			"coverage/**",
 			"test/**",
-			".eslintrc.cjs"
+			".eslintrc.cjs",
+			"jsdoc-plugin.cjs"
 		],
 		"check-coverage": true,
 		"statements": 80,
