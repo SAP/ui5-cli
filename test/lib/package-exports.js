@@ -8,3 +8,9 @@ const require = createRequire(import.meta.url);
 test("export of package.json", (t) => {
 	t.truthy(require("@ui5/cli/package.json").version);
 });
+
+// Check number of definied exports
+test("check number of exports", (t) => {
+	const packageJson = require("@ui5/cli/package.json");
+	t.is(Object.keys(packageJson.exports).length, 1);
+});
