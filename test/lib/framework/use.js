@@ -28,8 +28,9 @@ test.beforeEach(async (t) => {
 	});
 });
 
-test.afterEach.always(() => {
+test.afterEach.always((t) => {
 	sinon.restore();
+	esmock.purge(t.context.useFramework);
 });
 
 test.serial("Use with name and version (OpenUI5)", async (t) => {

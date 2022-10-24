@@ -54,7 +54,7 @@ test.beforeEach((t) => {
 
 test.afterEach.always((t) => {
 	sinon.restore();
-	esmock.purge(t.context.addFramework);
+	esmock.purge(t.context.addCommand);
 });
 
 test.serial("Accepts single library", async (t) => {
