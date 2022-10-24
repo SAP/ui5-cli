@@ -114,11 +114,11 @@
 		"url": "git@github.com:SAP/ui5-cli.git"
 	},
 	"dependencies": {
-		"@ui5/builder": "^3.0.0-alpha.11",
-		"@ui5/fs": "^3.0.0-alpha.6",
-		"@ui5/logger": "^3.0.1-alpha.2",
-		"@ui5/project": "^3.0.0-alpha.9",
-		"@ui5/server": "^3.0.0-alpha.3",
+		"@ui5/builder": "^3.0.0-alpha.12",
+		"@ui5/fs": "^3.0.0-alpha.7",
+		"@ui5/logger": "^3.0.1-alpha.3",
+		"@ui5/project": "^3.0.0-alpha.10",
+		"@ui5/server": "^3.0.0-alpha.4",
 		"chalk": "^4.1.2",
 		"data-with-position": "^0.5.0",
 		"import-local": "^3.1.0",
