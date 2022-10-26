@@ -70,8 +70,9 @@ if (
 		if (
 			!disableUpdateNotifier &&
 
-			// Node.js versions supporting ES modules
-			semver.satisfies(nodeVersion, "^12.20 || ^14.14 || >= 16.0", {includePrerelease: true})
+			// Check for minimum supported Node.js version of update-notifier v6
+			// See https://github.com/yeoman/update-notifier/blob/3046d0f61a57f8270291b6ab271f8a12df8421a6/package.json#L16
+			semver.satisfies(nodeVersion, ">=14.16", {includePrerelease: true})
 		) {
 			const updateNotifier = require("../lib/cli/update-notifier");
 			await updateNotifier({pkg});
