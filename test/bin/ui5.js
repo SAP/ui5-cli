@@ -2,9 +2,14 @@ const test = require("ava");
 const sinon = require("sinon");
 const mock = require("mock-require");
 const path = require("path");
+const semver = require("semver");
 
 test.beforeEach((t) => {
 	t.context.originalArgv = process.argv;
+	sinon.stub(semver, "satisfies")
+		.callThrough()
+		.withArgs(process.version, "< 14.16 || ^15 || ^17")
+		.returns(false);
 });
 
 test.afterEach.always((t) => {
@@ -122,7 +127,7 @@ test.serial.cb("ui5 logs warning when using pre-release Node.js version", (t) =>
 		t.is(consoleLogStub.getCall(1).args[0],
 			"You are using an unstable version of Node.js");
 		t.is(consoleLogStub.getCall(2).args[0],
-			"Detected Node.js version v17.0.0-v8-canary202108258414d1aed8");
+			"Detected Node.js version: v17.0.0-v8-canary202108258414d1aed8");
 		t.is(consoleLogStub.getCall(3).args[0],
 			"");
 		t.is(consoleLogStub.getCall(4).args[0],
@@ -134,6 +139,54 @@ test.serial.cb("ui5 logs warning when using pre-release Node.js version", (t) =>
 		t.is(consoleLogStub.getCall(7).args[0],
 			"   https://nodejs.org/en/about/releases");
 		t.is(consoleLogStub.getCall(8).args[0],
+			"=====================================================================");
+
+		t.is(importLocalStub.callCount, 1, "import-local should be called once");
+		t.deepEqual(importLocalStub.getCall(0).args, [
+			path.resolve(__dirname, "..", "..", "bin", "ui5.js")
+		], "import-local should be called with bin/ui5.js filename");
+
+		t.end();
+	}, 0);
+});
+
+test.serial.cb("ui5 logs warning when using EOL Node.js version", (t) => {
+	const consoleLogStub = sinon.stub(console, "log");
+
+	const importLocalStub = sinon.stub().returns(true);
+	mock("import-local", importLocalStub);
+
+	semver.satisfies.restore(); // restore semver.satisfies behavior for this test
+	sinon.stub(process, "version").value("v12.0.0");
+
+	mock.reRequire("../../bin/ui5");
+
+	setTimeout(() => {
+		t.is(consoleLogStub.callCount, 12, "console.log should be called 12 times");
+
+		t.is(consoleLogStub.getCall(0).args[0],
+			"================ NODE.JS VERSION REACHED END OF LIFE ================");
+		t.is(consoleLogStub.getCall(1).args[0],
+			"You are using a version of Node.js that reached its end of life, see:");
+		t.is(consoleLogStub.getCall(2).args[0],
+			"https://github.com/nodejs/release#end-of-life-releases");
+		t.is(consoleLogStub.getCall(3).args[0],
+			"");
+		t.is(consoleLogStub.getCall(4).args[0],
+			"Detected Node.js version: v12.0.0");
+		t.is(consoleLogStub.getCall(5).args[0],
+			"");
+		t.is(consoleLogStub.getCall(6).args[0],
+			"There might also be a newer version of @ui5/cli available at:");
+		t.is(consoleLogStub.getCall(7).args[0],
+			"https://www.npmjs.com/package/@ui5/cli");
+		t.is(consoleLogStub.getCall(8).args[0],
+			"");
+		t.is(consoleLogStub.getCall(9).args[0],
+			"=> Please upgrade to a supported version of Node.js and make sure to");
+		t.is(consoleLogStub.getCall(10).args[0],
+			"   use the latest version of @ui5/cli");
+		t.is(consoleLogStub.getCall(11).args[0],
 			"=====================================================================");
 
 		t.is(importLocalStub.callCount, 1, "import-local should be called once");

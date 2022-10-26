@@ -26,16 +26,31 @@ if (
 	console.log("=====================================================================");
 	process.exit(1);
 } else {
-	if (semver && semver.prerelease(nodeVersion)) {
-		console.log("====================== UNSTABLE NODE.JS VERSION =====================");
-		console.log("You are using an unstable version of Node.js");
-		console.log("Detected Node.js version " + nodeVersion);
-		console.log("");
-		console.log("=> Please note that an unstable version might cause unexpected");
-		console.log("   behavior. For productive use please consider using a stable");
-		console.log("   version of Node.js! For the release policy of Node.js, see");
-		console.log("   https://nodejs.org/en/about/releases");
-		console.log("=====================================================================");
+	if (semver) {
+		if (semver.prerelease(nodeVersion)) {
+			console.log("====================== UNSTABLE NODE.JS VERSION =====================");
+			console.log("You are using an unstable version of Node.js");
+			console.log("Detected Node.js version: " + nodeVersion);
+			console.log("");
+			console.log("=> Please note that an unstable version might cause unexpected");
+			console.log("   behavior. For productive use please consider using a stable");
+			console.log("   version of Node.js! For the release policy of Node.js, see");
+			console.log("   https://nodejs.org/en/about/releases");
+			console.log("=====================================================================");
+		} else if (semver.satisfies(nodeVersion, "< 14.16 || ^15 || ^17")) {
+			console.log("================ NODE.JS VERSION REACHED END OF LIFE ================");
+			console.log("You are using a version of Node.js that reached its end of life, see:");
+			console.log("https://github.com/nodejs/release#end-of-life-releases");
+			console.log("");
+			console.log("Detected Node.js version: " + nodeVersion);
+			console.log("");
+			console.log("There might also be a newer version of @ui5/cli available at:");
+			console.log("https://www.npmjs.com/package/@ui5/cli");
+			console.log("");
+			console.log("=> Please upgrade to a supported version of Node.js and make sure to");
+			console.log("   use the latest version of @ui5/cli");
+			console.log("=====================================================================");
+		}
 	}
 	// Timeout is required to log info when importing from local installation
 	setTimeout(async () => {

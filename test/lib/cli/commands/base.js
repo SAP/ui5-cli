@@ -2,9 +2,25 @@ const test = require("ava");
 const path = require("path");
 const execa = require("execa");
 const sinon = require("sinon");
+const semver = require("semver");
 const pkg = require("../../../../package.json");
 const ui5Cli = path.join(__dirname, "..", "..", "..", "..", "bin", "ui5.js");
 const ui5 = (args, options = {}) => execa(ui5Cli, args, options);
+
+const unsupportedNodeJsVersionWarning = semver.satisfies(process.version, "< 14.16 || ^15 || ^17") ?
+	`================ NODE.JS VERSION REACHED END OF LIFE ================
+You are using a version of Node.js that reached its end of life, see:
+https://github.com/nodejs/release#end-of-life-releases
+
+Detected Node.js version: ${process.version}
+
+There might also be a newer version of @ui5/cli available at:
+https://www.npmjs.com/package/@ui5/cli
+
+=> Please upgrade to a supported version of Node.js and make sure to
+   use the latest version of @ui5/cli
+=====================================================================
+` : "";
 
 test.beforeEach((t) => {
 	t.context.consoleLogStub = sinon.stub(console, "log");
@@ -17,19 +33,24 @@ test.afterEach.always(() => {
 
 test.serial("ui5 --version", async (t) => {
 	const {stdout} = await ui5(["--version"]);
-	t.is(stdout, `${pkg.version} (from ${ui5Cli})`);
+	t.is(stdout, `${unsupportedNodeJsVersionWarning}${pkg.version} (from ${ui5Cli})`);
 });
 
 test.serial("ui5 -v", async (t) => {
 	const {stdout} = await ui5(["-v"]);
-	t.is(stdout, `${pkg.version} (from ${ui5Cli})`);
+	t.is(stdout, `${unsupportedNodeJsVersionWarning}${pkg.version} (from ${ui5Cli})`);
 });
 
 test.serial("Yargs error handling", async (t) => {
 	const err = await t.throwsAsync(ui5(["invalidcomands"]));
 
 	const stdoutLines = err.stdout.split("\n");
-	t.deepEqual(stdoutLines[0], "Command Failed:", "Correct first log line");
+	// Skip lines of outdated Node.js version logging
+	const stdoutLineStart =
+		unsupportedNodeJsVersionWarning.startsWith(stdoutLines[0]) ?
+			unsupportedNodeJsVersionWarning.split("\n").length - 1 : 0;
+
+	t.deepEqual(stdoutLines[stdoutLineStart], "Command Failed:", "Correct first log line");
 	// Error message itself originates from yargs and is therefore not asserted
 	t.deepEqual(stdoutLines[stdoutLines.length - 1], `See 'ui5 --help' or 'ui5 build --help' for help`,
 		"Correct last log line");
@@ -45,9 +66,15 @@ test.serial("Exception error handling", async (t) => {
 	}));
 
 	const stdoutLines = err.stdout.split("\n");
-	t.deepEqual(stdoutLines[1], "⚠️  Process Failed With Error", "Correct error log");
-	t.deepEqual(stdoutLines[3], "Error Message:", "Correct error log");
-	t.deepEqual(stdoutLines[4], "Initialization not possible: ui5.yaml already exists", "Correct error log");
+	// Skip lines of outdated Node.js version logging
+	const stdoutLineStart =
+		unsupportedNodeJsVersionWarning.startsWith(stdoutLines[0]) ?
+			unsupportedNodeJsVersionWarning.split("\n").length - 1 : 1;
+
+	t.deepEqual(stdoutLines[stdoutLineStart + 1], "⚠️  Process Failed With Error", "Correct error log");
+	t.deepEqual(stdoutLines[stdoutLineStart + 3], "Error Message:", "Correct error log");
+	t.deepEqual(stdoutLines[stdoutLineStart + 4],
+		"Initialization not possible: ui5.yaml already exists", "Correct error log");
 	t.deepEqual(stdoutLines[stdoutLines.length - 1],
 		"For details, execute the same command again with an additional '--verbose' parameter",
 		"Correct last log line");
@@ -63,11 +90,18 @@ test.serial("Exception error handling with verbose logging", async (t) => {
 	}));
 
 	const stdoutLines = err.stdout.split("\n");
-	t.deepEqual(stdoutLines[1], "⚠️  Process Failed With Error", "Correct error log");
-	t.deepEqual(stdoutLines[3], "Error Message:", "Correct error log");
-	t.deepEqual(stdoutLines[4], "Initialization not possible: ui5.yaml already exists", "Correct error log");
-	t.deepEqual(stdoutLines[6], "Stack Trace:", "Correct error log");
-	t.deepEqual(stdoutLines[7], "Error: Initialization not possible: ui5.yaml already exists", "Correct error log");
+	// Skip lines of outdated Node.js version logging
+	const stdoutLineStart =
+		unsupportedNodeJsVersionWarning.startsWith(stdoutLines[0]) ?
+			unsupportedNodeJsVersionWarning.split("\n").length - 1 : 1;
+
+	t.deepEqual(stdoutLines[stdoutLineStart + 1], "⚠️  Process Failed With Error", "Correct error log");
+	t.deepEqual(stdoutLines[stdoutLineStart + 3], "Error Message:", "Correct error log");
+	t.deepEqual(stdoutLines[stdoutLineStart + 4],
+		"Initialization not possible: ui5.yaml already exists", "Correct error log");
+	t.deepEqual(stdoutLines[stdoutLineStart + 6], "Stack Trace:", "Correct error log");
+	t.deepEqual(stdoutLines[stdoutLineStart + 7],
+		"Error: Initialization not possible: ui5.yaml already exists", "Correct error log");
 
 	t.deepEqual(stdoutLines[stdoutLines.length - 1],
 		"If you think this is an issue of the UI5 Tooling, you might " +
