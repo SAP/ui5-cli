@@ -1,5 +1,6 @@
 import test from "ava";
 import sinonGlobal from "sinon";
+import {fileURLToPath} from "node:url";
 import {createRequire, Module} from "node:module";
 import chalk from "chalk";
 
@@ -152,7 +153,7 @@ test.serial("invokeLocalInstallation: Invokes local installation when found", as
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
 	t.is(importLocalStub.getCall(0).args.length, 1);
 	const importLocaPath = importLocalStub.getCall(0).args[0];
-	t.is(importLocaPath, new URL("../../bin/ui5.js", import.meta.url).pathname,
+	t.is(importLocaPath, fileURLToPath(new URL("../../bin/ui5.js", import.meta.url)),
 		"import-local should be called with bin/ui5.js filename");
 });
 
@@ -184,7 +185,7 @@ test.serial("invokeLocalInstallation: Invokes local installation when found (/w 
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
 	t.is(importLocalStub.getCall(0).args.length, 1);
 	const importLocaPath = importLocalStub.getCall(0).args[0];
-	t.is(importLocaPath, new URL("../../bin/ui5.js", import.meta.url).pathname,
+	t.is(importLocaPath, fileURLToPath(new URL("../../bin/ui5.js", import.meta.url)),
 		"import-local should be called with bin/ui5.js filename");
 });
 
