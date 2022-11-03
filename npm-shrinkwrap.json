@@ -22,7 +22,7 @@
 				"pretty-hrtime": "^1.0.3",
 				"semver": "^7.3.5",
 				"update-notifier": "^6.0.2",
-				"yargs": "^17.5.1"
+				"yargs": "^17.6.2"
 			},
 			"bin": {
 				"ui5": "bin/ui5.cjs"
@@ -10387,8 +10387,9 @@
 			"integrity": "sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A=="
 		},
 		"node_modules/yargs": {
-			"version": "17.6.0",
-			"license": "MIT",
+			"version": "17.6.2",
+			"resolved": "https://registry.npmjs.org/yargs/-/yargs-17.6.2.tgz",
+			"integrity": "sha512-1/9UrdHjDZc0eOU0HxOHoS78C69UD3JRMvzlJ7S79S2nTaWRA/whGCTV8o9e/N/1Va9YIV7Q4sOxD8VV4pCWOw==",
 			"dependencies": {
 				"cliui": "^8.0.1",
 				"escalade": "^3.1.1",
@@ -10396,7 +10397,7 @@
 				"require-directory": "^2.1.1",
 				"string-width": "^4.2.3",
 				"y18n": "^5.0.5",
-				"yargs-parser": "^21.0.0"
+				"yargs-parser": "^21.1.1"
 			},
 			"engines": {
 				"node": ">=12"
@@ -18335,7 +18336,9 @@
 			"integrity": "sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A=="
 		},
 		"yargs": {
-			"version": "17.6.0",
+			"version": "17.6.2",
+			"resolved": "https://registry.npmjs.org/yargs/-/yargs-17.6.2.tgz",
+			"integrity": "sha512-1/9UrdHjDZc0eOU0HxOHoS78C69UD3JRMvzlJ7S79S2nTaWRA/whGCTV8o9e/N/1Va9YIV7Q4sOxD8VV4pCWOw==",
 			"requires": {
 				"cliui": "^8.0.1",
 				"escalade": "^3.1.1",
@@ -18343,7 +18346,7 @@
 				"require-directory": "^2.1.1",
 				"string-width": "^4.2.3",
 				"y18n": "^5.0.5",
-				"yargs-parser": "^21.0.0"
+				"yargs-parser": "^21.1.1"
 			},
 			"dependencies": {
 				"ansi-regex": {
