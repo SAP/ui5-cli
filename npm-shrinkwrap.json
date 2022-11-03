@@ -22,7 +22,7 @@
 				"pretty-hrtime": "^1.0.3",
 				"semver": "^7.3.5",
 				"update-notifier": "^6.0.2",
-				"yargs": "^17.5.1"
+				"yargs": "^17.6.1"
 			},
 			"bin": {
 				"ui5": "bin/ui5.cjs"
@@ -10176,8 +10176,9 @@
 			"integrity": "sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A=="
 		},
 		"node_modules/yargs": {
-			"version": "17.6.0",
-			"license": "MIT",
+			"version": "17.6.1",
+			"resolved": "https://registry.npmjs.org/yargs/-/yargs-17.6.1.tgz",
+			"integrity": "sha512-leBuCGrL4dAd6ispNOGsJlhd0uZ6Qehkbu/B9KCR+Pxa/NVdNwi+i31lo0buCm6XxhJQFshXCD0/evfV4xfoUg==",
 			"dependencies": {
 				"cliui": "^8.0.1",
 				"escalade": "^3.1.1",
@@ -18014,7 +18015,9 @@
 			"integrity": "sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A=="
 		},
 		"yargs": {
-			"version": "17.6.0",
+			"version": "17.6.1",
+			"resolved": "https://registry.npmjs.org/yargs/-/yargs-17.6.1.tgz",
+			"integrity": "sha512-leBuCGrL4dAd6ispNOGsJlhd0uZ6Qehkbu/B9KCR+Pxa/NVdNwi+i31lo0buCm6XxhJQFshXCD0/evfV4xfoUg==",
 			"requires": {
 				"cliui": "^8.0.1",
 				"escalade": "^3.1.1",
