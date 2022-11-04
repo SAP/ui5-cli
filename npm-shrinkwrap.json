@@ -606,6 +606,15 @@
 				"@jridgewell/sourcemap-codec": "1.4.14"
 			}
 		},
+		"@jsdoc/salty": {
+			"version": "0.2.1",
+			"resolved": "https://registry.npmjs.org/@jsdoc/salty/-/salty-0.2.1.tgz",
+			"integrity": "sha512-JXwylDNSHa549N9uceDYu8D4GMXwSo3H8CCPYEQqxhhHpxD28+lRl2b3bS/caaPj5w1YD3SWtrficJNTnUjGpg==",
+			"dev": true,
+			"requires": {
+				"lodash": "^4.17.21"
+			}
+		},
 		"@nodelib/fs.scandir": {
 			"version": "2.1.5",
 			"resolved": "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz",
@@ -771,6 +780,30 @@
 				"terser": "^5.15.1",
 				"xml2js": "^0.4.23",
 				"yazl": "^2.5.1"
+			},
+			"dependencies": {
+				"jsdoc": {
+					"version": "3.6.11",
+					"resolved": "https://registry.npmjs.org/jsdoc/-/jsdoc-3.6.11.tgz",
+					"integrity": "sha512-8UCU0TYeIYD9KeLzEcAu2q8N/mx9O3phAGl32nmHlE0LpaJL71mMkP4d+QE5zWfNt50qheHtOZ0qoxVrsX5TUg==",
+					"requires": {
+						"@babel/parser": "^7.9.4",
+						"@types/markdown-it": "^12.2.3",
+						"bluebird": "^3.7.2",
+						"catharsis": "^0.9.0",
+						"escape-string-regexp": "^2.0.0",
+						"js2xmlparser": "^4.0.2",
+						"klaw": "^3.0.0",
+						"markdown-it": "^12.3.2",
+						"markdown-it-anchor": "^8.4.1",
+						"marked": "^4.0.10",
+						"mkdirp": "^1.0.4",
+						"requizzle": "^0.2.3",
+						"strip-json-comments": "^3.1.0",
+						"taffydb": "2.6.2",
+						"underscore": "~1.13.2"
+					}
+				}
 			}
 		},
 		"@ui5/fs": {
@@ -4653,11 +4686,13 @@
 			}
 		},
 		"jsdoc": {
-			"version": "3.6.11",
-			"resolved": "https://registry.npmjs.org/jsdoc/-/jsdoc-3.6.11.tgz",
-			"integrity": "sha512-8UCU0TYeIYD9KeLzEcAu2q8N/mx9O3phAGl32nmHlE0LpaJL71mMkP4d+QE5zWfNt50qheHtOZ0qoxVrsX5TUg==",
+			"version": "4.0.0",
+			"resolved": "https://registry.npmjs.org/jsdoc/-/jsdoc-4.0.0.tgz",
+			"integrity": "sha512-tzTgkklbWKrlaQL2+e3NNgLcZu3NaK2vsHRx7tyHQ+H5jcB9Gx0txSd2eJWlMC/xU1+7LQu4s58Ry0RkuaEQVg==",
+			"dev": true,
 			"requires": {
 				"@babel/parser": "^7.9.4",
+				"@jsdoc/salty": "^0.2.1",
 				"@types/markdown-it": "^12.2.3",
 				"bluebird": "^3.7.2",
 				"catharsis": "^0.9.0",
@@ -4670,7 +4705,6 @@
 				"mkdirp": "^1.0.4",
 				"requizzle": "^0.2.3",
 				"strip-json-comments": "^3.1.0",
-				"taffydb": "2.6.2",
 				"underscore": "~1.13.2"
 			}
 		},
@@ -5025,9 +5059,9 @@
 			"integrity": "sha512-PI1qEHHkTNWT+X6Ip9w+paonfIQ+QZP9sCeMYi47oqhH+EsW8CrJ8J7CzV19QVOj6il8ATGbK2nTECj22ZHGvQ=="
 		},
 		"marked": {
-			"version": "4.1.1",
-			"resolved": "https://registry.npmjs.org/marked/-/marked-4.1.1.tgz",
-			"integrity": "sha512-0cNMnTcUJPxbA6uWmCmjWz4NJRe/0Xfk2NhXCUHjew9qJzFN20krFnsUe7QynwqOwa5m1fZ4UDg0ycKFVC0ccw=="
+			"version": "4.2.1",
+			"resolved": "https://registry.npmjs.org/marked/-/marked-4.2.1.tgz",
+			"integrity": "sha512-VK1/jNtwqDLvPktNpL0Fdg3qoeUZhmRsuiIjPEy/lHwXW4ouLoZfO4XoWd4ClDt+hupV1VLpkZhEovjU0W/kqA=="
 		},
 		"matcher": {
 			"version": "3.0.0",
