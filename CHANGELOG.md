@@ -2,7 +2,40 @@
 All notable changes to this project will be documented in this file.  
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-A list of unreleased changes can be found [here](https://github.com/SAP/ui5-cli/compare/v3.0.0-beta.1...HEAD).
+A list of unreleased changes can be found [here](https://github.com/SAP/ui5-cli/compare/v3.0.0-beta.5...HEAD).
+
+<a name="v3.0.0-beta.5"></a>
+## [v3.0.0-beta.5] - 2022-12-12
+### Dependency Updates
+- Bump [@ui5](https://github.com/ui5)/builder from 3.0.0-beta.4 to 3.0.0-beta.5 [`704fbc0`](https://github.com/SAP/ui5-cli/commit/704fbc0d1250253621182dc66209b5ed6b58533e)
+
+
+<a name="v3.0.0-beta.4"></a>
+## [v3.0.0-beta.4] - 2022-12-01
+### Dependency Updates
+- Bump [@ui5](https://github.com/ui5)/server from 3.0.0-beta.3 to 3.0.0-beta.4 [`6b56f84`](https://github.com/SAP/ui5-cli/commit/6b56f8465e5e9d46254b70ad741864366cd61749)
+- Bump [@ui5](https://github.com/ui5)/builder from 3.0.0-beta.3 to 3.0.0-beta.4 [`30acd00`](https://github.com/SAP/ui5-cli/commit/30acd0074550e595b67317435d130d39d3016344)
+- Bump [@ui5](https://github.com/ui5)/fs from 3.0.0-beta.3 to 3.0.0-beta.4 [`db43b2e`](https://github.com/SAP/ui5-cli/commit/db43b2e04ea015bfce4654781288669e548bd68a)
+
+
+<a name="v3.0.0-beta.3"></a>
+## [v3.0.0-beta.3] - 2022-11-30
+### Dependency Updates
+- Bump [@ui5](https://github.com/ui5)/project from 3.0.0-beta.3 to 3.0.0-beta.4 [`a5cb382`](https://github.com/SAP/ui5-cli/commit/a5cb382382155fc2ca28e4eb18e6579bfbd70301)
+- Bump [@ui5](https://github.com/ui5)/server from 3.0.0-beta.2 to 3.0.0-beta.3 [`a0c8924`](https://github.com/SAP/ui5-cli/commit/a0c8924fbf07fa2e621506675c582fffa200436f)
+- Bump [@ui5](https://github.com/ui5)/builder from 3.0.0-beta.2 to 3.0.0-beta.3 [`4b9a71c`](https://github.com/SAP/ui5-cli/commit/4b9a71c0ee8a6fc47902b4b2767a886860c76b90)
+
+
+<a name="v3.0.0-beta.2"></a>
+## [v3.0.0-beta.2] - 2022-11-29
+### Dependency Updates
+- Bump [@ui5](https://github.com/ui5)/server from 3.0.0-beta.1 to 3.0.0-beta.2 [`8bbfcf9`](https://github.com/SAP/ui5-cli/commit/8bbfcf9e51036c7c9b60e29f53b011a60063c2ea)
+- Bump [@ui5](https://github.com/ui5)/builder from 3.0.0-beta.1 to 3.0.0-beta.2 [`3b241bc`](https://github.com/SAP/ui5-cli/commit/3b241bca435e107772473fab226b652ab3abbe69)
+- Bump [@ui5](https://github.com/ui5)/project from 3.0.0-beta.2 to 3.0.0-beta.3 [`1654cbc`](https://github.com/SAP/ui5-cli/commit/1654cbc91d6c0483144afbe600738a6bee5b4b66)
+- Bump [@ui5](https://github.com/ui5)/project from 3.0.0-beta.1 to 3.0.0-beta.2 [`677dc78`](https://github.com/SAP/ui5-cli/commit/677dc7856363051db7a4b0b2feb312a98cec943a)
+- Bump [@ui5](https://github.com/ui5)/fs from 3.0.0-beta.2 to 3.0.0-beta.3 [`6f59a7e`](https://github.com/SAP/ui5-cli/commit/6f59a7ed1124dc7e55cbbc42bfe2262103f78ef9)
+- Bump [@ui5](https://github.com/ui5)/logger from 3.0.1-beta.0 to 3.0.1-beta.1 [`1532039`](https://github.com/SAP/ui5-cli/commit/15320397fae3ccba9a702bbb6d920367c67c738a)
+
 
 <a name="v3.0.0-beta.1"></a>
 ## [v3.0.0-beta.1] - 2022-11-07
@@ -852,6 +885,10 @@ Only Node.js v10 or higher is supported.
 <a name="v0.0.1"></a>
 ## v0.0.1 - 2018-06-06
 
+[v3.0.0-beta.5]: https://github.com/SAP/ui5-cli/compare/v3.0.0-beta.4...v3.0.0-beta.5
+[v3.0.0-beta.4]: https://github.com/SAP/ui5-cli/compare/v3.0.0-beta.3...v3.0.0-beta.4
+[v3.0.0-beta.3]: https://github.com/SAP/ui5-cli/compare/v3.0.0-beta.2...v3.0.0-beta.3
+[v3.0.0-beta.2]: https://github.com/SAP/ui5-cli/compare/v3.0.0-beta.1...v3.0.0-beta.2
 [v3.0.0-beta.1]: https://github.com/SAP/ui5-cli/compare/v3.0.0-alpha.15...v3.0.0-beta.1
 [v3.0.0-alpha.15]: https://github.com/SAP/ui5-cli/compare/v3.0.0-alpha.14...v3.0.0-alpha.15
 [v3.0.0-alpha.14]: https://github.com/SAP/ui5-cli/compare/v3.0.0-alpha.13...v3.0.0-alpha.14

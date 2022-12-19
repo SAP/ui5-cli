@@ -1,6 +1,6 @@
 {
 	"name": "@ui5/cli",
-	"version": "3.0.0-beta.1",
+	"version": "3.0.0-beta.5",
 	"description": "UI5 Tooling - CLI",
 	"author": {
 		"name": "SAP SE",
@@ -26,7 +26,7 @@
 		"./package.json": "./package.json"
 	},
 	"engines": {
-		"node": ">= 16.13.2",
+		"node": "^16.18.0 || >=18.0.0",
 		"npm": ">= 8"
 	},
 	"scripts": {
@@ -116,16 +116,16 @@
 		"url": "git@github.com:SAP/ui5-cli.git"
 	},
 	"dependencies": {
-		"@ui5/builder": "^3.0.0-beta.1",
-		"@ui5/fs": "^3.0.0-beta.2",
-		"@ui5/logger": "^3.0.1-beta.0",
-		"@ui5/project": "^3.0.0-beta.1",
-		"@ui5/server": "^3.0.0-beta.1",
-		"chalk": "^4.1.2",
+		"@ui5/builder": "^3.0.0-beta.6",
+		"@ui5/fs": "^3.0.0-beta.4",
+		"@ui5/logger": "^3.0.1-beta.1",
+		"@ui5/project": "^3.0.0-beta.4",
+		"@ui5/server": "^3.0.0-beta.4",
+		"chalk": "^5.2.0",
 		"data-with-position": "^0.5.0",
 		"import-local": "^3.1.0",
 		"js-yaml": "^4.1.0",
-		"open": "^7.4.2",
+		"open": "^8.4.0",
 		"pretty-hrtime": "^1.0.3",
 		"semver": "^7.3.8",
 		"update-notifier": "^6.0.2",
@@ -133,22 +133,22 @@
 	},
 	"devDependencies": {
 		"@istanbuljs/esm-loader-hook": "^0.2.0",
-		"ava": "^4.3.3",
+		"ava": "^5.1.0",
 		"chokidar-cli": "^3.0.0",
 		"cross-env": "^7.0.3",
 		"depcheck": "^1.4.3",
-		"docdash": "^1.2.0",
-		"eslint": "^8.27.0",
+		"docdash": "^2.0.0",
+		"eslint": "^8.30.0",
 		"eslint-config-google": "^0.14.0",
 		"eslint-plugin-ava": "^13.2.0",
-		"eslint-plugin-jsdoc": "^37.9.7",
-		"esmock": "^2.0.7",
-		"execa": "^5.1.1",
+		"eslint-plugin-jsdoc": "^39.6.4",
+		"esmock": "^2.1.0",
+		"execa": "^6.1.0",
 		"jsdoc": "^3.6.11",
 		"nyc": "^15.1.0",
 		"open-cli": "^7.1.0",
 		"rimraf": "^3.0.2",
-		"sinon": "^14.0.2",
+		"sinon": "^15.0.1",
 		"tap-nyan": "^1.1.0",
 		"tap-xunit": "^2.4.1"
 	}
