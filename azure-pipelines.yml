@@ -10,20 +10,29 @@ trigger:
 strategy:
   matrix:
     linux_node_min_version:
-      imageName: 'ubuntu-20.04'
+      imageName: 'ubuntu-latest'
       node_version: 16.18.0
     linux_node_lts_16:
-      imageName: 'ubuntu-20.04'
+      imageName: 'ubuntu-latest'
       node_version: 16.x
-    linux_node_latest:
-      imageName: 'ubuntu-20.04'
+    linux_node_lts_18:
+      imageName: 'ubuntu-latest'
       node_version: 18.x
-    mac_node_latest:
-      imageName: 'macOS-11'
+    mac_node_lts_18:
+      imageName: 'macOS-latest'
       node_version: 18.x
-    windows_node_latest:
-      imageName: 'windows-2022'
+    windows_node_lts_18:
+      imageName: 'windows-latest'
       node_version: 18.x
+    linux_node_current:
+      imageName: 'ubuntu-latest'
+      node_version: 19.x
+    mac_node_current:
+      imageName: 'macOS-latest'
+      node_version: 19.x
+    windows_node_current:
+      imageName: 'windows-latest'
+      node_version: 19.x
 
 pool:
   vmImage: $(imageName)
