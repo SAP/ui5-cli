@@ -9,29 +9,29 @@ trigger:
 
 strategy:
   matrix:
-    linux_node_min_version:
-      imageName: 'ubuntu-latest'
-      node_version: 16.18.0
     linux_node_lts_16:
-      imageName: 'ubuntu-latest'
+      imageName: 'ubuntu-22.04'
       node_version: 16.x
+    linux_node_lts_18_min_version:
+      imageName: 'ubuntu-22.04'
+      node_version: 18.12.0
     linux_node_lts_18:
-      imageName: 'ubuntu-latest'
+      imageName: 'ubuntu-22.04'
       node_version: 18.x
     mac_node_lts_18:
-      imageName: 'macOS-latest'
+      imageName: 'macos-12'
       node_version: 18.x
     windows_node_lts_18:
-      imageName: 'windows-latest'
+      imageName: 'windows-2022'
       node_version: 18.x
     linux_node_current:
-      imageName: 'ubuntu-latest'
+      imageName: 'ubuntu-22.04'
       node_version: 19.x
     mac_node_current:
-      imageName: 'macOS-latest'
+      imageName: 'macos-12'
       node_version: 19.x
     windows_node_current:
-      imageName: 'windows-latest'
+      imageName: 'windows-2022'
       node_version: 19.x
 
 pool:
