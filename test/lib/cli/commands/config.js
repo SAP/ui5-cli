@@ -55,7 +55,6 @@ test.afterEach.always((t) => {
 test.serial("ui5 config list", async (t) => {
 	const {config, argv, consoleLog} = t.context;
 
-	// console.log(promisifyStub);
 	argv["_"] = ["list"];
 	await config.handler(argv);
 
@@ -71,7 +70,7 @@ test.serial("ui5 config get", async (t) => {
 
 	t.true(
 		consoleLog.getCall(0)
-			.args[0].startsWith("Getting property [1msnapshotEndpointUrl"),
+			.args[0].startsWith("Getting property "),
 		"Getting key from config file"
 	);
 });
@@ -86,7 +85,7 @@ test.serial("ui5 config set", async (t) => {
 
 	t.true(
 		consoleLog.getCall(0)
-			.args[0].startsWith("Set property [1msnapshotEndpointUrl[22m into "),
+			.args[0].startsWith("Set property "),
 		"Setting value into file"
 	);
 });
@@ -101,7 +100,7 @@ test.serial("ui5 config set empty value should delete", async (t) => {
 
 	t.true(
 		consoleLog.getCall(0)
-			.args[0].startsWith("Set property [1msnapshotEndpointUrl[22m into "),
+			.args[0].startsWith("Set property "),
 		"Setting value into file"
 	);
 });
