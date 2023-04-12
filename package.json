@@ -117,7 +117,7 @@
 		"import-local": "^3.1.0",
 		"js-yaml": "^4.1.0",
 		"open": "^7.4.2",
-		"semver": "^7.3.8",
+		"semver": "^7.4.0",
 		"treeify": "^1.0.1",
 		"update-notifier": "^6.0.2",
 		"yargs": "^16.2.0"
