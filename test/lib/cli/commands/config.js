@@ -36,7 +36,7 @@ test.beforeEach(async (t) => {
 
 	t.context.promisifyStub
 		.withArgs(fs.readFile)
-		.returns(() => JSON.stringify({snapshotEndpointUrl: "__url__"}));
+		.returns(() => JSON.stringify({mavenSnapshotEndpointUrl: "__url__"}));
 
 	t.context.promisifyStub.withArgs(fs.writeFile).returns(() => {});
 
@@ -65,7 +65,7 @@ test.serial("ui5 config get", async (t) => {
 	const {config, argv, consoleLog} = t.context;
 
 	argv["_"] = ["get"];
-	argv["key"] = "snapshotEndpointUrl";
+	argv["key"] = "mavenSnapshotEndpointUrl";
 	await config.handler(argv);
 
 	t.true(
@@ -79,7 +79,7 @@ test.serial("ui5 config set", async (t) => {
 	const {config, argv, consoleLog} = t.context;
 
 	argv["_"] = ["set"];
-	argv["key"] = "snapshotEndpointUrl";
+	argv["key"] = "mavenSnapshotEndpointUrl";
 	argv["value"] = "https://_snapshot_endpoint_";
 	await config.handler(argv);
 
@@ -94,7 +94,7 @@ test.serial("ui5 config set empty value should delete", async (t) => {
 	const {config, argv, consoleLog} = t.context;
 
 	argv["_"] = ["set"];
-	argv["key"] = "snapshotEndpointUrl";
+	argv["key"] = "mavenSnapshotEndpointUrl";
 	argv["value"] = "";
 	await config.handler(argv);
 
@@ -114,7 +114,7 @@ test.serial("ui5 config invalid key", async (t) => {
 
 	await t.throwsAsync(config.handler(argv), {
 		message:
-			"The provided key is not part of the .ui5rc allowed options: snapshotEndpointUrl",
+			"The provided key is not part of the .ui5rc allowed options: mavenSnapshotEndpointUrl",
 	});
 });
 
