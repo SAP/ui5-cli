@@ -128,8 +128,7 @@
 		"pretty-hrtime": "^1.0.3",
 		"semver": "^7.5.0",
 		"update-notifier": "^6.0.2",
-		"yargs": "^17.7.1",
-		"graceful-fs": "^4.2.11"
+		"yargs": "^17.7.1"
 	},
 	"devDependencies": {
 		"@istanbuljs/esm-loader-hook": "^0.2.0",

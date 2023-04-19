@@ -32,19 +32,8 @@ test.beforeEach(async (t) => {
 
 	t.context.builder = sinon.stub().resolves();
 	t.context.consoleLog = sinon.stub(console, "log");
-	t.context.promisifyStub = sinon.stub();
 
-	t.context.promisifyStub
-		.withArgs(fs.readFile)
-		.returns(() => JSON.stringify({mavenSnapshotEndpointUrl: "__url__"}));
-
-	t.context.promisifyStub.withArgs(fs.writeFile).returns(() => {});
-
-	t.context.config = await esmock.p("../../../../lib/cli/commands/config.js", {
-		"node:util": {
-			"promisify": t.context.promisifyStub
-		},
-	});
+	t.context.config = await esmock.p("../../../../lib/cli/commands/config.js");
 });
 
 test.afterEach.always((t) => {
