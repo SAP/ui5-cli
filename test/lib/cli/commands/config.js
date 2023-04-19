@@ -1,7 +1,6 @@
 import test from "ava";
 import sinon from "sinon";
 import esmock from "esmock";
-const {default: fs} = await import("graceful-fs");
 
 function getDefaultArgv() {
 	// This has been taken from the actual argv object yargs provides
