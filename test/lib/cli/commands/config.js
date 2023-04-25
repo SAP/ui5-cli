@@ -138,7 +138,7 @@ test.serial("ui5 config set", async (t) => {
 	}, "Configuration#toFile got called with expected argument");
 });
 
-test.serial("ui5 config set without value should delete", async (t) => {
+test.serial("ui5 config set without a value should delete the configuration", async (t) => {
 	const {config, argv, stderrWriteStub, stdoutWriteStub, Configuration} = t.context;
 
 	argv["_"] = ["set"];
@@ -157,7 +157,7 @@ test.serial("ui5 config set without value should delete", async (t) => {
 	}, "Configuration#toFile got called with expected argument");
 });
 
-test.serial("ui5 config set empty value should delete", async (t) => {
+test.serial("ui5 config set with an empty value should delete the configuration", async (t) => {
 	const {config, argv, stderrWriteStub, stdoutWriteStub, Configuration} = t.context;
 
 	argv["_"] = ["set"];
@@ -176,7 +176,7 @@ test.serial("ui5 config set empty value should delete", async (t) => {
 	}, "Configuration#toFile got called with expected argument");
 });
 
-test.serial("ui5 config set null should update", async (t) => {
+test.serial("ui5 config set null should update the configuration", async (t) => {
 	const {config, argv, stderrWriteStub, stdoutWriteStub, Configuration} = t.context;
 
 	argv["_"] = ["set"];
@@ -199,7 +199,7 @@ test.serial("ui5 config set null should update", async (t) => {
 	}, "Configuration#toFile got called with expected argument");
 });
 
-test.serial("ui5 config set false should update", async (t) => {
+test.serial("ui5 config set false should update the configuration", async (t) => {
 	const {config, argv, stderrWriteStub, stdoutWriteStub, Configuration} = t.context;
 
 	argv["_"] = ["set"];
