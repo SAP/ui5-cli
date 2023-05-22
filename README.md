@@ -12,8 +12,9 @@
 
 ## Deprecation
 
-> [UI5 Tooling v2](https://sap.github.io/ui5-tooling/v2) has been deprectaed 🚫  
-> Please migrate your projects to [UI5 Tooling v3](https://sap.github.io/ui5-tooling/v3/updates/migrate-v3/)!
+> 🚫 [UI5 Tooling v2](https://sap.github.io/ui5-tooling/v2) has been deprectaed!
+
+> ✅ Please migrate your projects to [UI5 Tooling v3](https://sap.github.io/ui5-tooling/v3/updates/migrate-v3/)!
 
 ## Documentation
 Can be found here: [sap.github.io/ui5-tooling](https://sap.github.io/ui5-tooling/pages/CLI/)
