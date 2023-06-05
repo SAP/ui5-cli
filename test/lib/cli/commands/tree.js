@@ -310,10 +310,10 @@ test.serial("ui5 tree --level 1", async (t) => {
 ${chalk.dim.italic("/home/project1")}
     ├─ ${chalk.bold("dependency1")} ${chalk.dim("(1.1.1, library) ")}\
 ${chalk.dim.italic("/home/dependency1")}
-    │   ╰─ ${chalk.dim.italic("Dependencies above level 1 are hidden")}
+    │   ╰─ ${chalk.dim.italic("Dependencies below level 1 are hidden")}
     ╰─ ${chalk.bold("dependency2")} ${chalk.inverse("test/dependency2")} \
 ${chalk.dim("(2.0.0, library) ")}${chalk.dim.italic("/home/dependency2")}
-        ╰─ ${chalk.dim.italic("Dependencies above level 1 are hidden")}
+        ╰─ ${chalk.dim.italic("Dependencies below level 1 are hidden")}
 
 ${chalk.bold.underline("Extensions (0):")}
 ${chalk.italic("None")}
