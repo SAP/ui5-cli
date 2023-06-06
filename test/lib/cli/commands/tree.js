@@ -226,6 +226,7 @@ test.serial("ui5 tree --flat", async (t) => {
 	t.deepEqual(graph.graphFromPackageDependencies.getCall(0).args, [{
 		rootConfigPath: undefined, versionOverride: undefined,
 		workspaceConfigPath: undefined, workspaceName: undefined,
+		cacheMode: "Default",
 	}]);
 
 	t.is(t.context.consoleOutput,
@@ -302,6 +303,7 @@ test.serial("ui5 tree --level 1", async (t) => {
 	t.deepEqual(graph.graphFromPackageDependencies.getCall(0).args, [{
 		rootConfigPath: undefined, versionOverride: undefined,
 		workspaceConfigPath: undefined, workspaceName: undefined,
+		cacheMode: "Default",
 	}]);
 
 	t.is(t.context.consoleOutput,
@@ -310,10 +312,10 @@ test.serial("ui5 tree --level 1", async (t) => {
 ${chalk.dim.italic("/home/project1")}
     ├─ ${chalk.bold("dependency1")} ${chalk.dim("(1.1.1, library) ")}\
 ${chalk.dim.italic("/home/dependency1")}
-    │   ╰─ ${chalk.dim.italic("Dependencies below level 1 are hidden")}
+    │   ╰─ ${chalk.dim.italic("Dependencies below Level 1 are hidden")}
     ╰─ ${chalk.bold("dependency2")} ${chalk.inverse("test/dependency2")} \
 ${chalk.dim("(2.0.0, library) ")}${chalk.dim.italic("/home/dependency2")}
-        ╰─ ${chalk.dim.italic("Dependencies below level 1 are hidden")}
+        ╰─ ${chalk.dim.italic("Dependencies below Level 1 are hidden")}
 
 ${chalk.bold.underline("Extensions (0):")}
 ${chalk.italic("None")}
@@ -503,7 +505,8 @@ test.serial("ui5 tree --cache-mode", async (t) => {
 				getNamespace: sinon.stub().returns("test/project1"),
 				getVersion: sinon.stub().returns("1.0.0"),
 				getType: sinon.stub().returns("application"),
-				getRootPath: sinon.stub().returns("/home/project1")
+				getRootPath: sinon.stub().returns("/home/project1"),
+				isFrameworkProject: sinon.stub().returns(false)
 			},
 			dependencies: []
 		});
