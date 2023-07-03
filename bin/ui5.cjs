@@ -90,12 +90,19 @@ const ui5 = {
 	},
 
 	async invokeCLI(pkg) {
+		let profile;
 		if (process.env.UI5_CLI_PROFILE) {
-			const profile = await import("../lib/utils/profile.js");
+			profile = await import("../lib/utils/profile.js");
 			await profile.start();
 		}
 		const {default: cli} = await import("../lib/cli/cli.js");
-		await cli(pkg);
+		const {command} = await cli(pkg);
+
+		// Stop profiling after CLI finished execution
+		// Except for "serve" command, which continues running and only stops on sigint (see profile.js)
+		if (profile && command !== "serve") {
+			await profile.stop();
+		}
 	},
 
 	async main() {
@@ -105,8 +112,7 @@ const ui5 = {
 		} else {
 			const localInstallationInvoked = await ui5.invokeLocalInstallation(pkg);
 			if (!localInstallationInvoked) {
-				const exitCode = await ui5.invokeCLI(pkg);
-				process.exit(exitCode);
+				await ui5.invokeCLI(pkg);
 			}
 		}
 	}
