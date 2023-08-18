@@ -5,6 +5,7 @@ import chalk from "chalk";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 import {execa} from "execa";
+import stripAnsi from "strip-ansi";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ui5Cli = path.join(__dirname, "..", "..", "..", "..", "bin", "ui5.cjs");
@@ -236,7 +237,8 @@ test.serial("ui5 config invalid option", async (t) => {
 
 test.serial("ui5 config empty option", async (t) => {
 	await t.throwsAsync(ui5(["config", "set"]), {
-		message: `Command failed with exit code 1: ${ui5Cli} config set
+		message: ($) => stripAnsi($) ===
+			`Command failed with exit code 1: ${ui5Cli} config set
 Command Failed:
 Not enough non-option arguments: got 0, need at least 1
 
@@ -246,7 +248,8 @@ See 'ui5 --help'`
 
 test.serial("ui5 config unknown command", async (t) => {
 	await t.throwsAsync(ui5(["config", "foo"]), {
-		message: `Command failed with exit code 1: ${ui5Cli} config foo
+		message: ($) => stripAnsi($) ===
+			`Command failed with exit code 1: ${ui5Cli} config foo
 Command Failed:
 Unknown argument: foo
 
