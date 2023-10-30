@@ -324,7 +324,6 @@ test.serial("integration: main / invokeCLI", async (t) => {
 
 test.serial("integration: Executing main when required as main module", async (t) => {
 	const {sinon, consoleLogStub} = t.context;
-	await td.reset();
 
 	const processExit = new Promise((resolve) => {
 		const processExitStub = sinon.stub(process, "exit");
@@ -351,7 +350,6 @@ test.serial("integration: Executing main when required as main module", async (t
 
 test.serial("integration: Executing main when required as main module (catch initialize error)", async (t) => {
 	const {sinon, consoleLogStub} = t.context;
-	await td.reset();
 
 	const processExit = new Promise((resolve) => {
 		const processExitStub = sinon.stub(process, "exit");
