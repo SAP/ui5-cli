@@ -50,7 +50,8 @@ function getDefaultBuilderArgs() {
 		jsdoc: false,
 		includedTasks: undefined,
 		excludedTasks: undefined,
-		cssVariables: false
+		cssVariables: false,
+		flatOutput: undefined
 	};
 }
 
