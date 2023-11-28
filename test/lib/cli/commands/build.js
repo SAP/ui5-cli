@@ -364,3 +364,15 @@ test.serial("ui5 build --experimental-css-variables", async (t) => {
 	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs,
 		"Build with activated CSS Variables is called with expected arguments");
 });
+
+test.serial("ui5 build --flat-output", async (t) => {
+	const {build, argv, builder, expectedBuilderArgs} = t.context;
+
+	argv["flat-output"] = true;
+
+	await build.handler(argv);
+
+	expectedBuilderArgs.flatOutput = true;
+	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs,
+		"Build with activated flatOutput is called with expected arguments");
+});
