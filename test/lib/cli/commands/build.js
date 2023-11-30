@@ -376,5 +376,5 @@ test.serial("ui5 build --output-style", async (t) => {
 
 	expectedBuilderArgs.outputStyle = "Flat";
 	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs,
-		"Build with activated flatOutput is called with expected arguments");
+		"Build with activated outputStyle='Flat' is called with expected arguments");
 });
