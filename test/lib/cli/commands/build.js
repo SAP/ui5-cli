@@ -25,7 +25,7 @@ function getDefaultArgv() {
 		"experimentalCssVariables": false,
 		"cache-mode": "Default",
 		"cacheMode": "Default",
-		"output-style": "default",
+		"output-style": "Default",
 		"$0": "ui5"
 	};
 }
@@ -370,11 +370,11 @@ test.serial("ui5 build --experimental-css-variables", async (t) => {
 test.serial("ui5 build --output-style", async (t) => {
 	const {build, argv, builder, expectedBuilderArgs} = t.context;
 
-	argv["output-style"] = "flat";
+	argv["output-style"] = "Flat";
 
 	await build.handler(argv);
 
 	expectedBuilderArgs.outputStyle = "Flat";
 	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs,
-		"Build with activated outputStyle='flat' is called with expected arguments");
+		"Build with activated outputStyle='Flat' is called with expected arguments");
 });
