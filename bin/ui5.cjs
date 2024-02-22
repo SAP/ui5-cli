@@ -77,13 +77,14 @@ const ui5 = {
 			return false;
 		}
 		if (process.argv.includes("--verbose")) {
-			console.info(`INFO: This project contains an individual ${pkg.name} installation which ` +
+			process.stderr.write(`INFO: This project contains an individual ${pkg.name} installation which ` +
 			"will be used over the global one.");
-			console.info("See https://github.com/SAP/ui5-cli#local-vs-global-installation for details.");
-			console.info("");
+			process.stderr.write("\n");
+			process.stderr.write("See https://github.com/SAP/ui5-cli#local-vs-global-installation for details.");
+			process.stderr.write("\n\n");
 		} else {
-			console.info(`INFO: Using local ${pkg.name} installation`);
-			console.info("");
+			process.stderr.write(`INFO: Using local ${pkg.name} installation`);
+			process.stderr.write("\n\n");
 		}
 		return true;
 	},

@@ -35,7 +35,6 @@ test.before(() => {
 test.beforeEach(async (t) => {
 	const sinon = t.context.sinon = sinonGlobal.createSandbox();
 	t.context.processStderrWriteStub = sinon.stub(process.stderr, "write");
-	t.context.consoleInfoStub = sinon.stub(console, "info");
 	t.context.originalArgv = process.argv;
 	process.env.UI5_CLI_TEST_BIN_RUN_MAIN = "false"; // prevent automatic execution of main function
 
@@ -77,7 +76,7 @@ test.serial("checkRequirements: Using supported Node.js version", (t) => {
 	});
 
 	t.true(returnValue);
-	t.is(processStderrWriteStub.callCount, 0, "console.log should not be called");
+	t.is(processStderrWriteStub.callCount, 0, "stderr info should not be provided");
 });
 
 test.serial("checkRequirements: Using unsupported Node.js version", (t) => {
@@ -149,7 +148,7 @@ test.serial("checkRequirements: logs warning when using pre-release Node.js vers
 });
 
 test.serial("invokeLocalInstallation: Invokes local installation when found", async (t) => {
-	const {processStderrWriteStub, consoleInfoStub} = t.context;
+	const {processStderrWriteStub} = t.context;
 
 	importLocalStub.returns({});
 
@@ -159,11 +158,10 @@ test.serial("invokeLocalInstallation: Invokes local installation when found", as
 
 	t.true(returnValue);
 
-	t.is(processStderrWriteStub.callCount, 0, "console.log should not be called");
-	t.is(consoleInfoStub.callCount, 2, "console.info should be called 2 times");
+	t.is(processStderrWriteStub.callCount, 2, "Information messages should be provided");
 
-	t.deepEqual(consoleInfoStub.getCall(0).args, ["INFO: Using local ui5-cli-test installation"]);
-	t.deepEqual(consoleInfoStub.getCall(1).args, [""]);
+	t.deepEqual(processStderrWriteStub.getCall(0).args, ["INFO: Using local ui5-cli-test installation"]);
+	t.deepEqual(processStderrWriteStub.getCall(1).args, ["\n\n"]);
 
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
 	t.is(importLocalStub.getCall(0).args.length, 1);
@@ -173,7 +171,7 @@ test.serial("invokeLocalInstallation: Invokes local installation when found", as
 });
 
 test.serial("invokeLocalInstallation: Invokes local installation when found (/w --verbose)", async (t) => {
-	const {processStderrWriteStub, consoleInfoStub} = t.context;
+	const {processStderrWriteStub} = t.context;
 
 	importLocalStub.returns({});
 
@@ -186,16 +184,15 @@ test.serial("invokeLocalInstallation: Invokes local installation when found (/w 
 
 	t.true(returnValue);
 
-	t.is(processStderrWriteStub.callCount, 0, "console.log should not be called");
-	t.is(consoleInfoStub.callCount, 3, "console.info should be called 3 times");
+	t.is(processStderrWriteStub.callCount, 4, "console.info should be called 3 times");
 
-	t.deepEqual(consoleInfoStub.getCall(0).args, [
+	t.deepEqual(processStderrWriteStub.getCall(0).args, [
 		"INFO: This project contains an individual ui5-cli-test installation which " +
 		"will be used over the global one."]);
-	t.deepEqual(consoleInfoStub.getCall(1).args, [
+	t.deepEqual(processStderrWriteStub.getCall(2).args, [
 		"See https://github.com/SAP/ui5-cli#local-vs-global-installation for details."
 	]);
-	t.deepEqual(consoleInfoStub.getCall(2).args, [""]);
+	t.deepEqual(processStderrWriteStub.getCall(3).args, ["\n\n"]);
 
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
 	t.is(importLocalStub.getCall(0).args.length, 1);
@@ -205,7 +202,7 @@ test.serial("invokeLocalInstallation: Invokes local installation when found (/w 
 });
 
 test.serial("invokeLocalInstallation: Doesn't invoke local installation when UI5_CLI_NO_LOCAL is set", async (t) => {
-	const {processStderrWriteStub, consoleInfoStub} = t.context;
+	const {processStderrWriteStub} = t.context;
 
 	process.env.UI5_CLI_NO_LOCAL = "true";
 
@@ -215,14 +212,13 @@ test.serial("invokeLocalInstallation: Doesn't invoke local installation when UI5
 
 	t.false(returnValue);
 
-	t.is(processStderrWriteStub.callCount, 0, "console.log should not be called");
-	t.is(consoleInfoStub.callCount, 0, "console.info should not be called");
+	t.is(processStderrWriteStub.callCount, 0, "Information messages should be provided");
 
 	t.is(importLocalStub.callCount, 0, "import-local should not be called");
 });
 
 test.serial("invokeLocalInstallation: Doesn't invoke local installation when it is not found", async (t) => {
-	const {processStderrWriteStub, consoleInfoStub} = t.context;
+	const {processStderrWriteStub} = t.context;
 
 	importLocalStub.returns(undefined);
 
@@ -232,8 +228,7 @@ test.serial("invokeLocalInstallation: Doesn't invoke local installation when it 
 
 	t.false(returnValue);
 
-	t.is(processStderrWriteStub.callCount, 0, "console.log should not be called");
-	t.is(consoleInfoStub.callCount, 0, "console.info should not be called");
+	t.is(processStderrWriteStub.callCount, 0, "stderr info should not be provided");
 
 	t.is(importLocalStub.callCount, 1, "import-local should be called");
 });

@@ -37,18 +37,18 @@ test.afterEach.always((t) => {
 });
 
 test.serial("ui5 --version", async (t) => {
-	const {stderr: stderr} = await ui5(["--version"]);
-	t.is(stderr, `${pkg.version} (from ${ui5Cli})`);
+	const {stdout} = await ui5(["--version"]);
+	t.is(stdout, `${pkg.version} (from ${ui5Cli})`);
 });
 
 test.serial("ui5 -v", async (t) => {
-	const {stderr} = await ui5(["-v"]);
-	t.is(stderr, `${pkg.version} (from ${ui5Cli})`);
+	const {stdout} = await ui5(["-v"]);
+	t.is(stdout, `${pkg.version} (from ${ui5Cli})`);
 });
 
 test.serial("Handle multiple options", async (t) => {
 	const {stderr} = await ui5(["versions", "--log-level", "silent", "--log-level", "silly"]);
-	t.regex(stripAnsi(stderr), /^verb/, "Verbose logging got enabled");
+	t.regex(stripAnsi(stderr), /verb/g, "Verbose logging got enabled");
 });
 
 test.serial("Yargs error handling", async (t) => {
