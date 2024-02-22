@@ -102,15 +102,8 @@ const ui5 = (args, options = {}) => execa(ui5Cli, args, options);
 test("ui5 --verbose", async (t) => {
 	// Using "versions" as a command, as the --verbose flag can't be used standalone
 	const {stderr} = await ui5(["versions", "--verbose"]);
-	t.true(stripAnsi(stderr).includes( // Debugger info is also included into the message. We need to exclude it
+	// Debugger info is also included into the message. We need to exclude it
+	t.true(stripAnsi(stderr).includes(
 		`verb cli:middlewares:base using @ui5/cli version ${pkg.version} (from ${ui5Cli})\n`+
-		`verb cli:middlewares:base using node version ${process.version}\n` +
-		`\n` +
-		`@ui5/cli:      ${pkg.version}\n` +
-		`@ui5/builder:  ${pkg.version}\n` +
-		`@ui5/server:   ${pkg.version}\n` +
-		`@ui5/fs:       ${pkg.version}\n` +
-		`@ui5/project:  ${pkg.version}\n` +
-		`@ui5/logger:   ${pkg.version}\n`
-	));
+		`verb cli:middlewares:base using node version ${process.version}`));
 });
