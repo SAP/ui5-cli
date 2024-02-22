@@ -50,7 +50,7 @@ async function assertFailingYamlUpdateRemoveHandler(t, {argv, expectedMessage}) 
 }
 
 test.beforeEach((t) => {
-	t.context.consoleLogStub = sinon.stub(console, "log");
+	t.context.consoleLogStub = sinon.stub(process.stderr, "write");
 });
 
 test.afterEach.always((t) => {
@@ -64,7 +64,9 @@ test.serial("Accepts single library", async (t) => {
 		expectedLibraries: [{name: "sap.ui.lib1"}],
 		expectedConsoleLog: [
 			"Updated configuration written to ui5.yaml",
-			"Removed framework library sap.ui.lib1 as dependency"
+			"\n",
+			"Removed framework library sap.ui.lib1 as dependency",
+			"\n"
 		]
 	});
 });
@@ -75,7 +77,9 @@ test.serial("Accepts multiple libraries", async (t) => {
 		expectedLibraries: [{name: "sap.ui.lib1"}, {name: "sap.ui.lib2"}],
 		expectedConsoleLog: [
 			"Updated configuration written to ui5.yaml",
-			"Removed framework libraries sap.ui.lib1 sap.ui.lib2 as dependencies"
+			"\n",
+			"Removed framework libraries sap.ui.lib1 sap.ui.lib2 as dependencies",
+			"\n"
 		]
 	});
 });
@@ -86,7 +90,9 @@ test.serial("Accepts multiple libraries duplicates", async (t) => {
 		expectedLibraries: [{name: "sap.ui.lib1"}, {name: "sap.ui.lib2"}],
 		expectedConsoleLog: [
 			"Updated configuration written to ui5.yaml",
-			"Removed framework libraries sap.ui.lib1 sap.ui.lib2 as dependencies"
+			"\n",
+			"Removed framework libraries sap.ui.lib1 sap.ui.lib2 as dependencies",
+			"\n"
 		]
 	});
 });

@@ -15,7 +15,7 @@ const ui5Cli = path.join(__dirname, "..", "..", "..", "bin", "ui5.cjs");
 const ui5 = (args, options = {}) => execa(ui5Cli, args, options);
 
 test.beforeEach(async (t) => {
-	t.context.consoleLogStub = sinon.stub(console, "log");
+	t.context.consoleLogStub = sinon.stub(process.stderr, "write");
 
 	t.context.isLogLevelEnabledStub = sinon.stub();
 	t.context.isLogLevelEnabledStub.withArgs("error").returns(true);
@@ -37,13 +37,13 @@ test.afterEach.always((t) => {
 });
 
 test.serial("ui5 --version", async (t) => {
-	const {stdout} = await ui5(["--version"]);
-	t.is(stdout, `${pkg.version} (from ${ui5Cli})`);
+	const {stderr: stderr} = await ui5(["--version"]);
+	t.is(stderr, `${pkg.version} (from ${ui5Cli})`);
 });
 
 test.serial("ui5 -v", async (t) => {
-	const {stdout} = await ui5(["-v"]);
-	t.is(stdout, `${pkg.version} (from ${ui5Cli})`);
+	const {stderr} = await ui5(["-v"]);
+	t.is(stderr, `${pkg.version} (from ${ui5Cli})`);
 });
 
 test.serial("Handle multiple options", async (t) => {
@@ -80,11 +80,11 @@ test.serial("Yargs error handling", async (t) => {
 
 	t.is(errorCode, 1, "Should exit with error code 1");
 	t.is(consoleWriterStopStub.callCount, 0, "ConsoleWriter.stop did not get called");
-	t.is(consoleLogStub.callCount, 4);
+	t.is(consoleLogStub.callCount, 6);
 	t.deepEqual(consoleLogStub.getCall(0).args, [chalk.bold.yellow("Command Failed:")], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(1).args, ["Unknown argument: invalid"], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(2).args, [""], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(3).args, [
+	t.deepEqual(consoleLogStub.getCall(2).args, ["Unknown argument: invalid"], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(3).args, ["\n\n"], "Correct error log");
+	t.deepEqual(consoleLogStub.getCall(4).args, [
 		chalk.dim(`See 'ui5 --help'`)
 	], "Correct error log");
 });
@@ -123,12 +123,12 @@ test.serial("Exception error handling", async (t) => {
 
 	t.is(errorCode, 1, "Should exit with error code 1");
 	t.is(consoleWriterStopStub.callCount, 1, "ConsoleWriter.stop got called once");
-	t.is(consoleLogStub.callCount, 7);
+	t.is(consoleLogStub.callCount, 10);
 	t.deepEqual(consoleLogStub.getCall(1).args, [chalk.bold.red("⚠️  Process Failed With Error")], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(3).args, [chalk.underline("Error Message:")], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(4).args,
+	t.deepEqual(consoleLogStub.getCall(5).args,
 		["Some error from foo command"], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(6).args, [chalk.dim(
+	t.deepEqual(consoleLogStub.getCall(8).args, [chalk.dim(
 		`For details, execute the same command again with an additional '--verbose' parameter`)], "Correct error log");
 });
 
@@ -204,17 +204,17 @@ test.serial("Exception error handling with verbose logging", async (t) => {
 	const errorCode = await processExit;
 
 	t.is(errorCode, 1, "Should exit with error code 1");
-	t.is(consoleLogStub.callCount, 10);
+	t.is(consoleLogStub.callCount, 14);
 	t.deepEqual(consoleLogStub.getCall(1).args, [chalk.bold.red("⚠️  Process Failed With Error")], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(3).args, [chalk.underline("Error Message:")], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(4).args,
+	t.deepEqual(consoleLogStub.getCall(5).args,
 		["Some error from foo command"], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(6).args, [chalk.underline("Stack Trace:")], "Correct error log");
-	t.is(consoleLogStub.getCall(7).args.length, 1);
-	t.true(consoleLogStub.getCall(7).args[0]
+	t.deepEqual(consoleLogStub.getCall(8).args, [chalk.underline("Stack Trace:")], "Correct error log");
+	t.is(consoleLogStub.getCall(10).args.length, 1);
+	t.true(consoleLogStub.getCall(10).args[0]
 		.startsWith("Error: Some error from foo command"), "Correct error log");
 
-	t.deepEqual(consoleLogStub.getCall(consoleLogStub.callCount - 1).args,
+	t.deepEqual(consoleLogStub.getCall(consoleLogStub.callCount - 2).args,
 		[chalk.dim(
 			`If you think this is an issue of the UI5 Tooling, you might report it using the ` +
 			`following URL: `) +
@@ -257,17 +257,17 @@ test.serial("Unexpected error handling", async (t) => {
 
 	t.is(errorCode, 1, "Should exit with error code 1");
 	t.is(consoleWriterStopStub.callCount, 0, "ConsoleWriter.stop did not get called");
-	t.is(consoleLogStub.callCount, 10);
+	t.is(consoleLogStub.callCount, 14);
 	t.deepEqual(consoleLogStub.getCall(1).args, [chalk.bold.red("⚠️  Process Failed With Error")], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(3).args, [chalk.underline("Error Message:")], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(4).args,
+	t.deepEqual(consoleLogStub.getCall(5).args,
 		["Cannot do this"], "Correct error log");
-	t.deepEqual(consoleLogStub.getCall(6).args, [chalk.underline("Stack Trace:")], "Correct error log");
-	t.is(consoleLogStub.getCall(7).args.length, 1);
-	t.true(consoleLogStub.getCall(7).args[0]
+	t.deepEqual(consoleLogStub.getCall(8).args, [chalk.underline("Stack Trace:")], "Correct error log");
+	t.is(consoleLogStub.getCall(10).args.length, 1);
+	t.true(consoleLogStub.getCall(10).args[0]
 		.startsWith("TypeError: Cannot do this"), "Correct error log");
 
-	t.deepEqual(consoleLogStub.getCall(consoleLogStub.callCount - 1).args,
+	t.deepEqual(consoleLogStub.getCall(consoleLogStub.callCount - 2).args,
 		[chalk.dim(
 			`If you think this is an issue of the UI5 Tooling, you might report it using the ` +
 			`following URL: `) +
@@ -276,8 +276,8 @@ test.serial("Unexpected error handling", async (t) => {
 });
 
 test.serial("ui5 --no-update-notifier", async (t) => {
-	const {stdout, failed} = await ui5(["versions", "--no-update-notifier"]);
-	t.regex(stdout, /@ui5\/cli:/, "Output includes version information");
+	const {stderr, failed} = await ui5(["versions", "--no-update-notifier"]);
+	t.regex(stderr, /@ui5\/cli:/, "Output includes version information");
 	t.false(failed, "Command should not fail");
 });
 

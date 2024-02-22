@@ -55,7 +55,7 @@ async function assertFailingYamlUpdateUseHandler(t, {argv, expectedMessage}) {
 }
 
 test.beforeEach(async (t) => {
-	t.context.consoleLogStub = sinon.stub(console, "log");
+	t.context.consoleLogStub = sinon.stub(process.stderr, "write");
 
 	t.context.frameworkUseStub = sinon.stub();
 
@@ -271,7 +271,9 @@ test.serial("Logs framework name, version and default config path when updating 
 
 	const expectedConsoleLog = [
 		"Updated configuration written to ui5.yaml",
-		"This project is now using SAPUI5 version 1.76.0"
+		"\n",
+		"This project is now using SAPUI5 version 1.76.0",
+		"\n"
 	];
 
 	t.is(t.context.consoleLogStub.callCount, expectedConsoleLog.length,
@@ -295,7 +297,9 @@ test.serial("Logs framework name, version and custom config path when updating c
 
 	const expectedConsoleLog = [
 		"Updated configuration written to /path/to/ui5.yaml",
-		"This project is now using SAPUI5 version 1.76.0"
+		"\n",
+		"This project is now using SAPUI5 version 1.76.0",
+		"\n"
 	];
 
 	t.is(t.context.consoleLogStub.callCount, expectedConsoleLog.length,
