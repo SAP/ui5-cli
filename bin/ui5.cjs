@@ -83,8 +83,8 @@ const ui5 = {
 			process.stderr.write("See https://github.com/SAP/ui5-cli#local-vs-global-installation for details.");
 			process.stderr.write("\n\n");
 		} else {
-			process.stderr.write(`INFO: Using local ${pkg.name} installation`);
-			process.stderr.write("\n\n");
+			process.stdout.write(`INFO: Using local ${pkg.name} installation`);
+			process.stdout.write("\n\n");
 		}
 		return true;
 	},
