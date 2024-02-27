@@ -63,6 +63,10 @@ test.beforeEach(async (t) => {
 		// NOTE: This fake impl only supports one string arg passed to console.log
 		t.context.consoleOutput += message;
 	});
+	t.context.processStdoutWrite = sinon.stub(process.stdout, "write").callsFake((message) => {
+		// NOTE: This fake impl only supports one string arg passed to console.log
+		t.context.consoleOutput += message;
+	});
 
 	t.context.open = sinon.stub();
 
