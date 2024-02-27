@@ -55,7 +55,7 @@ async function assertFailingYamlUpdateUseHandler(t, {argv, expectedMessage}) {
 }
 
 test.beforeEach(async (t) => {
-	t.context.consoleLogStub = sinon.stub(process.stderr, "write");
+	t.context.processStdoutStub = sinon.stub(process.stdout, "write");
 
 	t.context.frameworkUseStub = sinon.stub();
 
@@ -276,10 +276,10 @@ test.serial("Logs framework name, version and default config path when updating 
 		"\n"
 	];
 
-	t.is(t.context.consoleLogStub.callCount, expectedConsoleLog.length,
+	t.is(t.context.processStdoutStub.callCount, expectedConsoleLog.length,
 		"console.log should be called " + expectedConsoleLog.length + " times");
 	expectedConsoleLog.forEach((expectedLog, i) => {
-		t.deepEqual(t.context.consoleLogStub.getCall(i).args, [expectedLog],
+		t.deepEqual(t.context.processStdoutStub.getCall(i).args, [expectedLog],
 			"console.log should be called with expected string on call index " + i);
 	});
 });
@@ -302,10 +302,10 @@ test.serial("Logs framework name, version and custom config path when updating c
 		"\n"
 	];
 
-	t.is(t.context.consoleLogStub.callCount, expectedConsoleLog.length,
+	t.is(t.context.processStdoutStub.callCount, expectedConsoleLog.length,
 		"console.log should be called " + expectedConsoleLog.length + " times");
 	expectedConsoleLog.forEach((expectedLog, i) => {
-		t.deepEqual(t.context.consoleLogStub.getCall(i).args, [expectedLog],
+		t.deepEqual(t.context.processStdoutStub.getCall(i).args, [expectedLog],
 			"console.log should be called with expected string on call index " + i);
 	});
 });
