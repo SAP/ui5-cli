@@ -24,10 +24,10 @@ async function assertRemoveHandler(t, {argv, expectedLibraries, expectedConsoleL
 		}],
 	"Remove function should be called with expected args");
 
-	t.is(t.context.consoleLogStub.callCount, expectedConsoleLog.length,
+	t.is(t.context.processStdoutStub.callCount, expectedConsoleLog.length,
 		"console.log should be called " + expectedConsoleLog.length + " times");
 	expectedConsoleLog.forEach((expectedLog, i) => {
-		t.deepEqual(t.context.consoleLogStub.getCall(i).args, [expectedLog],
+		t.deepEqual(t.context.processStdoutStub.getCall(i).args, [expectedLog],
 			"console.log should be called with expected string on call index " + i);
 	});
 }
@@ -50,7 +50,7 @@ async function assertFailingYamlUpdateRemoveHandler(t, {argv, expectedMessage}) 
 }
 
 test.beforeEach((t) => {
-	t.context.consoleLogStub = sinon.stub(process.stderr, "write");
+	t.context.processStdoutStub = sinon.stub(process.stdout, "write");
 });
 
 test.afterEach.always((t) => {
