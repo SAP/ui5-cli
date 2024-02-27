@@ -276,8 +276,8 @@ test.serial("Unexpected error handling", async (t) => {
 });
 
 test.serial("ui5 --no-update-notifier", async (t) => {
-	const {stderr, failed} = await ui5(["versions", "--no-update-notifier"]);
-	t.regex(stderr, /@ui5\/cli:/, "Output includes version information");
+	const {stdout, failed} = await ui5(["versions", "--no-update-notifier"]);
+	t.regex(stdout, /@ui5\/cli:/, "Output includes version information");
 	t.false(failed, "Command should not fail");
 });
 
