@@ -112,6 +112,7 @@ module.exports = ui5;
 if (process.env.NODE_ENV !== "test" || process.env.UI5_CLI_TEST_BIN_RUN_MAIN !== "false") {
 	ui5.main().catch((err) => {
 		process.stderr.write("Fatal Error: Unable to initialize UI5 CLI");
+		process.stderr.write("\n");
 		process.stderr.write(err);
 		process.exit(1);
 	});
