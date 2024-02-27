@@ -34,6 +34,7 @@ test.before(() => {
 
 test.beforeEach(async (t) => {
 	const sinon = t.context.sinon = sinonGlobal.createSandbox();
+	t.context.processStdoutWriteStub = sinon.stub(process.stdout, "write");
 	t.context.processStderrWriteStub = sinon.stub(process.stderr, "write");
 	t.context.originalArgv = process.argv;
 	process.env.UI5_CLI_TEST_BIN_RUN_MAIN = "false"; // prevent automatic execution of main function
@@ -148,7 +149,7 @@ test.serial("checkRequirements: logs warning when using pre-release Node.js vers
 });
 
 test.serial("invokeLocalInstallation: Invokes local installation when found", async (t) => {
-	const {processStderrWriteStub} = t.context;
+	const {processStdoutWriteStub} = t.context;
 
 	importLocalStub.returns({});
 
@@ -158,10 +159,10 @@ test.serial("invokeLocalInstallation: Invokes local installation when found", as
 
 	t.true(returnValue);
 
-	t.is(processStderrWriteStub.callCount, 2, "Information messages should be provided");
+	t.is(processStdoutWriteStub.callCount, 2, "Information messages should be provided");
 
-	t.deepEqual(processStderrWriteStub.getCall(0).args, ["INFO: Using local ui5-cli-test installation"]);
-	t.deepEqual(processStderrWriteStub.getCall(1).args, ["\n\n"]);
+	t.deepEqual(processStdoutWriteStub.getCall(0).args, ["INFO: Using local ui5-cli-test installation"]);
+	t.deepEqual(processStdoutWriteStub.getCall(1).args, ["\n\n"]);
 
 	t.is(importLocalStub.callCount, 1, "import-local should be called once");
 	t.is(importLocalStub.getCall(0).args.length, 1);
