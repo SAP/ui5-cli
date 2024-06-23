@@ -37,7 +37,7 @@
 				"eslint": "^8.57.0",
 				"eslint-config-google": "^0.14.0",
 				"eslint-plugin-ava": "^14.0.0",
-				"eslint-plugin-jsdoc": "^48.2.13",
+				"eslint-plugin-jsdoc": "^48.2.15",
 				"esmock": "^2.6.6",
 				"execa": "^8.0.1",
 				"jsdoc": "^4.0.3",
@@ -5138,9 +5138,9 @@
 			}
 		},
 		"node_modules/eslint-plugin-jsdoc": {
-			"version": "48.2.13",
-			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-48.2.13.tgz",
-			"integrity": "sha512-4MzMKN0uMIehmFUVzJxNmjc573HnTKLt7Qrg7QQyXC3JkHBweaVbHwgwG+T3boefD3NyLXRHNOYYPJqmslDvHA==",
+			"version": "48.2.15",
+			"resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-48.2.15.tgz",
+			"integrity": "sha512-ScHhf9thOoJQ4dXpS+nJXTfNfslG8NBtzQ165PiXWIyGlJcAmkiEeTIEAlIcLA7uztJF7zRiuiKIqOBX4JpVzw==",
 			"dev": true,
 			"dependencies": {
 				"@es-joy/jsdoccomment": "~0.43.1",
