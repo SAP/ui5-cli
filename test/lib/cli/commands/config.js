@@ -236,6 +236,7 @@ test.serial("ui5 config invalid option", async (t) => {
 });
 
 test.serial("ui5 config empty option", async (t) => {
+	// *Pipeline logging*
 	await t.throwsAsync(ui5(["config", "set"]), {
 		message: ($) => {
 			const message = stripAnsi($);
