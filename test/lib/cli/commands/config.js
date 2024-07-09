@@ -236,7 +236,6 @@ test.serial("ui5 config invalid option", async (t) => {
 });
 
 test.serial("ui5 config empty option", async (t) => {
-	// *Pipeline logging*
 	await t.throwsAsync(ui5(["config", "set"]), {
 		message: ($) => {
 			const message = stripAnsi($);
@@ -246,8 +245,8 @@ test.serial("ui5 config empty option", async (t) => {
 			// Begin debug logging TODO: remove later
 			const expectedMessage = `Command failed with exit code 1: ${ui5Cli} config set`;
 
-			console.log("expected message", expectedMessage);
-			console.log("actual message", message);
+			console.error("expected message", expectedMessage);
+			console.error("actual message", message);
 			// End debug logging
 
 			return message.includes(`Command failed with exit code 1: ${ui5Cli} config set`) &&
