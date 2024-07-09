@@ -240,6 +240,15 @@ test.serial("ui5 config empty option", async (t) => {
 		message: ($) => {
 			const message = stripAnsi($);
 			// stderr might include debug information
+
+
+			// Begin debug logging TODO: remove later
+			const expectedMessage = `Command failed with exit code 1: ${ui5Cli} config set`;
+
+			console.log("expected message", expectedMessage);
+			console.log("actual message", message);
+			// End debug logging
+
 			return message.includes(`Command failed with exit code 1: ${ui5Cli} config set`) &&
 				message.includes(`Command Failed:
 Not enough non-option arguments: got 0, need at least 1
