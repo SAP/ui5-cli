@@ -7,8 +7,8 @@ export default [
 
 		languageOptions: {
 			globals: {},
-			ecmaVersion: 5,
-			sourceType: "script",
+			ecmaVersion: 2022,
+			sourceType: "commonjs",
 		},
 	},
 ];
