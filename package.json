@@ -30,24 +30,29 @@
 		"npm": ">= 8"
 	},
 	"scripts": {
-		"test": "npm run lint && npm run jsdoc-generate && npm run coverage && npm run depcheck && npm run check-licenses",
+		"build": "npm run cleanup && tsc -p tsconfig.build.json",
+		"build-test": "tsc --noEmit -p .",
+		"build-watch": "npm run cleanup && tsc -w -p tsconfig.build.json",
+		"cleanup": "rimraf lib coverage",
+		"test": "npm run lint && npm run build-test && npm run jsdoc-generate && npm run coverage && npm run depcheck",
 		"test-azure": "npm run coverage-xunit",
 		"lint": "eslint ./",
 		"unit": "rimraf test/tmp && ava",
 		"unit-verbose": "rimraf test/tmp && cross-env UI5_LOG_LVL=verbose ava --verbose --serial",
 		"unit-watch": "npm run unit -- --watch",
 		"unit-xunit": "rimraf test/tmp && ava --node-arguments=\"--experimental-loader=@istanbuljs/esm-loader-hook\" --tap | tap-xunit --dontUseCommentsAsTestNames=true > test-results.xml",
-		"unit-inspect": "cross-env UI5_LOG_LVL=verbose ava debug --break",
+		"unit-debug": "cross-env UI5_LOG_LVL=verbose ava debug",
+		"unit-update-snapshots": "ava --update-snapshots",
 		"coverage": "rimraf test/tmp && nyc ava --node-arguments=\"--experimental-loader=@istanbuljs/esm-loader-hook\"",
 		"coverage-xunit": "nyc --reporter=text --reporter=text-summary --reporter=cobertura npm run unit-xunit",
 		"jsdoc": "npm run jsdoc-generate && open-cli jsdocs/index.html",
-		"jsdoc-generate": "jsdoc -c ./jsdoc.json -t $(node -p 'path.dirname(require.resolve(\"docdash\"))') ./lib/ || (echo 'Error during JSDoc generation! Check log.' && exit 1)",
-		"jsdoc-watch": "npm run jsdoc && chokidar \"./lib/**/*.js\" -c \"npm run jsdoc-generate\"",
+		"jsdoc-generate": "typedoc",
+		"jsdoc-watch": "typedoc --watch",
 		"preversion": "npm test",
 		"version": "git-chglog --sort semver --next-tag v$npm_package_version -o CHANGELOG.md v4.0.0.. && git add CHANGELOG.md",
 		"prepublishOnly": "git push --follow-tags",
-		"release-note": "git-chglog --sort semver -c .chglog/release-config.yml v$npm_package_version | node .chglog/consolidate-changelogs.js",
-		"depcheck": "depcheck --ignores @ui5/cli,rimraf,docdash,@istanbuljs/esm-loader-hook,@ui5/fs,@ui5/builder",
+		"release-note": "git-chglog --sort semver -c .chglog/release-config.yml v$npm_package_version",
+		"depcheck": "depcheck --ignores @ui5/cli,rimraf,@istanbuljs/esm-loader-hook,tsx,typedoc-plugin-rename-defaults",
 		"check-licenses": "licensee --errors-only"
 	},
 	"files": [
@@ -60,57 +65,6 @@
 		"LICENSES/**",
 		".reuse/**"
 	],
-	"ava": {
-		"files": [
-			"test/bin/**/*.js",
-			"test/lib/**/*.js"
-		],
-		"nodeArguments": [
-			"--loader=esmock",
-			"--no-warnings"
-		],
-		"workerThreads": false
-	},
-	"nyc": {
-		"reporter": [
-			"lcov",
-			"text",
-			"text-summary"
-		],
-		"exclude": [
-			".chglog/**",
-			"docs/**",
-			"jsdocs/**",
-			"coverage/**",
-			"test/**",
-			"jsdoc-plugin.cjs"
-		],
-		"check-coverage": true,
-		"statements": 80,
-		"branches": 75,
-		"functions": 75,
-		"lines": 80,
-		"watermarks": {
-			"statements": [
-				70,
-				90
-			],
-			"branches": [
-				70,
-				90
-			],
-			"functions": [
-				70,
-				90
-			],
-			"lines": [
-				70,
-				90
-			]
-		},
-		"cache": true,
-		"all": true
-	},
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:SAP/ui5-cli.git"
@@ -134,19 +88,18 @@
 	"devDependencies": {
 		"@eslint/js": "^9.8.0",
 		"@istanbuljs/esm-loader-hook": "^0.2.0",
+		"@istanbuljs/nyc-config-typescript": "^1.0.2",
+		"@stylistic/eslint-plugin": "^2.6.4",
+		"@types/node": "^22.5.0",
+		"@types/sinon": "^17.0.3",
 		"ava": "^6.1.3",
-		"chokidar-cli": "^3.0.0",
 		"cross-env": "^7.0.3",
 		"depcheck": "^1.4.7",
-		"docdash": "^2.0.2",
 		"eslint": "^9.9.1",
-		"eslint-config-google": "^0.14.0",
 		"eslint-plugin-ava": "^15.0.1",
 		"eslint-plugin-jsdoc": "^50.2.2",
 		"esmock": "^2.6.7",
 		"execa": "^9.3.1",
-		"globals": "^15.9.0",
-		"jsdoc": "^4.0.3",
 		"licensee": "^10.0.0",
 		"nyc": "^17.0.0",
 		"open-cli": "^8.0.0",
@@ -154,6 +107,10 @@
 		"sinon": "^18.0.0",
 		"strip-ansi": "^7.1.0",
 		"tap-xunit": "^2.4.1",
-		"testdouble": "^3.20.2"
+		"testdouble": "^3.20.2",
+		"tsx": "^4.19.0",
+		"typedoc": "^0.26.6",
+		"typedoc-plugin-rename-defaults": "^0.7.1",
+		"typescript-eslint": "^8.3.0"
 	}
 }

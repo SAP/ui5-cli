@@ -35,6 +35,9 @@ build/Release
 node_modules
 jspm_packages
 
+# TypeScript cache
+*.tsbuildinfo
+
 # Optional npm cache directory
 .npm
 
@@ -60,3 +63,6 @@ deploy_key
 # Custom directories
 test/tmp/
 jsdocs/
+
+# Generated code
+/lib/

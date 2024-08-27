@@ -1,0 +1,16 @@
+{
+	// This is our configuration for development and linting,
+	// compared to "tsconfig.build.json" it also includes tests
+	// and other TypeScript sources in the project
+	// For this reason however, it should not be used to emit JavaScript (except for linting purposes),
+	// since the output directory would then contain "src" and "test" directories instead of just the content of "src"
+	"extends": "./tsconfig.base.json",
+	"include": [
+		"src/**/*",
+		"test/**/*",
+	],
+	"exclude": [
+		"test/tmp/**/*",
+		"test/fixtures/**/*",
+	]
+}
