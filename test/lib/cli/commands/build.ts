@@ -73,7 +73,7 @@ test.beforeEach(async (t) => {
 	t.context.graphFromPackageDependenciesStub = sinon.stub().resolves(fakeGraph);
 	t.context.graphFromStaticFileStub = sinon.stub().resolves(fakeGraph);
 
-	t.context.build = await esmock.p("../../../../lib/cli/commands/build.js", {
+	t.context.build = await esmock.p("../../../../src/cli/commands/build.js", {
 		"@ui5/project/graph": {
 			graphFromPackageDependencies: t.context.graphFromPackageDependenciesStub,
 			graphFromStaticFile: t.context.graphFromStaticFileStub,

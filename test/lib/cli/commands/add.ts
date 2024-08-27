@@ -4,8 +4,8 @@ import esmock from "esmock";
 
 async function createMock(t, yamlUpdated = true) {
 	t.context.frameworkAddStub = sinon.stub().resolves({yamlUpdated});
-	t.context.addCommand = await esmock.p("../../../../lib/cli/commands/add.js", {
-		"../../../../lib/framework/add.js": t.context.frameworkAddStub,
+	t.context.addCommand = await esmock.p("../../../../src/cli/commands/add.js", {
+		"../../../../src/framework/add.js": t.context.frameworkAddStub,
 	});
 }
 

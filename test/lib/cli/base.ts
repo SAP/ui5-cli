@@ -22,7 +22,7 @@ test.beforeEach(async (t) => {
 	t.context.isLogLevelEnabledStub.withArgs("verbose").returns(false);
 	t.context.consoleWriterStopStub = sinon.stub();
 
-	t.context.base = await esmock("../../../lib/cli/base.js", {
+	t.context.base = await esmock("../../../src/cli/base.js", {
 		"@ui5/logger": {
 			isLogLevelEnabled: t.context.isLogLevelEnabledStub,
 		},
@@ -62,7 +62,7 @@ test.serial("Yargs error handling", async (t) => {
 		});
 	});
 
-	const {default: base} = await import("../../../lib/cli/base.js");
+	const {default: base} = await import("../../../src/cli/base.js");
 
 	const cli = yargs();
 
@@ -232,7 +232,7 @@ test.serial("Unexpected error handling", async (t) => {
 		});
 	});
 
-	const {default: base} = await import("../../../lib/cli/base.js");
+	const {default: base} = await import("../../../src/cli/base.js");
 
 	const cli = yargs();
 

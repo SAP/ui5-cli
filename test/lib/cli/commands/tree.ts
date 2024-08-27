@@ -45,7 +45,7 @@ test.beforeEach(async (t) => {
 		t.context.consoleOutput += message;
 	});
 
-	t.context.tree = await esmock.p("../../../../lib/cli/commands/tree.js", {
+	t.context.tree = await esmock.p("../../../../src/cli/commands/tree.js", {
 		"@ui5/project/graph": t.context.graph,
 	});
 });

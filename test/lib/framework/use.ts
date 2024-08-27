@@ -21,9 +21,9 @@ test.beforeEach(async (t) => {
 	t.context.getRootProjectConfigurationStub = sinon.stub();
 	t.context.frameworkResolverResolveVersionStub = sinon.stub();
 	t.context.updateYamlStub = sinon.stub();
-	t.context.useFramework = await esmock.p("../../../lib/framework/use.js", {
-		"../../../lib/framework/updateYaml.js": t.context.updateYamlStub,
-		"../../../lib/framework/utils.js": {
+	t.context.useFramework = await esmock.p("../../../src/framework/use.js", {
+		"../../../src/framework/updateYaml.js": t.context.updateYamlStub,
+		"../../../src/framework/utils.js": {
 			getRootProjectConfiguration: t.context.getRootProjectConfigurationStub,
 			frameworkResolverResolveVersion: t.context.frameworkResolverResolveVersionStub,
 		},

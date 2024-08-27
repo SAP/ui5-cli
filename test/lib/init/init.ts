@@ -1,5 +1,5 @@
 import test from "ava";
-import init from "../../../lib/init/init.js";
+import init from "../../../src/init/init.js";
 import {fileURLToPath} from "node:url";
 import sinon from "sinon";
 import esmock from "esmock";
@@ -101,7 +101,7 @@ test("Init for invalid project (Missing 'name' in package.json)", async (t) => {
 test.serial("Init with default arguments (throws fs.readFile error)", async (t) => {
 	const fsReadFileStub = sinon.stub().withArgs("package.json", "utf8")
 		.rejects(new Error("Some error from fs.readFile"));
-	const init = await esmock("../../../lib/init/init", {
+	const init = await esmock("../../../src/init/init", {
 		"node:fs/promises": {
 			readFile: fsReadFileStub,
 		},

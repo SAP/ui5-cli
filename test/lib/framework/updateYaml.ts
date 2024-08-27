@@ -8,7 +8,7 @@ let updateYaml;
 test.beforeEach(async (t) => {
 	t.context.fsReadFileStub = sinon.stub();
 	t.context.fsWriteFileStub = sinon.stub().resolves();
-	updateYaml = await esmock("../../../lib/framework/updateYaml", {
+	updateYaml = await esmock("../../../src/framework/updateYaml", {
 		"node:fs/promises": {
 			readFile: t.context.fsReadFileStub,
 			writeFile: t.context.fsWriteFileStub,

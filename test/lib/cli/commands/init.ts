@@ -18,11 +18,11 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 	const fsWriteFileStub = sinon.stub().resolves();
 	const jsyamlDumpStub = sinon.stub().returns(ui5Yaml);
 
-	const initCommand = t.context.initCommand = await esmock.p("../../../../lib/cli/commands/init.js", {
-		"../../../../lib/utils/fsHelper": {
+	const initCommand = t.context.initCommand = await esmock.p("../../../../src/cli/commands/init.js", {
+		"../../../../src/utils/fsHelper": {
 			exists: sinon.stub().resolves(false),
 		},
-		"../../../../lib/init/init": sinon.stub().resolves({}),
+		"../../../../src/init/init": sinon.stub().resolves({}),
 		"js-yaml": {
 			dump: jsyamlDumpStub,
 		},
@@ -42,8 +42,8 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 });
 
 test.serial("Error: throws if ui5.yaml already exists", async (t) => {
-	const initCommand = t.context.initCommand = await esmock.p("../../../../lib/cli/commands/init.js", {
-		"../../../../lib/utils/fsHelper": {
+	const initCommand = t.context.initCommand = await esmock.p("../../../../src/cli/commands/init.js", {
+		"../../../../src/utils/fsHelper": {
 			exists: sinon.stub().resolves(true),
 		},
 	});

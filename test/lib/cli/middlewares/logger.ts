@@ -8,8 +8,8 @@ test.beforeEach(async (t) => {
 	t.context.setLogLevelStub = sinon.stub();
 	t.context.isLogLevelEnabledStub = sinon.stub().returns(true);
 	t.context.getVersionStub = sinon.stub().returns("1.0.0");
-	t.context.logger = await esmock("../../../../lib/cli/middlewares/logger.js", {
-		"../../../../lib/cli/version.js": {
+	t.context.logger = await esmock("../../../../src/cli/middlewares/logger.js", {
+		"../../../../src/cli/version.js": {
 			getVersion: t.context.getVersionStub,
 		},
 		"@ui5/logger": {

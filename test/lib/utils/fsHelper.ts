@@ -1,7 +1,7 @@
 import test from "ava";
 import sinon from "sinon";
 import esmock from "esmock";
-import {exists, pathsExist} from "../../../lib/utils/fsHelper.js";
+import {exists, pathsExist} from "../../../src/utils/fsHelper.js";
 
 test.afterEach.always(() => {
 	sinon.restore();
@@ -28,7 +28,7 @@ test("Returns results of multiple paths", async (t) => {
 
 test.serial("Throws in case of fs.stat error", async (t) => {
 	const fsStatStub = sinon.stub().rejects(new Error("Some fs.stat error"));
-	const {exists, pathsExist} = await esmock("../../../lib/utils/fsHelper.js", {
+	const {exists, pathsExist} = await esmock("../../../src/utils/fsHelper.js", {
 		"node:fs/promises": {
 			stat: fsStatStub,
 		},

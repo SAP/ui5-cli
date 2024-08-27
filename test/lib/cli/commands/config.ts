@@ -50,7 +50,7 @@ test.beforeEach(async (t) => {
 	sinon.stub(Configuration, "fromFile").resolves(new Configuration({}));
 	sinon.stub(Configuration, "toFile").resolves();
 
-	t.context.config = await esmock.p("../../../../lib/cli/commands/config.js", {
+	t.context.config = await esmock.p("../../../../src/cli/commands/config.js", {
 		"@ui5/project/config/Configuration": t.context.Configuration,
 	});
 });

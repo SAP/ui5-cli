@@ -28,7 +28,7 @@ test.beforeEach(async (t) => {
 		}),
 	};
 
-	t.context.utils = await esmock.p("../../../lib/framework/utils.js", {
+	t.context.utils = await esmock.p("../../../src/framework/utils.js", {
 		"@ui5/project/graph": {
 			graphFromStaticFile: t.context.graphFromStaticFile,
 			graphFromPackageDependencies: t.context.graphFromPackageDependencies,

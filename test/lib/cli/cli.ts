@@ -51,17 +51,17 @@ test.beforeEach(async (t) => {
 		},
 	]);
 
-	t.context.cli = await esmock.p("../../../lib/cli/cli.js", {
+	t.context.cli = await esmock.p("../../../src/cli/cli.js", {
 		"update-notifier": t.context.updateNotifier,
 		"yargs": t.context.yargs,
 		// TODO: Somehow esmock is unable to mock this import
 		// "yargs/helpers": {
 		// 	hideBin: t.context.yargsHideBin
 		// },
-		"../../../lib/cli/version.js": {
+		"../../../src/cli/version.js": {
 			setVersion: t.context.setVersion,
 		},
-		"../../../lib/cli/base.js": t.context.cliBase,
+		"../../../src/cli/base.js": t.context.cliBase,
 		"node:fs/promises": {
 			readdir: t.context.readdir,
 		},

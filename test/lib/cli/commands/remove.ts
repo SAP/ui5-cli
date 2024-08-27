@@ -4,8 +4,8 @@ import esmock from "esmock";
 
 async function createMock(t, yamlUpdated = true) {
 	t.context.frameworkRemoveStub = sinon.stub().resolves({yamlUpdated});
-	t.context.removeCommand = await esmock.p("../../../../lib/cli/commands/remove.js", {
-		"../../../../lib/framework/remove.js": t.context.frameworkRemoveStub,
+	t.context.removeCommand = await esmock.p("../../../../src/cli/commands/remove.js", {
+		"../../../../src/framework/remove.js": t.context.frameworkRemoveStub,
 	});
 }
 

@@ -1,6 +1,6 @@
 import test from "ava";
 import sinon from "sinon";
-import versions from "../../../../lib/cli/commands/versions.js";
+import versions from "../../../../src/cli/commands/versions.js";
 
 test.afterEach.always((t) => {
 	sinon.restore();

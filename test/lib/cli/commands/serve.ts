@@ -69,7 +69,7 @@ test.beforeEach(async (t) => {
 
 	t.context.open = sinon.stub();
 
-	t.context.serve = await esmock.p("../../../../lib/cli/commands/serve.js", {
+	t.context.serve = await esmock.p("../../../../src/cli/commands/serve.js", {
 		"@ui5/server": t.context.server,
 		"@ui5/server/internal/sslUtil": t.context.sslUtil,
 		"@ui5/project/graph": t.context.graph,

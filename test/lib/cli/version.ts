@@ -1,5 +1,5 @@
 import test from "ava";
-import {setVersion, getVersion} from "../../../lib/cli/version.js";
+import {setVersion, getVersion} from "../../../src/cli/version.js";
 
 test("Set and get version", (t) => {
 	t.is(getVersion(), undefined);

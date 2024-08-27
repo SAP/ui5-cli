@@ -59,8 +59,8 @@ test.beforeEach(async (t) => {
 
 	t.context.frameworkUseStub = sinon.stub();
 
-	t.context.useCommand = await esmock.p("../../../../lib/cli/commands/use.js", {
-		"../../../../lib/framework/use": t.context.frameworkUseStub,
+	t.context.useCommand = await esmock.p("../../../../src/cli/commands/use.js", {
+		"../../../../src/framework/use": t.context.frameworkUseStub,
 	});
 });
 
