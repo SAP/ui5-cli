@@ -4,7 +4,7 @@ import {getVersion} from "../version.js";
 /**
  * Logger middleware to enable logging capabilities
  *
- * @param {object} argv logger arguments
+ * @param argv logger arguments
  */
 export async function initLogger(argv: object) {
 	if (argv.silent) {

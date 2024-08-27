@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 const versions = {
 	command: "versions",
 	describe: "Shows the versions of all UI5 Tooling modules",
-	middlewares: [baseMiddleware]
+	middlewares: [baseMiddleware],
 };
 
 const NOT_FOUND = "===(not installed)";
@@ -20,7 +20,7 @@ versions.getVersion = (pkg) => {
 	}
 };
 
-versions.handler = async function() {
+versions.handler = async function () {
 	const output = (await Promise.all(
 		[
 			"@ui5/cli",

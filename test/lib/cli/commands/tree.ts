@@ -17,7 +17,7 @@ function getDefaultArgv() {
 		"cacheMode": "Default",
 		"flat": false,
 		"level": undefined,
-		"$0": "ui5"
+		"$0": "ui5",
 	};
 }
 
@@ -34,7 +34,7 @@ test.beforeEach(async (t) => {
 	};
 	t.context.graph = {
 		graphFromStaticFile: sinon.stub().resolves(fakeGraph),
-		graphFromPackageDependencies: sinon.stub().resolves(fakeGraph)
+		graphFromPackageDependencies: sinon.stub().resolves(fakeGraph),
 	};
 
 	t.context.consoleOutput = "";
@@ -46,7 +46,7 @@ test.beforeEach(async (t) => {
 	});
 
 	t.context.tree = await esmock.p("../../../../lib/cli/commands/tree.js", {
-		"@ui5/project/graph": t.context.graph
+		"@ui5/project/graph": t.context.graph,
 	});
 });
 test.afterEach.always((t) => {
@@ -67,7 +67,7 @@ test.serial("ui5 tree (Without dependencies)", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -104,7 +104,7 @@ test.serial("ui5 tree", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency1", "dependency2"]
+			dependencies: ["dependency1", "dependency2"],
 		});
 		await fn({
 			project: {
@@ -115,7 +115,7 @@ test.serial("ui5 tree", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency2"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency1"]
+			dependencies: ["dependency1"],
 		});
 		await fn({
 			project: {
@@ -126,7 +126,7 @@ test.serial("ui5 tree", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency3"]
+			dependencies: ["dependency3"],
 		});
 		await fn({
 			project: {
@@ -137,7 +137,7 @@ test.serial("ui5 tree", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency3"),
 				isFrameworkProject: sinon.stub().returns(true),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -183,7 +183,7 @@ test.serial("ui5 tree --flat", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency1", "dependency2"]
+			dependencies: ["dependency1", "dependency2"],
 		});
 		await fn({
 			project: {
@@ -194,7 +194,7 @@ test.serial("ui5 tree --flat", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency2"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency1"]
+			dependencies: ["dependency1"],
 		});
 		await fn({
 			project: {
@@ -205,7 +205,7 @@ test.serial("ui5 tree --flat", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency3"]
+			dependencies: ["dependency3"],
 		});
 		await fn({
 			project: {
@@ -216,7 +216,7 @@ test.serial("ui5 tree --flat", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency3"),
 				isFrameworkProject: sinon.stub().returns(true),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -260,7 +260,7 @@ test.serial("ui5 tree --level 1", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency1", "dependency2"]
+			dependencies: ["dependency1", "dependency2"],
 		});
 		await fn({
 			project: {
@@ -271,7 +271,7 @@ test.serial("ui5 tree --level 1", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency2"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency1"]
+			dependencies: ["dependency1"],
 		});
 		await fn({
 			project: {
@@ -282,7 +282,7 @@ test.serial("ui5 tree --level 1", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: ["dependency3"]
+			dependencies: ["dependency3"],
 		});
 		await fn({
 			project: {
@@ -293,7 +293,7 @@ test.serial("ui5 tree --level 1", async (t) => {
 				getRootPath: sinon.stub().returns("/home/dependency3"),
 				isFrameworkProject: sinon.stub().returns(true),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -325,7 +325,7 @@ ${chalk.italic("None")}
 });
 
 test.serial("ui5 tree --level 'string' throws", async (t) => {
-	const {argv, tree, traverseBreadthFirst,} = t.context;
+	const {argv, tree, traverseBreadthFirst} = t.context;
 
 	traverseBreadthFirst.callsFake(async (fn) => {
 		await fn({
@@ -337,14 +337,14 @@ test.serial("ui5 tree --level 'string' throws", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
 	argv.level = NaN; // Yargs already takes care of transforming non-numeric values to NaN
 
 	await t.throwsAsync(tree.handler(argv), {
-		message: `The provided 'level' option is not a number`
+		message: `The provided 'level' option is not a number`,
 	});
 });
 
@@ -361,7 +361,7 @@ test.serial("ui5 tree (With extensions)", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 	getExtensionNames.returns(["extension1", "extension2"]);
@@ -424,7 +424,7 @@ test.serial("ui5 tree --perf", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -471,7 +471,7 @@ test.serial("ui5 tree --framework-version", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -508,9 +508,9 @@ test.serial("ui5 tree --cache-mode", async (t) => {
 				getVersion: sinon.stub().returns("1.0.0"),
 				getType: sinon.stub().returns("application"),
 				getRootPath: sinon.stub().returns("/home/project1"),
-				isFrameworkProject: sinon.stub().returns(false)
+				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -550,7 +550,7 @@ test.serial("ui5 tree --config", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -589,7 +589,7 @@ test.serial("ui5 tree --workspace", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -628,7 +628,7 @@ test.serial("ui5 tree --no-workspace", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -668,7 +668,7 @@ test.serial("ui5 tree --workspace-config", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -708,7 +708,7 @@ test.serial("ui5 tree --dependency-definition", async (t) => {
 				getRootPath: sinon.stub().returns("/home/project1"),
 				isFrameworkProject: sinon.stub().returns(false),
 			},
-			dependencies: []
+			dependencies: [],
 		});
 	});
 
@@ -717,7 +717,7 @@ test.serial("ui5 tree --dependency-definition", async (t) => {
 	t.is(graph.graphFromPackageDependencies.callCount, 0);
 	t.is(graph.graphFromStaticFile.callCount, 1);
 	t.deepEqual(graph.graphFromStaticFile.getCall(0).args, [{
-		filePath: fakePath, versionOverride: undefined, cacheMode: "Default"
+		filePath: fakePath, versionOverride: undefined, cacheMode: "Default",
 	}]);
 
 	t.is(t.context.consoleOutput,

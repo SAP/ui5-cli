@@ -3,7 +3,7 @@
  * JSDoc doesn't see "{@" as a valid type expression, probably as there's also {@link ...}.
  */
 exports.handlers = {
-	jsdocCommentFound: function(e) {
+	jsdocCommentFound: function (e) {
 		e.comment = e.comment.replace(/{@ui5\//g, "{ @ui5/");
-	}
+	},
 };

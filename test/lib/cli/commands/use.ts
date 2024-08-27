@@ -8,7 +8,7 @@ async function assertUseHandler(t, {argv, expectedFrameworkOptions}) {
 	frameworkUseStub.resolves({
 		usedFramework: undefined, // not required for this test
 		usedVersion: undefined, // not required for this test
-		yamlUpdated: true
+		yamlUpdated: true,
 	});
 
 	await useCommand.handler(argv);
@@ -19,8 +19,8 @@ async function assertUseHandler(t, {argv, expectedFrameworkOptions}) {
 			frameworkOptions: expectedFrameworkOptions,
 			projectGraphOptions: {
 				dependencyDefinition: undefined,
-				config: undefined
-			}
+				config: undefined,
+			},
 		}],
 	"Use function should be called with expected args");
 }
@@ -30,7 +30,7 @@ async function assertFailingUseHandler(t, {argv, expectedMessage}) {
 
 	frameworkUseStub.resolves({
 		usedFramework: undefined, // not required for this test
-		usedVersion: undefined // not required for this test
+		usedVersion: undefined, // not required for this test
 	});
 
 	const exception = await t.throwsAsync(useCommand.handler(argv));
@@ -45,7 +45,7 @@ async function assertFailingYamlUpdateUseHandler(t, {argv, expectedMessage}) {
 	frameworkUseStub.resolves({
 		usedFramework: "SAPUI5",
 		usedVersion: "1.76.0",
-		yamlUpdated: false
+		yamlUpdated: false,
 	});
 
 	const exception = await t.throwsAsync(useCommand.handler(argv));
@@ -60,7 +60,7 @@ test.beforeEach(async (t) => {
 	t.context.frameworkUseStub = sinon.stub();
 
 	t.context.useCommand = await esmock.p("../../../../lib/cli/commands/use.js", {
-		"../../../../lib/framework/use": t.context.frameworkUseStub
+		"../../../../lib/framework/use": t.context.frameworkUseStub,
 	});
 });
 
@@ -74,8 +74,8 @@ test.serial("Accepts framework name and version (SAPUI5@1.76.0)", async (t) => {
 		argv: {"framework-info": "SAPUI5@1.76.0"},
 		expectedFrameworkOptions: {
 			name: "SAPUI5",
-			version: "1.76.0"
-		}
+			version: "1.76.0",
+		},
 	});
 });
 
@@ -84,8 +84,8 @@ test.serial("Accepts framework name and version (OpenUI5@1.76.0)", async (t) => 
 		argv: {"framework-info": "OpenUI5@1.76.0"},
 		expectedFrameworkOptions: {
 			name: "OpenUI5",
-			version: "1.76.0"
-		}
+			version: "1.76.0",
+		},
 	});
 });
 
@@ -94,8 +94,8 @@ test.serial("Accepts framework name and version (SAPUI5@1.76)", async (t) => {
 		argv: {"framework-info": "SAPUI5@1.76"},
 		expectedFrameworkOptions: {
 			name: "SAPUI5",
-			version: "1.76"
-		}
+			version: "1.76",
+		},
 	});
 });
 
@@ -104,8 +104,8 @@ test.serial("Accepts framework name and version (OpenUI5@1.76)", async (t) => {
 		argv: {"framework-info": "OpenUI5@1.76"},
 		expectedFrameworkOptions: {
 			name: "OpenUI5",
-			version: "1.76"
-		}
+			version: "1.76",
+		},
 	});
 });
 
@@ -114,8 +114,8 @@ test.serial("Accepts framework name and version (SAPUI5@1.79.0-SNAPSHOT)", async
 		argv: {"framework-info": "SAPUI5@1.79.0-SNAPSHOT"},
 		expectedFrameworkOptions: {
 			name: "SAPUI5",
-			version: "1.79.0-SNAPSHOT"
-		}
+			version: "1.79.0-SNAPSHOT",
+		},
 	});
 });
 
@@ -124,8 +124,8 @@ test.serial("Accepts framework name and version (OpenUI5@1.79.0-SNAPSHOT)", asyn
 		argv: {"framework-info": "OpenUI5@1.79.0-SNAPSHOT"},
 		expectedFrameworkOptions: {
 			name: "OpenUI5",
-			version: "1.79.0-SNAPSHOT"
-		}
+			version: "1.79.0-SNAPSHOT",
+		},
 	});
 });
 
@@ -134,8 +134,8 @@ test.serial("Accepts framework name and version (SAPUI5@latest)", async (t) => {
 		argv: {"framework-info": "SAPUI5@latest"},
 		expectedFrameworkOptions: {
 			name: "SAPUI5",
-			version: "latest"
-		}
+			version: "latest",
+		},
 	});
 });
 
@@ -144,8 +144,8 @@ test.serial("Accepts framework name and version (OpenUI5@latest)", async (t) => 
 		argv: {"framework-info": "OpenUI5@latest"},
 		expectedFrameworkOptions: {
 			name: "OpenUI5",
-			version: "latest"
-		}
+			version: "latest",
+		},
 	});
 });
 
@@ -154,8 +154,8 @@ test.serial("Accepts framework name and uses latest (SAPUI5)", async (t) => {
 		argv: {"framework-info": "SAPUI5"},
 		expectedFrameworkOptions: {
 			name: "SAPUI5",
-			version: "latest"
-		}
+			version: "latest",
+		},
 	});
 });
 
@@ -164,8 +164,8 @@ test.serial("Accepts framework name and uses latest (sapui5)", async (t) => {
 		argv: {"framework-info": "sapui5"},
 		expectedFrameworkOptions: {
 			name: "sapui5",
-			version: "latest"
-		}
+			version: "latest",
+		},
 	});
 });
 
@@ -174,8 +174,8 @@ test.serial("Accepts framework name and uses latest (OpenUI5)", async (t) => {
 		argv: {"framework-info": "OpenUI5"},
 		expectedFrameworkOptions: {
 			name: "OpenUI5",
-			version: "latest"
-		}
+			version: "latest",
+		},
 	});
 });
 
@@ -184,8 +184,8 @@ test.serial("Accepts framework version (1.76.0)", async (t) => {
 		argv: {"framework-info": "1.76.0"},
 		expectedFrameworkOptions: {
 			name: null,
-			version: "1.76.0"
-		}
+			version: "1.76.0",
+		},
 	});
 });
 
@@ -194,8 +194,8 @@ test.serial("Accepts framework version (1.76)", async (t) => {
 		argv: {"framework-info": "1.76"},
 		expectedFrameworkOptions: {
 			name: null,
-			version: "1.76"
-		}
+			version: "1.76",
+		},
 	});
 });
 
@@ -204,57 +204,57 @@ test.serial("Accepts framework version (latest)", async (t) => {
 		argv: {"framework-info": "latest"},
 		expectedFrameworkOptions: {
 			name: null,
-			version: "latest"
-		}
+			version: "latest",
+		},
 	});
 });
 
 test.serial("Rejects on empty framework-info", async (t) => {
 	await assertFailingUseHandler(t, {
 		argv: {"framework-info": ""},
-		expectedMessage: "Invalid framework info: "
+		expectedMessage: "Invalid framework info: ",
 	});
 });
 
 test.serial("Rejects on invalid framework-info (@1.2.3)", async (t) => {
 	await assertFailingUseHandler(t, {
 		argv: {"framework-info": "@1.2.3"},
-		expectedMessage: "Invalid framework info: @1.2.3"
+		expectedMessage: "Invalid framework info: @1.2.3",
 	});
 });
 
 test.serial("Rejects on invalid framework-info (SAPUI5@)", async (t) => {
 	await assertFailingUseHandler(t, {
 		argv: {"framework-info": "SAPUI5@"},
-		expectedMessage: "Invalid framework info: SAPUI5@"
+		expectedMessage: "Invalid framework info: SAPUI5@",
 	});
 });
 
 test.serial("Rejects on invalid framework-info (@SAPUI5@)", async (t) => {
 	await assertFailingUseHandler(t, {
 		argv: {"framework-info": "@SAPUI5@"},
-		expectedMessage: "Invalid framework info: @SAPUI5@"
+		expectedMessage: "Invalid framework info: @SAPUI5@",
 	});
 });
 
 test.serial("Rejects on invalid framework-info (SAPUI5@1.2.3@4.5.6)", async (t) => {
 	await assertFailingUseHandler(t, {
 		argv: {"framework-info": "SAPUI5@1.2.3@4.5.6"},
-		expectedMessage: "Invalid framework info: SAPUI5@1.2.3@4.5.6"
+		expectedMessage: "Invalid framework info: SAPUI5@1.2.3@4.5.6",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated", async (t) => {
 	await assertFailingYamlUpdateUseHandler(t, {
 		argv: {"framework-info": "SAPUI5@1.76.0"},
-		expectedMessage: "Internal error while updating ui5.yaml to SAPUI5 version 1.76.0"
+		expectedMessage: "Internal error while updating ui5.yaml to SAPUI5 version 1.76.0",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated (with config path)", async (t) => {
 	await assertFailingYamlUpdateUseHandler(t, {
 		argv: {"framework-info": "SAPUI5@1.76.0", "config": "/path/to/ui5.yaml"},
-		expectedMessage: "Internal error while updating config at /path/to/ui5.yaml to SAPUI5 version 1.76.0"
+		expectedMessage: "Internal error while updating config at /path/to/ui5.yaml to SAPUI5 version 1.76.0",
 	});
 });
 
@@ -264,7 +264,7 @@ test.serial("Logs framework name, version and default config path when updating 
 	frameworkUseStub.resolves({
 		usedFramework: "SAPUI5",
 		usedVersion: "1.76.0",
-		yamlUpdated: true
+		yamlUpdated: true,
 	});
 
 	await useCommand.handler({"framework-info": "SAPUI5@1.76.0"});
@@ -273,7 +273,7 @@ test.serial("Logs framework name, version and default config path when updating 
 		"Updated configuration written to ui5.yaml",
 		"\n",
 		"This project is now using SAPUI5 version 1.76.0",
-		"\n"
+		"\n",
 	];
 
 	t.is(t.context.processStdoutStub.callCount, expectedConsoleLog.length,
@@ -290,7 +290,7 @@ test.serial("Logs framework name, version and custom config path when updating c
 	frameworkUseStub.resolves({
 		usedFramework: "SAPUI5",
 		usedVersion: "1.76.0",
-		yamlUpdated: true
+		yamlUpdated: true,
 	});
 
 	await useCommand.handler({"framework-info": "SAPUI5@1.76.0", "config": "/path/to/ui5.yaml"});
@@ -299,7 +299,7 @@ test.serial("Logs framework name, version and custom config path when updating c
 		"Updated configuration written to /path/to/ui5.yaml",
 		"\n",
 		"This project is now using SAPUI5 version 1.76.0",
-		"\n"
+		"\n",
 	];
 
 	t.is(t.context.processStdoutStub.callCount, expectedConsoleLog.length,

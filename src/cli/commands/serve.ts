@@ -7,64 +7,64 @@ import baseMiddleware from "../middlewares/base.js";
 const serve = {
 	command: "serve",
 	describe: "Start a web server for the current project",
-	middlewares: [baseMiddleware]
+	middlewares: [baseMiddleware],
 };
 
-serve.builder = function(cli) {
+serve.builder = function (cli) {
 	return cli
 		.option("port", {
 			describe: "Port to bind on (default for HTTP: 8080, HTTP/2: 8443)",
 			alias: "p",
-			type: "number"
+			type: "number",
 		})
 		.option("open", {
 			describe:
 				"Open web server root directory in default browser. " +
 				"Optionally, supplied relative path will be appended to the root URL",
 			alias: "o",
-			type: "string"
+			type: "string",
 		})
 		.option("h2", {
 			describe: "Shortcut for enabling the HTTP/2 protocol for the web server",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("simple-index", {
 			describe: "Use a simplified view for the server directory listing",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("accept-remote-connections", {
 			describe: "Accept remote connections. By default the server only accepts connections from localhost",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("key", {
 			describe: "Path to the private key",
 			default: path.join(os.homedir(), ".ui5", "server", "server.key"),
-			type: "string"
+			type: "string",
 		})
 		.option("cert", {
 			describe: "Path to the certificate",
 			default: path.join(os.homedir(), ".ui5", "server", "server.crt"),
-			type: "string"
+			type: "string",
 		})
 		.option("sap-csp-policies", {
 			describe:
 				"Always send content security policies 'sap-target-level-1' and " +
 				"'sap-target-level-3' in report-only mode",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("serve-csp-reports", {
 			describe: "Collects and serves CSP reports upon request to '/.ui5/csp/csp-reports.json'",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("framework-version", {
 			describe: "Overrides the framework version defined by the project. " +
-				"Takes the same value as the version part of \"ui5 use\"",
-			type: "string"
+			"Takes the same value as the version part of \"ui5 use\"",
+			type: "string",
 		})
 		.option("cache-mode", {
 			describe:
@@ -73,7 +73,7 @@ serve.builder = function(cli) {
 				"does not create any requests. 'Off' invalidates any existing cache and updates from the repository",
 			type: "string",
 			default: "Default",
-			choices: ["Default", "Force", "Off"]
+			choices: ["Default", "Force", "Off"],
 		})
 		.example("ui5 serve", "Start a web server for the current project")
 		.example("ui5 serve --h2", "Enable the HTTP/2 protocol for the web server (requires SSL certificate)")
@@ -84,7 +84,7 @@ serve.builder = function(cli) {
 			"Listen to port 1337 and launch default browser with http://localhost:1337/test/QUnit.html");
 };
 
-serve.handler = async function(argv) {
+serve.handler = async function (argv) {
 	const {graphFromStaticFile, graphFromPackageDependencies} = await import("@ui5/project/graph");
 	const {serve: serverServe} = await import("@ui5/server");
 	const {getSslCertificate} = await import("@ui5/server/internal/sslUtil");
@@ -136,7 +136,7 @@ serve.handler = async function(argv) {
 		cert: argv.h2 ? argv.cert : undefined,
 		key: argv.h2 ? argv.key : undefined,
 		sendSAPTargetCSP: !!argv.sapCspPolicies,
-		serveCSPReports: !!argv.serveCspReports
+		serveCSPReports: !!argv.serveCspReports,
 	};
 
 	if (serverConfig.h2) {

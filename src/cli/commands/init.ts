@@ -4,10 +4,10 @@ import baseMiddleware from "../middlewares/base.js";
 const initCommand = {
 	command: "init",
 	describe: "Initialize the UI5 Tooling configuration for an application or library project.",
-	middlewares: [baseMiddleware]
+	middlewares: [baseMiddleware],
 };
 
-initCommand.handler = async function() {
+initCommand.handler = async function () {
 	const {exists} = await import("../../utils/fsHelper.js");
 	const {default: init} = await import("../../init/init.js");
 	const {default: path} = await import("node:path");

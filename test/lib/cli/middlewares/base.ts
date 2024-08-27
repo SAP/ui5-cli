@@ -6,8 +6,8 @@ test.beforeEach(async (t) => {
 	t.context.initLogger = sinon.stub();
 	t.context.baseMiddleware = await esmock("../../../../lib/cli/middlewares/base.js", {
 		"../../../../lib/cli/middlewares/logger.js": {
-			initLogger: t.context.initLogger
-		}
+			initLogger: t.context.initLogger,
+		},
 	});
 });
 

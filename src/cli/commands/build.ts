@@ -4,106 +4,106 @@ const build = {
 	command: "build",
 	describe: "Build project in current directory",
 	handler: handleBuild,
-	middlewares: [baseMiddleware]
+	middlewares: [baseMiddleware],
 };
 
-build.builder = function(cli) {
+build.builder = function (cli) {
 	return cli
 		.command("jsdoc", "Build JSDoc resources", {
 			handler: handleBuild,
 			builder: noop,
-			middlewares: [baseMiddleware]
+			middlewares: [baseMiddleware],
 		})
 		.command("preload", "(default) Build project and create preload bundles", {
 			handler: handleBuild,
 			builder: noop,
-			middlewares: [baseMiddleware]
+			middlewares: [baseMiddleware],
 		})
 		.command("self-contained",
 			"Build project and create self-contained bundle. " +
 			"Recommended to be used in conjunction with --include-all-dependencies", {
 				handler: handleBuild,
 				builder: noop,
-				middlewares: [baseMiddleware]
+				middlewares: [baseMiddleware],
 			})
 		.option("include-all-dependencies", {
 			describe: "Include all dependencies in the build result. " +
-				"This is equivalent to '--include-dependency \"*\"'",
+			"This is equivalent to '--include-dependency \"*\"'",
 			alias: ["all", "a"],
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("include-dependency", {
 			describe: "A list of dependencies to be included in the build result. You can use the asterisk '*' as" +
-				" an alias for including all dependencies in the build result. The listed dependencies cannot be" +
-				" overruled by dependencies defined in 'exclude-dependency'. " +
-				"The provided name must match with the dependency name shown in 'ui5 ls --flat'",
+			" an alias for including all dependencies in the build result. The listed dependencies cannot be" +
+			" overruled by dependencies defined in 'exclude-dependency'. " +
+			"The provided name must match with the dependency name shown in 'ui5 ls --flat'",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("include-dependency-regexp", {
 			describe: "A list of regular expressions defining dependencies to be included in the build result." +
-				" This list is prioritized like 'include-dependency'.",
+			" This list is prioritized like 'include-dependency'.",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("include-dependency-tree", {
 			describe: "A list of dependencies to be included in the build result. Transitive dependencies are" +
-				" implicitly included and do not need to be part of this list. These dependencies overrule" +
-				" the selection of 'exclude-dependency-tree' but can be overruled by 'exclude-dependency'.",
+			" implicitly included and do not need to be part of this list. These dependencies overrule" +
+			" the selection of 'exclude-dependency-tree' but can be overruled by 'exclude-dependency'.",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("exclude-dependency", {
 			describe: "A list of dependencies to be excluded from the build result. The listed dependencies can" +
-				" be overruled by dependencies defined in 'include-dependency'. " +
-				"The provided name must match with the dependency name shown in 'ui5 ls --flat'",
+			" be overruled by dependencies defined in 'include-dependency'. " +
+			"The provided name must match with the dependency name shown in 'ui5 ls --flat'",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("exclude-dependency-regexp", {
 			describe: "A list of regular expressions defining dependencies to be excluded from the build result." +
-				" This list is prioritized like 'exclude-dependency'.",
+			" This list is prioritized like 'exclude-dependency'.",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("exclude-dependency-tree", {
 			describe: "A list of dependencies to be excluded from the build result. Transitive dependencies are" +
-				" implicitly included and do not need to be part of this list.",
+			" implicitly included and do not need to be part of this list.",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("dest", {
 			describe: "Path of build destination",
 			default: "./dist",
-			type: "string"
+			type: "string",
 		})
 		.option("clean-dest", {
 			describe: "If present, clean the destination directory before building",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("create-build-manifest", {
 			describe: "Store build metadata in a '.ui5' directory in the build destination, " +
-				"allowing reuse of the build result in other builds",
+			"allowing reuse of the build result in other builds",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("include-task", {
 			describe: "A list of tasks to be added to the default execution set. " +
-				"This option takes precedence over any excludes.",
+			"This option takes precedence over any excludes.",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("exclude-task", {
 			describe: "A list of tasks to be excluded from the default task execution set",
 			type: "string",
-			array: true
+			array: true,
 		})
 		.option("framework-version", {
 			describe: "Overrides the framework version defined by the project. " +
-				"Takes the same value as the version part of \"ui5 use\"",
-			type: "string"
+			"Takes the same value as the version part of \"ui5 use\"",
+			type: "string",
 		})
 		.option("cache-mode", {
 			describe:
@@ -112,24 +112,24 @@ build.builder = function(cli) {
 				"does not create any requests. 'Off' invalidates any existing cache and updates from the repository",
 			type: "string",
 			default: "Default",
-			choices: ["Default", "Force", "Off"]
+			choices: ["Default", "Force", "Off"],
 		})
 		.option("experimental-css-variables", {
 			describe:
 				"Generate CSS variables (css-variables.css, css-variables.source.less)" +
 				" and skeleton (library-skeleton(-RTL).css) for all themes",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("output-style", {
 			describe:
 				"Processes build results into a specific directory structure. \r\n\r\n" +
 				"- Flat: Omits the project namespace and the \"resources\" directory.\r\n" +
 				"- Namespace: Respects the project namespace and the \"resources\" directory, " +
-					"maintaining the original structure.\r\n" +
+				"maintaining the original structure.\r\n" +
 				"- Default: The default directory structure for every project type. For applications, " +
-					"this is identical to \"Flat\", and for libraries, it is \"Namespace\". Other types have a " +
-					"more distinct default output style.",
+				"this is identical to \"Flat\", and for libraries, it is \"Namespace\". Other types have a " +
+				"more distinct default output style.",
 			type: "string",
 			default: "Default",
 			choices: ["Default", "Flat", "Namespace"],
@@ -148,6 +148,10 @@ build.builder = function(cli) {
 			"Preload build with experimental CSS variables artifacts");
 };
 
+/**
+ *
+ * @param argv
+ */
 async function handleBuild(argv) {
 	const {graphFromStaticFile, graphFromPackageDependencies} = await import("@ui5/project/graph");
 
@@ -186,7 +190,7 @@ async function handleBuild(argv) {
 			excludeDependencyTree: argv["exclude-dependency-tree"],
 			defaultIncludeDependency: buildSettings.includeDependency,
 			defaultIncludeDependencyRegExp: buildSettings.includeDependencyRegExp,
-			defaultIncludeDependencyTree: buildSettings.includeDependencyTree
+			defaultIncludeDependencyTree: buildSettings.includeDependencyTree,
 		},
 		selfContained: command === "self-contained",
 		jsdoc: command === "jsdoc",
@@ -197,6 +201,9 @@ async function handleBuild(argv) {
 	});
 }
 
+/**
+ *
+ */
 function noop() {}
 
 export default build;

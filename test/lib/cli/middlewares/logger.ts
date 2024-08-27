@@ -10,7 +10,7 @@ test.beforeEach(async (t) => {
 	t.context.getVersionStub = sinon.stub().returns("1.0.0");
 	t.context.logger = await esmock("../../../../lib/cli/middlewares/logger.js", {
 		"../../../../lib/cli/version.js": {
-			getVersion: t.context.getVersionStub
+			getVersion: t.context.getVersionStub,
 		},
 		"@ui5/logger": {
 			getLogger: () => ({
@@ -18,7 +18,7 @@ test.beforeEach(async (t) => {
 			}),
 			setLogLevel: t.context.setLogLevelStub,
 			isLogLevelEnabled: t.context.isLogLevelEnabledStub,
-		}
+		},
 	});
 });
 
@@ -104,6 +104,6 @@ test("ui5 --verbose", async (t) => {
 	const {stderr} = await ui5(["versions", "--verbose"]);
 	// Debugger info is also included into the message. We need to exclude it
 	t.true(stripAnsi(stderr).includes(
-		`verb cli:middlewares:base using @ui5/cli version ${pkg.version} (from ${ui5Cli})\n`+
+		`verb cli:middlewares:base using @ui5/cli version ${pkg.version} (from ${ui5Cli})\n` +
 		`verb cli:middlewares:base using node version ${process.version}`));
 });

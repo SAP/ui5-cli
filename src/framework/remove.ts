@@ -6,13 +6,13 @@ const log = getLogger("cli:framework:remove");
 /**
  * Removes the given set of libraries from the framework libraries section in the ui5.yaml
  *
- * @param {object} parameters Parameters
- * @param {object} parameters.projectGraphOptions
- * @param {object} parameters.libraries
+ * @param parameters Parameters
+ * @param parameters.projectGraphOptions
+ * @param parameters.libraries
  */
-export default async function({ projectGraphOptions, libraries }: {
-    projectGraphOptions: object;
-    libraries: object;
+export default async function ({projectGraphOptions, libraries}: {
+	projectGraphOptions: object;
+	libraries: object;
 }) {
 	const project = await getRootProjectConfiguration(projectGraphOptions);
 
@@ -57,7 +57,6 @@ export default async function({ projectGraphOptions, libraries }: {
 		}
 	});
 
-
 	allLibraries.sort((a, b) => {
 		return a.name.localeCompare(b.name);
 	});
@@ -71,9 +70,9 @@ export default async function({ projectGraphOptions, libraries }: {
 			configPathOverride: projectGraphOptions.config,
 			data: {
 				framework: {
-					libraries: allLibraries
-				}
-			}
+					libraries: allLibraries,
+				},
+			},
 		});
 		yamlUpdated = true;
 	} catch (err) {
@@ -82,6 +81,6 @@ export default async function({ projectGraphOptions, libraries }: {
 		}
 	}
 	return {
-		yamlUpdated
+		yamlUpdated,
 	};
 }

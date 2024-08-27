@@ -26,7 +26,7 @@ function getDefaultArgv() {
 		"cache-mode": "Default",
 		"cacheMode": "Default",
 		"output-style": "Default",
-		"$0": "ui5"
+		"$0": "ui5",
 	};
 }
 
@@ -44,7 +44,7 @@ function getDefaultBuilderArgs() {
 			excludeDependencyTree: undefined,
 			defaultIncludeDependency: undefined,
 			defaultIncludeDependencyRegExp: undefined,
-			defaultIncludeDependencyTree: undefined
+			defaultIncludeDependencyTree: undefined,
 		},
 		createBuildManifest: false,
 		selfContained: false,
@@ -52,7 +52,7 @@ function getDefaultBuilderArgs() {
 		includedTasks: undefined,
 		excludedTasks: undefined,
 		cssVariables: false,
-		outputStyle: "Default"
+		outputStyle: "Default",
 	};
 }
 
@@ -64,9 +64,9 @@ test.beforeEach(async (t) => {
 	t.context.getBuilderSettings = sinon.stub().returns(undefined);
 	const fakeGraph = {
 		getRoot: sinon.stub().returns({
-			getBuilderSettings: t.context.getBuilderSettings
+			getBuilderSettings: t.context.getBuilderSettings,
 		}),
-		build: t.context.builder
+		build: t.context.builder,
 	};
 	t.context.expectedBuilderArgs.graph = fakeGraph;
 	t.context.ProjectGraphStub = sinon.stub().resolves(fakeGraph);
@@ -76,9 +76,9 @@ test.beforeEach(async (t) => {
 	t.context.build = await esmock.p("../../../../lib/cli/commands/build.js", {
 		"@ui5/project/graph": {
 			graphFromPackageDependencies: t.context.graphFromPackageDependenciesStub,
-			graphFromStaticFile: t.context.graphFromStaticFileStub
+			graphFromStaticFile: t.context.graphFromStaticFileStub,
 		},
-		"@ui5/project/graph/ProjectGraph": t.context.ProjectGraphStub
+		"@ui5/project/graph/ProjectGraph": t.context.ProjectGraphStub,
 	});
 });
 
@@ -349,7 +349,7 @@ test.serial("ui5 build (Include dependency via configuration)", async (t) => {
 		excludeDependencyTree: undefined,
 		defaultIncludeDependency: ["a"],
 		defaultIncludeDependencyRegExp: ["^b0$"],
-		defaultIncludeDependencyTree: ["b1"]
+		defaultIncludeDependencyTree: ["b1"],
 	};
 
 	t.deepEqual(builder.getCall(0).args[0], expectedBuilderArgs, "default build triggered with expected arguments");

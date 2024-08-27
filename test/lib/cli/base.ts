@@ -24,11 +24,11 @@ test.beforeEach(async (t) => {
 
 	t.context.base = await esmock("../../../lib/cli/base.js", {
 		"@ui5/logger": {
-			isLogLevelEnabled: t.context.isLogLevelEnabledStub
+			isLogLevelEnabled: t.context.isLogLevelEnabledStub,
 		},
 		"@ui5/logger/writers/Console": {
-			stop: t.context.consoleWriterStopStub
-		}
+			stop: t.context.consoleWriterStopStub,
+		},
 	});
 });
 
@@ -71,7 +71,7 @@ test.serial("Yargs error handling", async (t) => {
 	cli.command({
 		command: "foo",
 		describe: "This is a task",
-		handler: async function() {}
+		handler: async function () {},
 	});
 
 	await cli.parseAsync(["invalid"]);
@@ -85,10 +85,9 @@ test.serial("Yargs error handling", async (t) => {
 	t.deepEqual(consoleLogStub.getCall(2).args, ["Unknown argument: invalid"], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(3).args, ["\n\n"], "Correct error log");
 	t.deepEqual(consoleLogStub.getCall(4).args, [
-		chalk.dim(`See 'ui5 --help'`)
+		chalk.dim(`See 'ui5 --help'`),
 	], "Correct error log");
 });
-
 
 test.serial("Exception error handling", async (t) => {
 	const {base, consoleLogStub, consoleWriterStopStub} = t.context;
@@ -110,13 +109,13 @@ test.serial("Exception error handling", async (t) => {
 	cli.command({
 		command: "foo",
 		describe: "This task fails with an error",
-		handler: async function() {
+		handler: async function () {
 			throw error;
-		}
+		},
 	});
 
 	await t.throwsAsync(cli.parse(["foo"]), {
-		is: error
+		is: error,
 	});
 
 	const errorCode = await processExit;
@@ -154,13 +153,13 @@ test.serial("Exception error handling without logging (silent)", async (t) => {
 	cli.command({
 		command: "foo",
 		describe: "This task fails with an error",
-		handler: async function() {
+		handler: async function () {
 			throw error;
-		}
+		},
 	});
 
 	await t.throwsAsync(cli.parse(["foo"]), {
-		is: error
+		is: error,
 	});
 
 	const errorCode = await processExit;
@@ -192,13 +191,13 @@ test.serial("Exception error handling with verbose logging", async (t) => {
 	cli.command({
 		command: "foo",
 		describe: "This task fails with an error",
-		handler: async function() {
+		handler: async function () {
 			throw error;
-		}
+		},
 	});
 
 	await t.throwsAsync(cli.parse(["foo"]), {
-		is: error
+		is: error,
 	});
 
 	const errorCode = await processExit;
@@ -244,13 +243,13 @@ test.serial("Unexpected error handling", async (t) => {
 	cli.command({
 		command: "foo",
 		describe: "This task fails with a TypeError",
-		handler: async function() {
+		handler: async function () {
 			throw typeError;
-		}
+		},
 	});
 
 	await t.throwsAsync(cli.parse(["foo"]), {
-		is: typeError
+		is: typeError,
 	});
 
 	const errorCode = await processExit;
@@ -283,9 +282,8 @@ test.serial("ui5 --no-update-notifier", async (t) => {
 
 test.serial("ui5 --output-style", async (t) => {
 	await t.throwsAsync(ui5(["build", "--output-style", "nonExistent"]), {
-		message: /Argument: output-style, Given: "Nonexistent", Choices: "Default", "Flat", "Namespace"/s
+		message: /Argument: output-style, Given: "Nonexistent", Choices: "Default", "Flat", "Namespace"/s,
 	}, "Coercion correctly capitalizes the first letter and makes the rest lowercase");
-
 
 	// "--output-style" uses a coerce to transform the input into the correct letter case.
 	// It is hard/unmaintainable to spy on internal implementation, so we check the output.
@@ -293,14 +291,14 @@ test.serial("ui5 --output-style", async (t) => {
 	// an invalid "--output-style" choice exception is not thrown.
 	// Of course, the build would throw another exception, because there's nothing actually to build.
 	await t.throwsAsync(ui5(["build", "--output-style", "flat"]), {
-		message: /^((?!Argument: output-style, Given: "Flat).)*$/s
+		message: /^((?!Argument: output-style, Given: "Flat).)*$/s,
 	}, "Does not throw an exception because of the --output-style input");
 
 	await t.throwsAsync(ui5(["build", "--output-style", "nAmEsPaCe"]), {
-		message: /^((?!Argument: output-style, Given: "Namespace).)*$/s
+		message: /^((?!Argument: output-style, Given: "Namespace).)*$/s,
 	}, "Does not throw an exception because of the --output-style input");
 
 	await t.throwsAsync(ui5(["build", "--output-style", "Default"]), {
-		message: /^((?!Argument: output-style, Given: "Default).)*$/s
+		message: /^((?!Argument: output-style, Given: "Default).)*$/s,
 	}, "Does not throw an exception because of the --output-style input");
 });

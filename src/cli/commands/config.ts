@@ -7,18 +7,18 @@ const configCommand = {
 	command: "config",
 	describe: "Get and set UI5 Tooling configuration options",
 	middlewares: [baseMiddleware],
-	handler: handleConfig
+	handler: handleConfig,
 };
 
-configCommand.builder = function(cli) {
+configCommand.builder = function (cli) {
 	return cli
 		.demandCommand(1, "Command required. Available commands are 'set', 'get', and 'list'")
 		.command("set <option> [value]", "Set the value for a given configuration option. " +
-			"Clear an existing configuration by omitting the value", {
+		"Clear an existing configuration by omitting the value", {
 			handler: handleConfig,
 			builder: (cli) => {
 				cli.positional("option", {
-					choices: Configuration.OPTIONS
+					choices: Configuration.OPTIONS,
 				});
 			},
 			middlewares: [baseMiddleware],
@@ -39,8 +39,15 @@ configCommand.builder = function(cli) {
 			"Unset the current value of the ui5DataDir configuration");
 };
 
+/**
+ *
+ */
 function noop() {}
 
+/**
+ *
+ * @param argv
+ */
 async function handleConfig(argv) {
 	const {_: commandArgs, option, value} = argv;
 	const command = commandArgs[commandArgs.length - 1];
@@ -53,30 +60,35 @@ async function handleConfig(argv) {
 	let jsonConfig;
 
 	switch (command) {
-	case "list":
+		case "list":
 		// Print all configuration values to stdout
-		process.stdout.write(formatJsonForOutput(config.toJson()));
-		break;
-	case "get":
+			process.stdout.write(formatJsonForOutput(config.toJson()));
+			break;
+		case "get":
 		// Get a single configuration value and print to stdout
-		process.stdout.write(`${config.toJson()[option] ?? ""}\n`);
-		break;
-	case "set":
-		jsonConfig = config.toJson();
-		if (value === undefined || value === "") {
-			delete jsonConfig[option];
-			process.stderr.write(`Configuration option ${chalk.bold(option)} has been unset\n`);
-		} else {
-			jsonConfig[option] = value;
-			process.stderr.write(`Configuration option ${chalk.bold(option)} has been updated:
+			process.stdout.write(`${config.toJson()[option] ?? ""}\n`);
+			break;
+		case "set":
+			jsonConfig = config.toJson();
+			if (value === undefined || value === "") {
+				delete jsonConfig[option];
+				process.stderr.write(`Configuration option ${chalk.bold(option)} has been unset\n`);
+			} else {
+				jsonConfig[option] = value;
+				process.stderr.write(`Configuration option ${chalk.bold(option)} has been updated:
 ${formatJsonForOutput(jsonConfig, option)}`);
-		}
+			}
 
-		await Configuration.toFile(new Configuration(jsonConfig));
-		break;
+			await Configuration.toFile(new Configuration(jsonConfig));
+			break;
 	}
 }
 
+/**
+ *
+ * @param config
+ * @param filterKey
+ */
 function formatJsonForOutput(config, filterKey) {
 	return Object.keys(config)
 		.filter((key) => !filterKey || filterKey === key)

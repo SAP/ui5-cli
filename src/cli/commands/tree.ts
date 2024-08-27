@@ -8,25 +8,25 @@ const tree = {
 	describe:
 		"Outputs the dependency tree of the current project to stdout. " +
 		"It takes all relevant parameters of ui5 build into account.",
-	middlewares: [baseMiddleware]
+	middlewares: [baseMiddleware],
 };
 
-tree.builder = function(cli) {
+tree.builder = function (cli) {
 	return cli
 		.option("flat", {
 			describe: "Output a flat list of all dependencies instead of a tree hierarchy",
 			type: "boolean",
-			default: false
+			default: false,
 		})
 		.option("level", {
 			describe: "Limit the number of levels shown in the tree hierarchy",
-			type: "number"
+			type: "number",
 		})
 		.option("framework-version", {
 			describe:
 				"Overrides the framework version defined by the project. " +
 				"Takes the same value as the version part of \"ui5 use\"",
-			type: "string"
+			type: "string",
 		})
 		.option("cache-mode", {
 			describe:
@@ -35,11 +35,11 @@ tree.builder = function(cli) {
 				"does not create any requests. 'Off' invalidates any existing cache and updates from the repository",
 			type: "string",
 			default: "Default",
-			choices: ["Default", "Force", "Off"]
+			choices: ["Default", "Force", "Off"],
 		});
 };
 
-tree.handler = async function(argv) {
+tree.handler = async function (argv) {
 	let startTime;
 	let elapsedTime;
 	if (argv.perf) {
@@ -80,7 +80,7 @@ tree.handler = async function(argv) {
 	const indentWidth = 4;
 	await graph.traverseBreadthFirst(async ({project, dependencies}) => {
 		projects.set(project.getName(), {
-			render: function(level, connectorIndices, lastChild, renderDeps = true) {
+			render: function (level, connectorIndices, lastChild, renderDeps = true) {
 				let baseString = " ".repeat(level * indentWidth);
 				connectorIndices.forEach((idx) => {
 					baseString = `${baseString.slice(0, idx)}│${baseString.slice(idx + 1)}`;
@@ -119,7 +119,7 @@ tree.handler = async function(argv) {
 						projects.get(dep).render(level + 1, newConnectorIndices, i === lastIdx);
 					});
 				}
-			}
+			},
 		});
 	});
 
@@ -130,7 +130,7 @@ tree.handler = async function(argv) {
 		// We need to transform the map into an array in order to know the index
 		// for determining whether we are rendering the last entry (lastChild param)
 		Array.from(projects.values()).forEach(({render: renderProject}, idx, arr) => {
-			renderProject(0, [], idx == arr.length -1, false);
+			renderProject(0, [], idx == arr.length - 1, false);
 		});
 	} else {
 		// Recursively render the tree, starting with the first entry of the map
@@ -165,6 +165,10 @@ tree.handler = async function(argv) {
 	}
 };
 
+/**
+ *
+ * @param startTime
+ */
 async function getElapsedTime(startTime) {
 	const timeDiff = process.hrtime(startTime);
 	const {default: prettyHrtime} = await import("pretty-hrtime");

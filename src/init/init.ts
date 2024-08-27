@@ -5,9 +5,8 @@ import {pathsExist} from "../utils/fsHelper.js";
 /**
  * Reads the package.json file and returns its content
  *
- * @private
- * @param {string} filePath Path to package.json
- * @returns {object} Package json content
+ * @param filePath Path to package.json
+ * @returns Package json content
  */
 async function readPackageJson(filePath: string) {
 	const content = await readFile(filePath, "utf8");
@@ -17,11 +16,10 @@ async function readPackageJson(filePath: string) {
 /**
  * Determines the project type from the provided parameters
  *
- * @private
- * @param {boolean} hasWebapp Webapp folder exists
- * @param {boolean} hasSrc Src folder exists
- * @param {boolean} hasTest Test folder exists
- * @returns {string} Project type
+ * @param hasWebapp Webapp folder exists
+ * @param hasSrc Src folder exists
+ * @param hasTest Test folder exists
+ * @returns Project type
  */
 function getProjectType(hasWebapp: boolean, hasSrc: boolean, hasTest: boolean) {
 	let errorReason;
@@ -65,15 +63,14 @@ function getProjectType(hasWebapp: boolean, hasSrc: boolean, hasTest: boolean) {
  * Checks the package.json and tries to determine the project type. If the <b>ui5.yaml</b> file does not exist,
  * it is created with the basic project configuration.
  *
- * @function default
- * @static
- * @param {string} cwd Current working directory
- * @returns {Promise} Promise resolving with the project configuration object
+ * @param cwd.cwd
+ * @param cwd Current working directory
+ * @returns Promise resolving with the project configuration object
  */
-async function init({ cwd = "./" }: string = {}) {
+async function init({cwd = "./"}: string = {}) {
 	const projectConfig = {
 		specVersion: "4.0",
-		metadata: {}
+		metadata: {},
 	};
 	let pkg;
 
@@ -87,7 +84,7 @@ async function init({ cwd = "./" }: string = {}) {
 		}
 	}
 
-	if (pkg && pkg.name) {
+	if (pkg?.name) {
 		projectConfig.metadata.name = pkg.name;
 	} else {
 		throw new Error("Initialization not possible: Missing 'name' in package.json");

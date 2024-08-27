@@ -3,24 +3,24 @@ import base from "../middlewares/base.js";
 const addCommand = {
 	command: "add [--development] [--optional] <framework-libraries..>",
 	describe: "Add SAPUI5/OpenUI5 framework libraries to the project configuration.",
-	middlewares: [base]
+	middlewares: [base],
 };
 
-addCommand.builder = function(cli) {
+addCommand.builder = function (cli) {
 	return cli
 		.positional("framework-libraries", {
 			describe: "Framework library names",
-			type: "string"
+			type: "string",
 		}).option("development", {
 			describe: "Add as development dependency",
 			alias: ["D", "dev"],
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		}).option("optional", {
 			describe: "Add as optional dependency",
 			alias: ["O"],
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.example("$0 add sap.ui.core sap.m", "Add the framework libraries sap.ui.core and sap.m as dependencies")
 		.example("$0 add -D sap.ui.support", "Add the framework library sap.ui.support as development dependency")
@@ -28,10 +28,10 @@ addCommand.builder = function(cli) {
 			"Add the framework library themelib_sap_fiori_3 as optional dependency");
 };
 
-addCommand.handler = async function(argv) {
+addCommand.handler = async function (argv) {
 	const libraryNames = argv["framework-libraries"] || [];
-	const development = argv["development"];
-	const optional = argv["optional"];
+	const development = argv.development;
+	const optional = argv.optional;
 
 	if (libraryNames.length === 0) {
 		// Should not happen via yargs as parameter is mandatory
@@ -44,7 +44,7 @@ addCommand.handler = async function(argv) {
 
 	const projectGraphOptions = {
 		dependencyDefinition: argv.dependencyDefinition,
-		config: argv.config
+		config: argv.config,
 	};
 
 	const libraries = libraryNames.map((name) => {
@@ -60,10 +60,10 @@ addCommand.handler = async function(argv) {
 	const {default: add} = await import("../../framework/add.js");
 	const {yamlUpdated} = await add({
 		projectGraphOptions,
-		libraries
+		libraries,
 	});
 
-	const library = libraries.length === 1 ? "library": "libraries";
+	const library = libraries.length === 1 ? "library" : "libraries";
 	if (!yamlUpdated) {
 		if (argv.config) {
 			throw new Error(
@@ -83,7 +83,7 @@ addCommand.handler = async function(argv) {
 		} else if (optional) {
 			logMessage += " optional";
 		}
-		logMessage += libraries.length === 1 ? " dependency": " dependencies";
+		logMessage += libraries.length === 1 ? " dependency" : " dependencies";
 		process.stdout.write(logMessage);
 		process.stdout.write("\n");
 	}

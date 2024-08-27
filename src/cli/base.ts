@@ -2,50 +2,54 @@ import chalk from "chalk";
 import {isLogLevelEnabled} from "@ui5/logger";
 import ConsoleWriter from "@ui5/logger/writers/Console";
 
-export default function(cli) {
+/**
+ *
+ * @param cli
+ */
+export default function (cli) {
 	cli.usage("Usage: ui5 <command> [options]")
 		.demandCommand(1, "Command required")
 		.option("config", {
 			alias: "c",
 			describe: "Path to project configuration file in YAML format",
-			type: "string"
+			type: "string",
 		})
 		.option("dependency-definition", {
 			describe: "Path to a YAML file containing the project's dependency tree. " +
-		"This option will disable resolution of node package dependencies.",
-			type: "string"
+			"This option will disable resolution of node package dependencies.",
+			type: "string",
 		})
 		.option("workspace-config", {
 			describe: "Path to workspace configuration file in YAML format",
-			type: "string"
+			type: "string",
 		})
 		.option("workspace", {
 			alias: "w",
 			describe: "Name of the workspace configuration to use",
 			default: "default",
-			type: "string"
+			type: "string",
 		})
 		.option("loglevel", {
 			alias: "log-level",
 			describe: "Set the logging level",
 			default: "info",
 			type: "string",
-			choices: ["silent", "error", "warn", "info", "perf", "verbose", "silly"]
+			choices: ["silent", "error", "warn", "info", "perf", "verbose", "silly"],
 		})
 		.option("verbose", {
 			describe: "Enable verbose logging.",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("perf", {
 			describe: "Enable performance measurements and related logging.",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.option("silent", {
 			describe: "Disable all log output.",
 			default: false,
-			type: "boolean"
+			type: "boolean",
 		})
 		.coerce([
 			// base.js
@@ -86,7 +90,7 @@ export default function(cli) {
 			"Execute command using the 'dolphin' workspace of a ui5-workspace.yaml")
 		.example("ui5 <command> --log-level silly",
 			"Execute command with the maximum log output")
-		.fail(function(msg, err, yargs) {
+		.fail(function (msg, err, yargs) {
 			if (err) {
 				ConsoleWriter.stop();
 				// Exception
@@ -138,4 +142,3 @@ export default function(cli) {
 			process.exit(1);
 		});
 }
-

@@ -4,10 +4,10 @@ import baseMiddleware from "../middlewares/base.js";
 const useCommand = {
 	command: "use <framework-info>",
 	describe: "Initialize or update the project's framework configuration.",
-	middlewares: [baseMiddleware]
+	middlewares: [baseMiddleware],
 };
 
-useCommand.builder = function(cli) {
+useCommand.builder = function (cli) {
 	return cli
 		.positional("framework-info", {
 			describe: "Framework name, version or both (name@version).\n" +
@@ -17,7 +17,7 @@ useCommand.builder = function(cli) {
 			"For SAP-internal usage the version can also be \"latest-snapshot\", " +
 			"a version or range ending with -SNAPSHOT, " +
 			"or a simplified range such as \"1-SNAPSHOT\", \"1.x-SNAPSHOT\" or \"1.108-SNAPSHOT\".",
-			type: "string"
+			type: "string",
 		})
 		.example("$0 use sapui5@latest", "Use SAPUI5 in the latest available version")
 		.example("$0 use openui5@1.76", "Use OpenUI5 in the latest available 1.76 patch version")
@@ -25,6 +25,10 @@ useCommand.builder = function(cli) {
 		.example("$0 use openui5", "Use OpenUI5 in the latest available version");
 };
 
+/**
+ *
+ * @param frameworkInfo
+ */
 function parseFrameworkInfo(frameworkInfo) {
 	const parts = frameworkInfo.split("@");
 	if (parts.length > 2) {
@@ -41,12 +45,12 @@ function parseFrameworkInfo(frameworkInfo) {
 			// Framework name without version uses "latest", similar to npm install behavior
 			return {
 				name: nameOrVersion,
-				version: "latest"
+				version: "latest",
 			};
 		} else {
 			return {
 				name: null,
-				version: nameOrVersion
+				version: nameOrVersion,
 			};
 		}
 	} else {
@@ -58,18 +62,18 @@ function parseFrameworkInfo(frameworkInfo) {
 	}
 }
 
-useCommand.handler = async function(argv) {
+useCommand.handler = async function (argv) {
 	const frameworkOptions = parseFrameworkInfo(argv["framework-info"]);
 
 	const projectGraphOptions = {
 		dependencyDefinition: argv.dependencyDefinition,
-		config: argv.config
+		config: argv.config,
 	};
 
 	const {default: use} = await import("../../framework/use.js");
 	const {usedFramework, usedVersion, yamlUpdated} = await use({
 		projectGraphOptions,
-		frameworkOptions
+		frameworkOptions,
 	});
 
 	if (!yamlUpdated) {

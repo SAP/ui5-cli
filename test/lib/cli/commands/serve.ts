@@ -26,7 +26,7 @@ function getDefaultArgv() {
 		"serveCspReports": false,
 		"cache-mode": "Default",
 		"cacheMode": "Default",
-		"$0": "ui5"
+		"$0": "ui5",
 	};
 }
 
@@ -36,27 +36,26 @@ test.beforeEach(async (t) => {
 	t.context.server = {
 		serve: sinon.stub().returns({
 			h2: false,
-			port: 8080
-		})
+			port: 8080,
+		}),
 	};
 	t.context.sslUtil = {
-		getSslCertificate: sinon.stub().resolves()
+		getSslCertificate: sinon.stub().resolves(),
 	};
 
 	t.context.getServerSettings = sinon.stub().returns({});
 	t.context.fakeGraph = {
 		getRoot: () => {
 			return {
-				getServerSettings: t.context.getServerSettings
+				getServerSettings: t.context.getServerSettings,
 			};
-		}
+		},
 	};
 
 	t.context.graph = {
 		graphFromStaticFile: sinon.stub().resolves(t.context.fakeGraph),
-		graphFromPackageDependencies: sinon.stub().resolves(t.context.fakeGraph)
+		graphFromPackageDependencies: sinon.stub().resolves(t.context.fakeGraph),
 	};
-
 
 	t.context.consoleOutput = "";
 	t.context.processStderrWrite = sinon.stub(process.stderr, "write").callsFake((message) => {
@@ -74,7 +73,7 @@ test.beforeEach(async (t) => {
 		"@ui5/server": t.context.server,
 		"@ui5/server/internal/sslUtil": t.context.sslUtil,
 		"@ui5/project/graph": t.context.graph,
-		"open": t.context.open
+		"open": t.context.open,
 	});
 });
 
@@ -113,7 +112,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -122,12 +121,12 @@ test.serial("ui5 serve --h2", async (t) => {
 
 	sslUtil.getSslCertificate.resolves({
 		key: "random-key",
-		cert: "random-cert"
+		cert: "random-cert",
 	});
 
 	server.serve.returns({
 		h2: true,
-		port: 8443
+		port: 8443,
 	});
 
 	argv.h2 = true;
@@ -159,13 +158,13 @@ URL: https://localhost:8443
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 
 	t.is(sslUtil.getSslCertificate.callCount, 1);
 	t.deepEqual(sslUtil.getSslCertificate.getCall(0).args, [
 		"/home/.ui5/server/server.key",
-		"/home/.ui5/server/server.crt"
+		"/home/.ui5/server/server.crt",
 	]);
 });
 
@@ -190,7 +189,7 @@ ${chalk.dim.underline("Please Note:")}
 ${chalk.bold.dim("* This server is intended for development purposes only. Do not use it in production.")}
 ${chalk.dim("* Vulnerable (custom-)middleware can pose a threat to your system when exposed to the network")}
 ${chalk.dim("* The use of proxy-middleware with preconfigured credentials might enable unauthorized access " +
-	"to a target system for third parties on your network")}
+"to a target system for third parties on your network")}
 
 Server started
 URL: http://localhost:8080
@@ -209,7 +208,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -245,12 +244,12 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 
 	t.is(open.callCount, 1);
 	t.deepEqual(open.getCall(0).args, [
-		"http://localhost:8080/index.html"
+		"http://localhost:8080/index.html",
 	]);
 });
 
@@ -286,12 +285,12 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 
 	t.is(open.callCount, 1);
 	t.deepEqual(open.getCall(0).args, [
-		"http://localhost:8080"
+		"http://localhost:8080",
 	]);
 });
 
@@ -328,7 +327,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -363,8 +362,8 @@ URL: http://localhost:8080
 			port: 8080,
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
-			simpleIndex: false
-		}
+			simpleIndex: false,
+		},
 	]);
 });
 
@@ -400,7 +399,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -436,7 +435,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -472,7 +471,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -508,7 +507,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -545,7 +544,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -581,7 +580,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: true,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -617,7 +616,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: true,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -653,7 +652,7 @@ URL: http://localhost:8080
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: true,
-		}
+		},
 	]);
 });
 
@@ -661,12 +660,12 @@ test.serial("ui5 serve with ui5.yaml port setting", async (t) => {
 	const {argv, serve, graph, server, fakeGraph, getServerSettings} = t.context;
 
 	getServerSettings.returns({
-		httpPort: 3333
+		httpPort: 3333,
 	});
 
 	server.serve.returns({
 		h2: false,
-		port: 3333
+		port: 3333,
 	});
 
 	await serve.handler(argv);
@@ -696,7 +695,7 @@ URL: http://localhost:3333
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 });
 
@@ -705,16 +704,16 @@ test.serial("ui5 serve --h2 with ui5.yaml port setting", async (t) => {
 
 	sslUtil.getSslCertificate.resolves({
 		key: "random-key",
-		cert: "random-cert"
+		cert: "random-cert",
 	});
 
 	getServerSettings.returns({
-		httpsPort: 4444
+		httpsPort: 4444,
 	});
 
 	server.serve.returns({
 		h2: true,
-		port: 4444
+		port: 4444,
 	});
 
 	argv.h2 = true;
@@ -746,13 +745,13 @@ URL: https://localhost:4444
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 
 	t.is(sslUtil.getSslCertificate.callCount, 1);
 	t.deepEqual(sslUtil.getSslCertificate.getCall(0).args, [
 		"/home/.ui5/server/server.key",
-		"/home/.ui5/server/server.crt"
+		"/home/.ui5/server/server.crt",
 	]);
 });
 
@@ -761,16 +760,16 @@ test.serial("ui5 serve --h2 with ui5.yaml port setting and port CLI argument", a
 
 	sslUtil.getSslCertificate.resolves({
 		key: "random-key",
-		cert: "random-cert"
+		cert: "random-cert",
 	});
 
 	getServerSettings.returns({
-		httpsPort: 4444
+		httpsPort: 4444,
 	});
 
 	server.serve.returns({
 		h2: true,
-		port: 5555
+		port: 5555,
 	});
 
 	argv.h2 = true;
@@ -803,12 +802,12 @@ URL: https://localhost:5555
 			sendSAPTargetCSP: false,
 			serveCSPReports: false,
 			simpleIndex: false,
-		}
+		},
 	]);
 
 	t.is(sslUtil.getSslCertificate.callCount, 1);
 	t.deepEqual(sslUtil.getSslCertificate.getCall(0).args, [
 		"/home/.ui5/server/server.key",
-		"/home/.ui5/server/server.crt"
+		"/home/.ui5/server/server.crt",
 	]);
 });

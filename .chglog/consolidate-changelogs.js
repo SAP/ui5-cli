@@ -10,7 +10,7 @@ function handleDependencyBump(line) {
 		const changelogPath = fileURLToPath(
 			new URL(`./CHANGELOG.md`, import.meta.resolve(`${moduleName}/package.json`)));
 		const changelog = fs.readFileSync(changelogPath, {
-			encoding: "utf8"
+			encoding: "utf8",
 		});
 		const sectionRegExp =
 			new RegExp(`^## \\[v${moduleVersion.replace(".", "\\.")}\\].+\\n((?:.|\\n)+?)(?=^<a )`, "m");

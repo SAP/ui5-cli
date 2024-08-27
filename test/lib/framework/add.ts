@@ -22,7 +22,7 @@ test.beforeEach(async (t) => {
 	t.context.getRootProjectConfigurationStub = sinon.stub();
 	t.context.getLibraryMetadataStub = sinon.stub();
 	t.context.createFrameworkResolverInstanceStub = sinon.stub().resolves({
-		getLibraryMetadata: t.context.getLibraryMetadataStub
+		getLibraryMetadata: t.context.getLibraryMetadataStub,
 	});
 
 	t.context.updateYamlStub = sinon.stub();
@@ -31,7 +31,7 @@ test.beforeEach(async (t) => {
 		"../../../lib/framework/updateYaml.js": t.context.updateYamlStub,
 		"../../../lib/framework/utils.js": {
 			getRootProjectConfiguration: t.context.getRootProjectConfigurationStub,
-			createFrameworkResolverInstance: t.context.createFrameworkResolverInstanceStub
+			createFrameworkResolverInstance: t.context.createFrameworkResolverInstanceStub,
 		},
 	});
 });
@@ -46,7 +46,7 @@ test.serial("Add without existing libraries in config", async (t) => {
 		getLibraryMetadataStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -62,7 +62,7 @@ test.serial("Add without existing libraries in config", async (t) => {
 
 	const result = await addFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
@@ -75,10 +75,10 @@ test.serial("Add without existing libraries in config", async (t) => {
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "OpenUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 
 	t.is(getLibraryMetadataStub.callCount, 1, "Resolver.getLibraryMetadata should be called once");
@@ -90,8 +90,8 @@ test.serial("Add without existing libraries in config", async (t) => {
 		configPathOverride: undefined,
 		project,
 		data: {
-			framework: {libraries: [{name: "sap.ui.lib1"}]}
-		}
+			framework: {libraries: [{name: "sap.ui.lib1"}]},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -100,7 +100,7 @@ test.serial("Add with existing libraries in config", async (t) => {
 		getLibraryMetadataStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -110,10 +110,10 @@ test.serial("Add with existing libraries in config", async (t) => {
 		frameworkName: "OpenUI5",
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
-			name: "sap.ui.lib2"
+			name: "sap.ui.lib2",
 		}, {
-			name: "sap.ui.lib1"
-		}]
+			name: "sap.ui.lib1",
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
@@ -121,7 +121,7 @@ test.serial("Add with existing libraries in config", async (t) => {
 
 	const result = await addFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}, {name: "sap.ui.lib3"}]
+		libraries: [{name: "sap.ui.lib1"}, {name: "sap.ui.lib3"}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
@@ -134,10 +134,10 @@ test.serial("Add with existing libraries in config", async (t) => {
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "OpenUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 
 	t.is(getLibraryMetadataStub.callCount, 2, "Resolver.getLibraryMetadata should be called twice");
@@ -155,10 +155,10 @@ test.serial("Add with existing libraries in config", async (t) => {
 				libraries: [
 					{name: "sap.ui.lib1"},
 					{name: "sap.ui.lib2"},
-					{name: "sap.ui.lib3"}
-				]
-			}
-		}
+					{name: "sap.ui.lib3"},
+				],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -167,7 +167,7 @@ test.serial("Add optional with existing libraries in config", async (t) => {
 		getLibraryMetadataStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -178,11 +178,11 @@ test.serial("Add optional with existing libraries in config", async (t) => {
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
 			name: "sap.ui.lib2",
-			development: true
+			development: true,
 		}, {
 			name: "sap.ui.lib1",
-			development: true
-		}]
+			development: true,
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
@@ -190,7 +190,7 @@ test.serial("Add optional with existing libraries in config", async (t) => {
 
 	const result = await addFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1", optional: true}, {name: "sap.ui.lib3", optional: true}]
+		libraries: [{name: "sap.ui.lib1", optional: true}, {name: "sap.ui.lib3", optional: true}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
@@ -203,10 +203,10 @@ test.serial("Add optional with existing libraries in config", async (t) => {
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "OpenUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 
 	t.is(getLibraryMetadataStub.callCount, 2, "Resolver.getLibraryMetadata should be called twice");
@@ -224,10 +224,10 @@ test.serial("Add optional with existing libraries in config", async (t) => {
 				libraries: [
 					{name: "sap.ui.lib1", optional: true},
 					{name: "sap.ui.lib2", development: true},
-					{name: "sap.ui.lib3", optional: true}
-				]
-			}
-		}
+					{name: "sap.ui.lib3", optional: true},
+				],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -235,11 +235,11 @@ test.serial("Add with specVersion 1.0", async (t) => {
 	const {
 		addFramework,
 		getRootProjectConfigurationStub, createFrameworkResolverInstanceStub, getLibraryMetadataStub,
-		updateYamlStub
+		updateYamlStub,
 	} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -251,7 +251,7 @@ test.serial("Add with specVersion 1.0", async (t) => {
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
-		projectGraphOptions
+		projectGraphOptions,
 	}));
 
 	t.is(error.message,
@@ -271,11 +271,11 @@ test.serial("Add without framework configuration", async (t) => {
 	const {
 		addFramework,
 		getRootProjectConfigurationStub, createFrameworkResolverInstanceStub, getLibraryMetadataStub,
-		updateYamlStub
+		updateYamlStub,
 	} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -287,11 +287,11 @@ test.serial("Add without framework configuration", async (t) => {
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
-		projectGraphOptions
+		projectGraphOptions,
 	}));
 
 	t.is(error.message, `Project my-project is missing a framework configuration. ` +
-		`Please use "ui5 use" to configure a framework and version.`);
+	`Please use "ui5 use" to configure a framework and version.`);
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
 	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
@@ -307,28 +307,28 @@ test.serial("Add without framework version configuration", async (t) => {
 	const {
 		addFramework,
 		getRootProjectConfigurationStub, createFrameworkResolverInstanceStub, getLibraryMetadataStub,
-		updateYamlStub
+		updateYamlStub,
 	} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
 		specVersion: "2.0",
 		name: "my-project",
 		path: "my-project-path",
-		frameworkName: "OpenUI5"
+		frameworkName: "OpenUI5",
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
-		projectGraphOptions
+		projectGraphOptions,
 	}));
 
 	t.is(error.message, `Project my-project does not define a framework version configuration. ` +
-		`Please use "ui5 use" to configure a version.`);
+	`Please use "ui5 use" to configure a version.`);
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
 	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
@@ -344,13 +344,13 @@ test.serial("Add with failing library metadata call", async (t) => {
 	const {
 		addFramework,
 		getRootProjectConfigurationStub, createFrameworkResolverInstanceStub, getLibraryMetadataStub,
-		updateYamlStub
+		updateYamlStub,
 	} = t.context;
 
 	getLibraryMetadataStub.rejects(new Error("Failed to load library sap.ui.lib1"));
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -358,14 +358,14 @@ test.serial("Add with failing library metadata call", async (t) => {
 		name: "my-project",
 		path: "my-project-path",
 		frameworkName: "SAPUI5",
-		frameworkVersion: "1.76.0"
+		frameworkVersion: "1.76.0",
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	}));
 
 	t.is(error.message, `Failed to find SAPUI5 framework library sap.ui.lib1: Failed to load library sap.ui.lib1`);
@@ -378,10 +378,10 @@ test.serial("Add with failing library metadata call", async (t) => {
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "SAPUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 
 	t.is(getLibraryMetadataStub.callCount, 1, "Resolver.getLibraryMetadata should be called once");
@@ -395,7 +395,7 @@ test.serial("Add with failing YAML update", async (t) => {
 	const {
 		addFramework,
 		getRootProjectConfigurationStub, createFrameworkResolverInstanceStub, getLibraryMetadataStub,
-		updateYamlStub
+		updateYamlStub,
 	} = t.context;
 
 	const yamlUpdateError = new Error("Failed to update YAML file");
@@ -403,7 +403,7 @@ test.serial("Add with failing YAML update", async (t) => {
 	updateYamlStub.rejects(yamlUpdateError);
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -411,14 +411,14 @@ test.serial("Add with failing YAML update", async (t) => {
 		name: "my-project",
 		path: "my-project-path",
 		frameworkName: "SAPUI5",
-		frameworkVersion: "1.76.0"
+		frameworkVersion: "1.76.0",
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
 	const result = await addFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: false}, "yamlUpdated should be false");
@@ -431,10 +431,10 @@ test.serial("Add with failing YAML update", async (t) => {
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "SAPUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 
 	t.is(getLibraryMetadataStub.callCount, 1, "Resolver.getLibraryMetadata should be called once");
@@ -447,9 +447,9 @@ test.serial("Add with failing YAML update", async (t) => {
 		project,
 		data: {
 			framework: {
-				libraries: [{name: "sap.ui.lib1"}]
-			}
-		}
+				libraries: [{name: "sap.ui.lib1"}],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -457,13 +457,13 @@ test.serial("Add with failing YAML update (unexpected error)", async (t) => {
 	const {
 		addFramework,
 		getRootProjectConfigurationStub, createFrameworkResolverInstanceStub, getLibraryMetadataStub,
-		updateYamlStub
+		updateYamlStub,
 	} = t.context;
 
 	updateYamlStub.rejects(new Error("Some unexpected error"));
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -471,14 +471,14 @@ test.serial("Add with failing YAML update (unexpected error)", async (t) => {
 		name: "my-project",
 		path: "my-project-path",
 		frameworkName: "SAPUI5",
-		frameworkVersion: "1.76.0"
+		frameworkVersion: "1.76.0",
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(addFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	}));
 
 	t.is(error.message, `Some unexpected error`);
@@ -491,10 +491,10 @@ test.serial("Add with failing YAML update (unexpected error)", async (t) => {
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "SAPUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 
 	t.is(getLibraryMetadataStub.callCount, 1, "Resolver.getLibraryMetadata should be called once");
@@ -507,9 +507,9 @@ test.serial("Add with failing YAML update (unexpected error)", async (t) => {
 		project,
 		data: {
 			framework: {
-				libraries: [{name: "sap.ui.lib1"}]
-			}
-		}
+				libraries: [{name: "sap.ui.lib1"}],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -517,7 +517,7 @@ test.serial("Add should not modify input parameters", async (t) => {
 	const {addFramework, getRootProjectConfigurationStub, createFrameworkResolverInstanceStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -526,7 +526,7 @@ test.serial("Add should not modify input parameters", async (t) => {
 		path: "my-project-path",
 		frameworkName: "SAPUI5",
 		frameworkVersion: "1.76.0",
-		frameworkLibraries: [{"name": "sap.ui.lib1"}]
+		frameworkLibraries: [{name: "sap.ui.lib1"}],
 	});
 
 	const libraries = [{name: "sap.ui.lib2"}];
@@ -535,17 +535,17 @@ test.serial("Add should not modify input parameters", async (t) => {
 
 	await addFramework({
 		projectGraphOptions,
-		libraries
+		libraries,
 	});
 
 	t.is(createFrameworkResolverInstanceStub.callCount, 1, "createFrameworkResolverInstanceStub should be called once");
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "SAPUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 
 	t.deepEqual(libraries, [{name: "sap.ui.lib2"}], "libraries array should not be changed");
@@ -555,11 +555,11 @@ test.serial("Add with projectGraphOptions.config", async (t) => {
 	const {
 		addFramework,
 		getRootProjectConfigurationStub, createFrameworkResolverInstanceStub, getLibraryMetadataStub,
-		updateYamlStub
+		updateYamlStub,
 	} = t.context;
 
 	const projectGraphOptions = {
-		config: "/path/to/ui5.yaml"
+		config: "/path/to/ui5.yaml",
 	};
 
 	const project = createMockProject({
@@ -567,7 +567,7 @@ test.serial("Add with projectGraphOptions.config", async (t) => {
 		name: "my-project",
 		path: "my-project-path",
 		frameworkName: "SAPUI5",
-		frameworkVersion: "1.76.0"
+		frameworkVersion: "1.76.0",
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
@@ -575,7 +575,7 @@ test.serial("Add with projectGraphOptions.config", async (t) => {
 	const libraries = [{name: "sap.ui.lib1"}];
 	await addFramework({
 		projectGraphOptions,
-		libraries
+		libraries,
 	});
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
@@ -586,10 +586,10 @@ test.serial("Add with projectGraphOptions.config", async (t) => {
 	t.deepEqual(createFrameworkResolverInstanceStub.getCall(0).args, [
 		{
 			frameworkName: "SAPUI5",
-			frameworkVersion: "1.76.0"
+			frameworkVersion: "1.76.0",
 		}, {
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	], "createFrameworkResolverInstance called with expected arguments");
 	t.is(getLibraryMetadataStub.callCount, 1, "Resolver.getLibraryMetadata should be called once");
 	t.deepEqual(getLibraryMetadataStub.getCall(0).args, ["sap.ui.lib1"],
@@ -601,8 +601,8 @@ test.serial("Add with projectGraphOptions.config", async (t) => {
 		configPathOverride: "/path/to/ui5.yaml",
 		data: {
 			framework: {
-				libraries: [{name: "sap.ui.lib1"}]
-			}
-		}
+				libraries: [{name: "sap.ui.lib1"}],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });

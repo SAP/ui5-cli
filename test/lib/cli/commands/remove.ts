@@ -5,7 +5,7 @@ import esmock from "esmock";
 async function createMock(t, yamlUpdated = true) {
 	t.context.frameworkRemoveStub = sinon.stub().resolves({yamlUpdated});
 	t.context.removeCommand = await esmock.p("../../../../lib/cli/commands/remove.js", {
-		"../../../../lib/framework/remove.js": t.context.frameworkRemoveStub
+		"../../../../lib/framework/remove.js": t.context.frameworkRemoveStub,
 	});
 }
 
@@ -19,8 +19,8 @@ async function assertRemoveHandler(t, {argv, expectedLibraries, expectedConsoleL
 			libraries: expectedLibraries,
 			projectGraphOptions: {
 				dependencyDefinition: undefined,
-				config: undefined
-			}
+				config: undefined,
+			},
 		}],
 	"Remove function should be called with expected args");
 
@@ -66,8 +66,8 @@ test.serial("Accepts single library", async (t) => {
 			"Updated configuration written to ui5.yaml",
 			"\n",
 			"Removed framework library sap.ui.lib1 as dependency",
-			"\n"
-		]
+			"\n",
+		],
 	});
 });
 
@@ -79,8 +79,8 @@ test.serial("Accepts multiple libraries", async (t) => {
 			"Updated configuration written to ui5.yaml",
 			"\n",
 			"Removed framework libraries sap.ui.lib1 sap.ui.lib2 as dependencies",
-			"\n"
-		]
+			"\n",
+		],
 	});
 });
 
@@ -92,36 +92,36 @@ test.serial("Accepts multiple libraries duplicates", async (t) => {
 			"Updated configuration written to ui5.yaml",
 			"\n",
 			"Removed framework libraries sap.ui.lib1 sap.ui.lib2 as dependencies",
-			"\n"
-		]
+			"\n",
+		],
 	});
 });
 
 test.serial("Rejects on empty framework-libraries", async (t) => {
 	await assertFailingRemoveHandler(t, {
 		argv: {"framework-libraries": ""},
-		expectedMessage: "Missing mandatory parameter framework-libraries"
+		expectedMessage: "Missing mandatory parameter framework-libraries",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated (single library)", async (t) => {
 	await assertFailingYamlUpdateRemoveHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1"]},
-		expectedMessage: "Internal error while removing framework library sap.ui.lib1 to ui5.yaml"
+		expectedMessage: "Internal error while removing framework library sap.ui.lib1 to ui5.yaml",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated (multiple libraries)", async (t) => {
 	await assertFailingYamlUpdateRemoveHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1", "sap.ui.lib2"]},
-		expectedMessage: "Internal error while removing framework libraries sap.ui.lib1 sap.ui.lib2 to ui5.yaml"
+		expectedMessage: "Internal error while removing framework libraries sap.ui.lib1 sap.ui.lib2 to ui5.yaml",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated (single library; with config path)", async (t) => {
 	await assertFailingYamlUpdateRemoveHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1"], "config": "/path/to/ui5.yaml"},
-		expectedMessage: "Internal error while removing framework library sap.ui.lib1 to config at /path/to/ui5.yaml"
+		expectedMessage: "Internal error while removing framework library sap.ui.lib1 to config at /path/to/ui5.yaml",
 	});
 });
 
@@ -129,6 +129,6 @@ test.serial("Rejects when YAML could not be updated (multiple libraries; with co
 	await assertFailingYamlUpdateRemoveHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1", "sap.ui.lib2"], "config": "/path/to/ui5.yaml"},
 		expectedMessage:
-			"Internal error while removing framework libraries sap.ui.lib1 sap.ui.lib2 to config at /path/to/ui5.yaml"
+			"Internal error while removing framework libraries sap.ui.lib1 sap.ui.lib2 to config at /path/to/ui5.yaml",
 	});
 });

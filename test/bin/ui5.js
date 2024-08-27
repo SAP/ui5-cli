@@ -70,10 +70,10 @@ test.serial("checkRequirements: Using supported Node.js version", (t) => {
 		pkg: {
 			name: "ui5-cli-engines-test",
 			engines: {
-				node: ">= 18"
-			}
+				node: ">= 18",
+			},
 		},
-		nodeVersion: "v20.0.0"
+		nodeVersion: "v20.0.0",
 	});
 
 	t.true(returnValue);
@@ -89,10 +89,10 @@ test.serial("checkRequirements: Using unsupported Node.js version", (t) => {
 		pkg: {
 			name: "ui5-cli-engines-test",
 			engines: {
-				node: "^999"
-			}
+				node: "^999",
+			},
 		},
-		nodeVersion: "v10.0.0"
+		nodeVersion: "v10.0.0",
 	});
 
 	t.false(returnValue);
@@ -120,10 +120,10 @@ test.serial("checkRequirements: logs warning when using pre-release Node.js vers
 		pkg: {
 			name: "ui5-cli-engines-test",
 			engines: {
-				node: "^17"
-			}
+				node: "^17",
+			},
 		},
-		nodeVersion: "v17.0.0-v8-canary202108258414d1aed8"
+		nodeVersion: "v17.0.0-v8-canary202108258414d1aed8",
 	});
 
 	t.true(returnValue);
@@ -191,7 +191,7 @@ test.serial("invokeLocalInstallation: Invokes local installation when found (/w 
 		"INFO: This project contains an individual ui5-cli-test installation which " +
 		"will be used over the global one."]);
 	t.deepEqual(processStderrWriteStub.getCall(2).args, [
-		"See https://github.com/SAP/ui5-cli#local-vs-global-installation for details."
+		"See https://github.com/SAP/ui5-cli#local-vs-global-installation for details.",
 	]);
 	t.deepEqual(processStderrWriteStub.getCall(3).args, ["\n\n"]);
 

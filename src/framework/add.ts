@@ -3,13 +3,13 @@ import {getRootProjectConfiguration, createFrameworkResolverInstance} from "./ut
 /**
  * Adds the given set of libraries to the framework libraries section in the ui5.yaml
  *
- * @param {object} parameters Parameters
- * @param {object} parameters.projectGraphOptions
- * @param {object} parameters.libraries
+ * @param parameters Parameters
+ * @param parameters.projectGraphOptions
+ * @param parameters.libraries
  */
-export default async function({ projectGraphOptions, libraries }: {
-    projectGraphOptions: object;
-    libraries: object;
+export default async function ({projectGraphOptions, libraries}: {
+	projectGraphOptions: object;
+	libraries: object;
 }) {
 	const project = await getRootProjectConfiguration(projectGraphOptions);
 
@@ -37,9 +37,9 @@ export default async function({ projectGraphOptions, libraries }: {
 	}
 
 	const resolver = await createFrameworkResolverInstance({
-		frameworkName, frameworkVersion
+		frameworkName, frameworkVersion,
 	}, {
-		cwd: project.getRootPath()
+		cwd: project.getRootPath(),
 	});
 
 	// Get metadata of all libraries to verify that they can be installed
@@ -74,9 +74,9 @@ export default async function({ projectGraphOptions, libraries }: {
 			configPathOverride: projectGraphOptions.config,
 			data: {
 				framework: {
-					libraries: allLibraries
-				}
-			}
+					libraries: allLibraries,
+				},
+			},
 		});
 		yamlUpdated = true;
 	} catch (err) {
@@ -85,6 +85,6 @@ export default async function({ projectGraphOptions, libraries }: {
 		}
 	}
 	return {
-		yamlUpdated
+		yamlUpdated,
 	};
 }

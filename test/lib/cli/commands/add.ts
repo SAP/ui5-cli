@@ -5,7 +5,7 @@ import esmock from "esmock";
 async function createMock(t, yamlUpdated = true) {
 	t.context.frameworkAddStub = sinon.stub().resolves({yamlUpdated});
 	t.context.addCommand = await esmock.p("../../../../lib/cli/commands/add.js", {
-		"../../../../lib/framework/add.js": t.context.frameworkAddStub
+		"../../../../lib/framework/add.js": t.context.frameworkAddStub,
 	});
 }
 
@@ -19,8 +19,8 @@ async function assertAddHandler(t, {argv, expectedLibraries, expectedConsoleLog}
 			libraries: expectedLibraries,
 			projectGraphOptions: {
 				dependencyDefinition: undefined,
-				config: undefined
-			}
+				config: undefined,
+			},
 		}],
 	"Add function should be called with expected args");
 
@@ -66,7 +66,7 @@ test.serial("Accepts single library", async (t) => {
 			"\n",
 			"Added framework library sap.ui.lib1 as dependency",
 			"\n",
-		]
+		],
 	});
 });
 
@@ -79,7 +79,7 @@ test.serial("Accepts multiple libraries", async (t) => {
 			"\n",
 			"Added framework libraries sap.ui.lib1 sap.ui.lib2 as dependencies",
 			"\n",
-		]
+		],
 	});
 });
 
@@ -88,26 +88,26 @@ test.serial("Accepts multiple libraries (--development)", async (t) => {
 		argv: {
 			"framework-libraries": [
 				"sap.ui.lib1",
-				"sap.ui.lib2"
+				"sap.ui.lib2",
 			],
-			"development": true
+			"development": true,
 		},
 		expectedLibraries: [
 			{
 				name: "sap.ui.lib1",
-				development: true
+				development: true,
 			},
 			{
 				name: "sap.ui.lib2",
-				development: true
-			}
+				development: true,
+			},
 		],
 		expectedConsoleLog: [
 			"Updated configuration written to ui5.yaml",
 			"\n",
 			"Added framework libraries sap.ui.lib1 sap.ui.lib2 as development dependencies",
-			"\n"
-		]
+			"\n",
+		],
 	});
 });
 
@@ -116,26 +116,26 @@ test.serial("Accepts multiple libraries (--optional)", async (t) => {
 		argv: {
 			"framework-libraries": [
 				"sap.ui.lib1",
-				"sap.ui.lib2"
+				"sap.ui.lib2",
 			],
-			"optional": true
+			"optional": true,
 		},
 		expectedLibraries: [
 			{
 				name: "sap.ui.lib1",
-				optional: true
+				optional: true,
 			},
 			{
 				name: "sap.ui.lib2",
-				optional: true
-			}
+				optional: true,
+			},
 		],
 		expectedConsoleLog: [
 			"Updated configuration written to ui5.yaml",
 			"\n",
 			"Added framework libraries sap.ui.lib1 sap.ui.lib2 as optional dependencies",
-			"\n"
-		]
+			"\n",
+		],
 	});
 });
 
@@ -144,37 +144,37 @@ test.serial("Rejects when development and optional are true", async (t) => {
 		argv: {
 			"framework-libraries": ["sap.ui.lib1"],
 			"development": true,
-			"optional": true
+			"optional": true,
 		},
-		expectedMessage: "Options 'development' and 'optional' cannot be combined"
+		expectedMessage: "Options 'development' and 'optional' cannot be combined",
 	});
 });
 
 test.serial("Rejects on empty framework-libraries", async (t) => {
 	await assertFailingAddHandler(t, {
 		argv: {"framework-libraries": ""},
-		expectedMessage: "Missing mandatory parameter framework-libraries"
+		expectedMessage: "Missing mandatory parameter framework-libraries",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated (single library)", async (t) => {
 	await assertFailingYamlUpdateAddHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1"]},
-		expectedMessage: "Internal error while adding framework library sap.ui.lib1 to ui5.yaml"
+		expectedMessage: "Internal error while adding framework library sap.ui.lib1 to ui5.yaml",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated (multiple libraries)", async (t) => {
 	await assertFailingYamlUpdateAddHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1", "sap.ui.lib2"]},
-		expectedMessage: "Internal error while adding framework libraries sap.ui.lib1 sap.ui.lib2 to ui5.yaml"
+		expectedMessage: "Internal error while adding framework libraries sap.ui.lib1 sap.ui.lib2 to ui5.yaml",
 	});
 });
 
 test.serial("Rejects when YAML could not be updated (single library; with config path)", async (t) => {
 	await assertFailingYamlUpdateAddHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1"], "config": "/path/to/ui5.yaml"},
-		expectedMessage: "Internal error while adding framework library sap.ui.lib1 to config at /path/to/ui5.yaml"
+		expectedMessage: "Internal error while adding framework library sap.ui.lib1 to config at /path/to/ui5.yaml",
 	});
 });
 
@@ -182,6 +182,6 @@ test.serial("Rejects when YAML could not be updated (multiple libraries; with co
 	await assertFailingYamlUpdateAddHandler(t, {
 		argv: {"framework-libraries": ["sap.ui.lib1", "sap.ui.lib2"], "config": "/path/to/ui5.yaml"},
 		expectedMessage:
-			"Internal error while adding framework libraries sap.ui.lib1 sap.ui.lib2 to config at /path/to/ui5.yaml"
+			"Internal error while adding framework libraries sap.ui.lib1 sap.ui.lib2 to config at /path/to/ui5.yaml",
 	});
 });

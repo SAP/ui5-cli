@@ -4,19 +4,19 @@ import baseMiddleware from "../middlewares/base.js";
 const removeCommand = {
 	command: "remove <framework-libraries..>",
 	describe: "Remove SAPUI5/OpenUI5 framework libraries from the project configuration.",
-	middlewares: [baseMiddleware]
+	middlewares: [baseMiddleware],
 };
 
-removeCommand.builder = function(cli) {
+removeCommand.builder = function (cli) {
 	return cli
 		.positional("framework-libraries", {
 			describe: "Framework library names",
-			type: "string"
+			type: "string",
 		})
 		.example("$0 remove sap.ui.core sap.m", "Remove the framework libraries sap.ui.core and sap.m as dependencies");
 };
 
-removeCommand.handler = async function(argv) {
+removeCommand.handler = async function (argv) {
 	let libraryNames = argv["framework-libraries"] || [];
 
 	if (libraryNames.length === 0) {
@@ -31,7 +31,7 @@ removeCommand.handler = async function(argv) {
 
 	const projectGraphOptions = {
 		dependencyDefinition: argv.dependencyDefinition,
-		config: argv.config
+		config: argv.config,
 	};
 
 	const libraries = libraryNames.map((name) => {
@@ -43,10 +43,10 @@ removeCommand.handler = async function(argv) {
 
 	const {yamlUpdated} = await remove({
 		projectGraphOptions,
-		libraries
+		libraries,
 	});
 
-	const library = libraries.length === 1 ? "library": "libraries";
+	const library = libraries.length === 1 ? "library" : "libraries";
 	if (!yamlUpdated) {
 		if (argv.config) {
 			throw new Error(
@@ -62,7 +62,7 @@ removeCommand.handler = async function(argv) {
 		process.stdout.write(`Updated configuration written to ${argv.config || "ui5.yaml"}`);
 		process.stdout.write("\n");
 		let logMessage = `Removed framework ${library} ${libraryNames.join(" ")} as`;
-		logMessage += libraries.length === 1 ? " dependency": " dependencies";
+		logMessage += libraries.length === 1 ? " dependency" : " dependencies";
 		process.stdout.write(logMessage);
 		process.stdout.write("\n");
 	}

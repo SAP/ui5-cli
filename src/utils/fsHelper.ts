@@ -4,9 +4,8 @@ import path from "node:path";
 /**
  * Checks if a file or path exists
  *
- * @private
- * @param {string} filePath Path to check
- * @returns {Promise} Promise resolving with true if the file or path exists
+ * @param filePath Path to check
+ * @returns Promise resolving with true if the file or path exists
  */
 export async function exists(filePath: string) {
 	try {
@@ -25,11 +24,10 @@ export async function exists(filePath: string) {
 /**
  * Checks if a list of paths exists
  *
- * @private
- * @param {Array} paths List of paths to check
- * @param {string} cwd Current working directory
- * @returns {Promise} Resolving with an array of booleans for each path
+ * @param paths List of paths to check
+ * @param cwd Current working directory
+ * @returns Resolving with an array of booleans for each path
  */
-export async function pathsExist(paths: Array<any>, cwd: string) {
+export async function pathsExist(paths: any[], cwd: string) {
 	return await Promise.all(paths.map((p) => exists(path.join(cwd, p))));
 }

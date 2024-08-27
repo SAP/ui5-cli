@@ -1,5 +1,11 @@
 import {getRootProjectConfiguration, frameworkResolverResolveVersion} from "./utils.js";
 
+/**
+ *
+ * @param root0
+ * @param root0.project
+ * @param root0.frameworkOptions
+ */
 function getEffectiveFrameworkName({project, frameworkOptions}) {
 	if (!project.getFrameworkName() && !frameworkOptions.name) {
 		throw new Error("No framework configuration defined. Make sure to also provide the framework name.");
@@ -18,7 +24,13 @@ function getEffectiveFrameworkName({project, frameworkOptions}) {
 	}
 }
 
-export default async function({projectGraphOptions, frameworkOptions}) {
+/**
+ *
+ * @param root0
+ * @param root0.projectGraphOptions
+ * @param root0.frameworkOptions
+ */
+export default async function ({projectGraphOptions, frameworkOptions}) {
 	const project = await getRootProjectConfiguration(projectGraphOptions);
 
 	if (project.getSpecVersion().lt("2.0")) {
@@ -29,16 +41,16 @@ export default async function({projectGraphOptions, frameworkOptions}) {
 	}
 
 	const framework = {
-		name: getEffectiveFrameworkName({project, frameworkOptions})
+		name: getEffectiveFrameworkName({project, frameworkOptions}),
 	};
 
 	const frameworkVersion = frameworkOptions.version || project.getFrameworkVersion();
 	if (frameworkVersion) {
 		framework.version = await frameworkResolverResolveVersion({
 			frameworkName: framework.name,
-			frameworkVersion
+			frameworkVersion,
 		}, {
-			cwd: project.getRootPath()
+			cwd: project.getRootPath(),
 		});
 	}
 
@@ -50,8 +62,8 @@ export default async function({projectGraphOptions, frameworkOptions}) {
 			project,
 			configPathOverride: projectGraphOptions.config,
 			data: {
-				framework: framework
-			}
+				framework: framework,
+			},
 		});
 		yamlUpdated = true;
 	} catch (err) {
@@ -62,6 +74,6 @@ export default async function({projectGraphOptions, frameworkOptions}) {
 	return {
 		yamlUpdated,
 		usedFramework: framework.name,
-		usedVersion: framework.version || null
+		usedVersion: framework.version || null,
 	};
 }

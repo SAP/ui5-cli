@@ -20,18 +20,18 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 
 	const initCommand = t.context.initCommand = await esmock.p("../../../../lib/cli/commands/init.js", {
 		"../../../../lib/utils/fsHelper": {
-			exists: sinon.stub().resolves(false)
+			exists: sinon.stub().resolves(false),
 		},
 		"../../../../lib/init/init": sinon.stub().resolves({}),
 		"js-yaml": {
-			dump: jsyamlDumpStub
+			dump: jsyamlDumpStub,
 		},
 		"node:path": {
-			resolve: () => ui5YamlPath
+			resolve: () => ui5YamlPath,
 		},
 		"node:fs/promises": {
-			writeFile: fsWriteFileStub
-		}
+			writeFile: fsWriteFileStub,
+		},
 	});
 
 	await initCommand.handler({});
@@ -44,11 +44,11 @@ test.serial("Writes ui5.yaml to fs", async (t) => {
 test.serial("Error: throws if ui5.yaml already exists", async (t) => {
 	const initCommand = t.context.initCommand = await esmock.p("../../../../lib/cli/commands/init.js", {
 		"../../../../lib/utils/fsHelper": {
-			exists: sinon.stub().resolves(true)
-		}
+			exists: sinon.stub().resolves(true),
+		},
 	});
 
 	await t.throwsAsync(initCommand.handler(), {
-		message: "Initialization not possible: ui5.yaml already exists"
+		message: "Initialization not possible: ui5.yaml already exists",
 	});
 });

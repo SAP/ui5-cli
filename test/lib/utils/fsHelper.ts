@@ -30,13 +30,13 @@ test.serial("Throws in case of fs.stat error", async (t) => {
 	const fsStatStub = sinon.stub().rejects(new Error("Some fs.stat error"));
 	const {exists, pathsExist} = await esmock("../../../lib/utils/fsHelper.js", {
 		"node:fs/promises": {
-			stat: fsStatStub
-		}
+			stat: fsStatStub,
+		},
 	});
 	await t.throwsAsync(exists("./test/fixtures/init/application/ui5.yaml"), {
-		message: "Some fs.stat error"
+		message: "Some fs.stat error",
 	});
 	await t.throwsAsync(pathsExist(["src", "test"], "./foo"), {
-		message: "Some fs.stat error"
+		message: "Some fs.stat error",
 	});
 });

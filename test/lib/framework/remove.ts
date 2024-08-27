@@ -28,13 +28,13 @@ test.beforeEach(async (t) => {
 	t.context.removeFramework = await esmock.p("../../../lib/framework/remove.js", {
 		"../../../lib/framework/updateYaml.js": t.context.updateYamlStub,
 		"../../../lib/framework/utils.js": {
-			getRootProjectConfiguration: t.context.getRootProjectConfigurationStub
+			getRootProjectConfiguration: t.context.getRootProjectConfigurationStub,
 		},
 		"@ui5/logger": {
 			getLogger: sinon.stub().returns({
-				warn: t.context.logWarnStub
-			})
-		}
+				warn: t.context.logWarnStub,
+			}),
+		},
 	});
 });
 
@@ -47,7 +47,7 @@ test.serial("Remove with existing libraries in config", async (t) => {
 	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -56,18 +56,17 @@ test.serial("Remove with existing libraries in config", async (t) => {
 		frameworkName: "OpenUI5",
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
-			name: "sap.ui.lib2"
+			name: "sap.ui.lib2",
 		}, {
-			name: "sap.ui.lib1"
-		}]
+			name: "sap.ui.lib1",
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
-
 	const result = await removeFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
@@ -81,8 +80,8 @@ test.serial("Remove with existing libraries in config", async (t) => {
 		project,
 		configPathOverride: undefined,
 		data: {
-			framework: {libraries: [{name: "sap.ui.lib2"}]}
-		}
+			framework: {libraries: [{name: "sap.ui.lib2"}]},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -90,7 +89,7 @@ test.serial("Remove with 2 existing libraries in config", async (t) => {
 	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -99,10 +98,10 @@ test.serial("Remove with 2 existing libraries in config", async (t) => {
 		frameworkName: "OpenUI5",
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
-			name: "sap.ui.lib2"
+			name: "sap.ui.lib2",
 		}, {
-			name: "sap.ui.lib1"
-		}]
+			name: "sap.ui.lib1",
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
@@ -110,10 +109,10 @@ test.serial("Remove with 2 existing libraries in config", async (t) => {
 	const result = await removeFramework({
 		projectGraphOptions,
 		libraries: [{
-			name: "sap.ui.lib1"
+			name: "sap.ui.lib1",
 		}, {
-			name: "sap.ui.lib2"
-		}]
+			name: "sap.ui.lib2",
+		}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
@@ -127,17 +126,16 @@ test.serial("Remove with 2 existing libraries in config", async (t) => {
 		project,
 		configPathOverride: undefined,
 		data: {
-			framework: {libraries: []}
-		}
+			framework: {libraries: []},
+		},
 	}], "updateYaml should be called with expected args");
 });
-
 
 test.serial("Remove with non-existing library in config", async (t) => {
 	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub, logWarnStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -146,10 +144,10 @@ test.serial("Remove with non-existing library in config", async (t) => {
 		frameworkName: "OpenUI5",
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
-			name: "sap.ui.lib1"
+			name: "sap.ui.lib1",
 		}, {
-			name: "sap.ui.lib2"
-		}]
+			name: "sap.ui.lib2",
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
@@ -157,8 +155,8 @@ test.serial("Remove with non-existing library in config", async (t) => {
 	await removeFramework({
 		projectGraphOptions,
 		libraries: [{
-			name: "sap.ui.nonexisting"
-		}]
+			name: "sap.ui.nonexisting",
+		}],
 	});
 
 	t.is(logWarnStub.callCount, 1, "logger called once");
@@ -177,12 +175,12 @@ test.serial("Remove with non-existing library in config", async (t) => {
 		data: {
 			framework: {
 				libraries: [{
-					name: "sap.ui.lib1"
+					name: "sap.ui.lib1",
 				}, {
-					name: "sap.ui.lib2"
-				}]
-			}
-		}
+					name: "sap.ui.lib2",
+				}],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -190,7 +188,7 @@ test.serial("Remove with specVersion 1.0", async (t) => {
 	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -201,7 +199,7 @@ test.serial("Remove with specVersion 1.0", async (t) => {
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(removeFramework({
-		projectGraphOptions
+		projectGraphOptions,
 	}));
 
 	t.is(error.message,
@@ -211,7 +209,6 @@ test.serial("Remove with specVersion 1.0", async (t) => {
 	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
 		"generateProjectGraph should be called with expected args");
 
-
 	t.is(updateYamlStub.callCount, 0, "updateYaml should not be called");
 });
 
@@ -219,7 +216,7 @@ test.serial("Remove without framework configuration", async (t) => {
 	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -230,11 +227,11 @@ test.serial("Remove without framework configuration", async (t) => {
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(removeFramework({
-		projectGraphOptions
+		projectGraphOptions,
 	}));
 
 	t.is(error.message, `Project my-project is missing a framework configuration. ` +
-		`Please use "ui5 use" to configure a framework and version.`);
+	`Please use "ui5 use" to configure a framework and version.`);
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
 	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
@@ -247,23 +244,23 @@ test.serial("Remove without framework version configuration", async (t) => {
 	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
 		specVersion: "2.0",
 		name: "my-project",
-		frameworkName: "OpenUI5"
+		frameworkName: "OpenUI5",
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(removeFramework({
-		projectGraphOptions
+		projectGraphOptions,
 	}));
 
 	t.is(error.message, `Project my-project does not define a framework version configuration. ` +
-		`Please use "ui5 use" to configure a version.`);
+	`Please use "ui5 use" to configure a version.`);
 
 	t.is(getRootProjectConfigurationStub.callCount, 1, "generateProjectGraph should be called once");
 	t.deepEqual(getRootProjectConfigurationStub.getCall(0).args, [{fakeProjectGraphOptions: true}],
@@ -280,7 +277,7 @@ test.serial("Remove with failing YAML update", async (t) => {
 	updateYamlStub.rejects(yamlUpdateError);
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -289,17 +286,17 @@ test.serial("Remove with failing YAML update", async (t) => {
 		frameworkName: "OpenUI5",
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
-			name: "sap.ui.lib2"
+			name: "sap.ui.lib2",
 		}, {
-			name: "sap.ui.lib1"
-		}]
+			name: "sap.ui.lib1",
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
 	const result = await removeFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: false}, "yamlUpdated should be false");
@@ -314,9 +311,9 @@ test.serial("Remove with failing YAML update", async (t) => {
 		configPathOverride: undefined,
 		data: {
 			framework: {
-				libraries: [{name: "sap.ui.lib2"}]
-			}
-		}
+				libraries: [{name: "sap.ui.lib2"}],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -326,7 +323,7 @@ test.serial("Remove with failing YAML update (unexpected error)", async (t) => {
 	updateYamlStub.rejects(new Error("Some unexpected error"));
 
 	const projectGraphOptions = {
-		fakeProjectGraphOptions: true
+		fakeProjectGraphOptions: true,
 	};
 
 	const project = createMockProject({
@@ -335,17 +332,17 @@ test.serial("Remove with failing YAML update (unexpected error)", async (t) => {
 		frameworkName: "OpenUI5",
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
-			name: "sap.ui.lib2"
+			name: "sap.ui.lib2",
 		}, {
-			name: "sap.ui.lib1"
-		}]
+			name: "sap.ui.lib1",
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
 	const error = await t.throwsAsync(removeFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	}));
 
 	t.is(error.message, `Some unexpected error`);
@@ -360,9 +357,9 @@ test.serial("Remove with failing YAML update (unexpected error)", async (t) => {
 		configPathOverride: undefined,
 		data: {
 			framework: {
-				libraries: [{name: "sap.ui.lib2"}]
-			}
-		}
+				libraries: [{name: "sap.ui.lib2"}],
+			},
+		},
 	}], "updateYaml should be called with expected args");
 });
 
@@ -370,7 +367,7 @@ test.serial("Remove with projectGraphOptions.config", async (t) => {
 	const {removeFramework, getRootProjectConfigurationStub, updateYamlStub} = t.context;
 
 	const projectGraphOptions = {
-		config: "/path/to/ui5.yaml"
+		config: "/path/to/ui5.yaml",
 	};
 
 	const project = createMockProject({
@@ -379,18 +376,17 @@ test.serial("Remove with projectGraphOptions.config", async (t) => {
 		frameworkName: "OpenUI5",
 		frameworkVersion: "1.76.0",
 		frameworkLibraries: [{
-			name: "sap.ui.lib2"
+			name: "sap.ui.lib2",
 		}, {
-			name: "sap.ui.lib1"
-		}]
+			name: "sap.ui.lib1",
+		}],
 	});
 
 	getRootProjectConfigurationStub.resolves(project);
 
-
 	const result = await removeFramework({
 		projectGraphOptions,
-		libraries: [{name: "sap.ui.lib1"}]
+		libraries: [{name: "sap.ui.lib1"}],
 	});
 
 	t.deepEqual(result, {yamlUpdated: true}, "yamlUpdated should be true");
@@ -404,7 +400,7 @@ test.serial("Remove with projectGraphOptions.config", async (t) => {
 		project,
 		configPathOverride: "/path/to/ui5.yaml",
 		data: {
-			framework: {libraries: [{name: "sap.ui.lib2"}]}
-		}
+			framework: {libraries: [{name: "sap.ui.lib2"}]},
+		},
 	}], "updateYaml should be called with expected args");
 });

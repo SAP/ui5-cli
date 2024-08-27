@@ -5,6 +5,9 @@ import base from "./base.js";
 import {fileURLToPath} from "node:url";
 import {readdir} from "node:fs/promises";
 
+/**
+ *
+ */
 async function getCommands() {
 	return (await readdir(new URL("./commands", import.meta.url), {withFileTypes: true}))
 		.filter((e) => !e.isDirectory() && e.name.endsWith(".js"))
@@ -26,7 +29,7 @@ export default async (pkg) => {
 		updateNotifier({
 			pkg,
 			updateCheckInterval: 86400000, // 1 day
-			shouldNotifyInNpmScript: true
+			shouldNotifyInNpmScript: true,
 		}).notify();
 	}
 
@@ -37,7 +40,7 @@ export default async (pkg) => {
 
 	const cli = yargs(hideBin(process.argv));
 	cli.parserConfiguration({
-		"parse-numbers": false
+		"parse-numbers": false,
 	});
 
 	// Explicitly set CLI version as the yargs default might

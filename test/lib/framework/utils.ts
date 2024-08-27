@@ -11,7 +11,7 @@ test.beforeEach(async (t) => {
 	const sinon = t.context.sinon = sinonGlobal.createSandbox();
 
 	t.context.graph = {
-		getRoot: sinon.stub().returns({})
+		getRoot: sinon.stub().returns({}),
 	};
 
 	t.context.graphFromStaticFile = sinon.stub().resolves(t.context.graph),
@@ -24,25 +24,25 @@ test.beforeEach(async (t) => {
 	t.context.ConfigurationGetUi5DataDirStub = sinon.stub().returns(undefined);
 	t.context.ConfigurationStub = {
 		fromFile: sinon.stub().resolves({
-			getUi5DataDir: t.context.ConfigurationGetUi5DataDirStub
-		})
+			getUi5DataDir: t.context.ConfigurationGetUi5DataDirStub,
+		}),
 	};
 
 	t.context.utils = await esmock.p("../../../lib/framework/utils.js", {
 		"@ui5/project/graph": {
 			graphFromStaticFile: t.context.graphFromStaticFile,
-			graphFromPackageDependencies: t.context.graphFromPackageDependencies
+			graphFromPackageDependencies: t.context.graphFromPackageDependencies,
 		},
 		"@ui5/project/ui5Framework/Sapui5Resolver": {
-			default: t.context.Sapui5Resolver
+			default: t.context.Sapui5Resolver,
 		},
 		"@ui5/project/ui5Framework/Openui5Resolver": {
-			default: t.context.Openui5Resolver
+			default: t.context.Openui5Resolver,
 		},
 		"@ui5/project/ui5Framework/Sapui5MavenSnapshotResolver": {
-			default: t.context.Sapui5MavenSnapshotResolver
+			default: t.context.Sapui5MavenSnapshotResolver,
 		},
-		"@ui5/project/config/Configuration": t.context.ConfigurationStub
+		"@ui5/project/config/Configuration": t.context.ConfigurationStub,
 	});
 	t.context._utils = t.context.utils._utils;
 });
@@ -63,13 +63,13 @@ test.serial("getRootProjectConfiguration: dependencyDefinition", async (t) => {
 	const {graphFromStaticFile, graphFromPackageDependencies} = t.context;
 
 	const result = await getRootProjectConfiguration({
-		dependencyDefinition: "foo"
+		dependencyDefinition: "foo",
 	});
 
 	t.is(graphFromStaticFile.callCount, 1);
 	t.deepEqual(graphFromStaticFile.getCall(0).args, [{
 		filePath: "foo",
-		resolveFrameworkDependencies: false
+		resolveFrameworkDependencies: false,
 	}]);
 
 	t.is(graphFromPackageDependencies.callCount, 0);
@@ -85,13 +85,13 @@ test.serial("getRootProjectConfiguration: config", async (t) => {
 	const {graphFromStaticFile, graphFromPackageDependencies} = t.context;
 
 	const result = await getRootProjectConfiguration({
-		config: "foo"
+		config: "foo",
 	});
 
 	t.is(graphFromPackageDependencies.callCount, 1);
 	t.deepEqual(graphFromPackageDependencies.getCall(0).args, [{
 		rootConfigPath: "foo",
-		resolveFrameworkDependencies: false
+		resolveFrameworkDependencies: false,
 	}]);
 
 	t.is(graphFromStaticFile.callCount, 0);
@@ -138,7 +138,7 @@ test.serial("getFrameworkResolver: Invalid framework.name", async (t) => {
 	const {getFrameworkResolver} = t.context._utils;
 
 	await t.throwsAsync(() => getFrameworkResolver("UI5", "1.100.0"), {
-		message: "Invalid framework.name: UI5"
+		message: "Invalid framework.name: UI5",
 	});
 });
 
@@ -152,22 +152,22 @@ test.serial("createFrameworkResolverInstance: Without ui5DataDir", async (t) => 
 
 	const result = await createFrameworkResolverInstance({
 		frameworkName: "<framework-name>",
-		frameworkVersion: "<framework-version>"
+		frameworkVersion: "<framework-version>",
 	}, {
-		cwd: "my-project-path"
+		cwd: "my-project-path",
 	});
 
 	t.is(t.context._utils.getFrameworkResolver.callCount, 1);
 	t.deepEqual(t.context._utils.getFrameworkResolver.getCall(0).args, [
 		"<framework-name>",
-		"<framework-version>"
+		"<framework-version>",
 	]);
 
 	t.is(t.context._utils.getUi5DataDir.callCount, 1);
 	t.deepEqual(t.context._utils.getUi5DataDir.getCall(0).args, [
 		{
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	]);
 
 	t.is(ResolverStub.callCount, 1);
@@ -177,8 +177,8 @@ test.serial("createFrameworkResolverInstance: Without ui5DataDir", async (t) => 
 		{
 			cwd: "my-project-path",
 			version: "<framework-version>",
-			ui5DataDir: undefined
-		}
+			ui5DataDir: undefined,
+		},
 	]);
 });
 
@@ -192,22 +192,22 @@ test.serial("createFrameworkResolverInstance: With ui5DataDir", async (t) => {
 
 	const result = await createFrameworkResolverInstance({
 		frameworkName: "<framework-name>",
-		frameworkVersion: "<framework-version>"
+		frameworkVersion: "<framework-version>",
 	}, {
-		cwd: "my-project-path"
+		cwd: "my-project-path",
 	});
 
 	t.is(t.context._utils.getFrameworkResolver.callCount, 1);
 	t.deepEqual(t.context._utils.getFrameworkResolver.getCall(0).args, [
 		"<framework-name>",
-		"<framework-version>"
+		"<framework-version>",
 	]);
 
 	t.is(t.context._utils.getUi5DataDir.callCount, 1);
 	t.deepEqual(t.context._utils.getUi5DataDir.getCall(0).args, [
 		{
-			cwd: "my-project-path"
-		}
+			cwd: "my-project-path",
+		},
 	]);
 
 	t.is(ResolverStub.callCount, 1);
@@ -217,8 +217,8 @@ test.serial("createFrameworkResolverInstance: With ui5DataDir", async (t) => {
 		{
 			cwd: "my-project-path",
 			version: "<framework-version>",
-			ui5DataDir: "my-ui5-data-dir"
-		}
+			ui5DataDir: "my-ui5-data-dir",
+		},
 	]);
 });
 
@@ -228,15 +228,15 @@ test.serial("frameworkResolverResolveVersion", async (t) => {
 
 	const resolveVersionStub = sinon.stub().resolves("1.111.1");
 	sinon.stub(t.context._utils, "getFrameworkResolver").resolves({
-		resolveVersion: resolveVersionStub
+		resolveVersion: resolveVersionStub,
 	});
 	sinon.stub(t.context._utils, "getUi5DataDir").resolves(undefined);
 
 	const result = await frameworkResolverResolveVersion({
 		frameworkName: "SAPUI5",
-		frameworkVersion: "latest"
+		frameworkVersion: "latest",
 	}, {
-		cwd: "my-project-path"
+		cwd: "my-project-path",
 	});
 
 	t.is(result, "1.111.1");
@@ -246,8 +246,8 @@ test.serial("frameworkResolverResolveVersion", async (t) => {
 		"latest",
 		{
 			cwd: "my-project-path",
-			ui5DataDir: undefined
-		}
+			ui5DataDir: undefined,
+		},
 	]);
 });
 
@@ -256,7 +256,7 @@ test.serial("getUi5DataDir: no value defined", async (t) => {
 	const {getUi5DataDir} = t.context._utils;
 
 	const result = await getUi5DataDir({
-		cwd: path.resolve("foo")
+		cwd: path.resolve("foo"),
 	});
 
 	t.is(result, undefined);
@@ -273,7 +273,7 @@ test.serial("getUi5DataDir: from environment variable", async (t) => {
 	process.env.UI5_DATA_DIR = ".ui5-data-dir-from-env-variable";
 
 	const result = await getUi5DataDir({
-		cwd: path.resolve("foo")
+		cwd: path.resolve("foo"),
 	});
 
 	t.is(result, path.join(path.resolve("foo"), ".ui5-data-dir-from-env-variable"));
@@ -288,7 +288,7 @@ test.serial("getUi5DataDir: from Configuration", async (t) => {
 	ConfigurationGetUi5DataDirStub.returns(".ui5-data-dir-from-configuration");
 
 	const result = await getUi5DataDir({
-		cwd: path.resolve("foo")
+		cwd: path.resolve("foo"),
 	});
 
 	t.is(result, path.join(path.resolve("foo"), ".ui5-data-dir-from-configuration"));

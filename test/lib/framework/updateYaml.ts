@@ -11,8 +11,8 @@ test.beforeEach(async (t) => {
 	updateYaml = await esmock("../../../lib/framework/updateYaml", {
 		"node:fs/promises": {
 			readFile: t.context.fsReadFileStub,
-			writeFile: t.context.fsWriteFileStub
-		}
+			writeFile: t.context.fsWriteFileStub,
+		},
 	});
 });
 
@@ -33,14 +33,14 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -77,14 +77,14 @@ shims:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -107,7 +107,6 @@ shims:
   configurations: {}
 `, "writeFile should be called with expected content");
 });
-
 
 test.serial("Should update second document", async (t) => {
 	t.context.fsReadFileStub.resolves(`
@@ -133,14 +132,14 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -175,13 +174,13 @@ metadata:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
-				name: "OpenUI5"
-			}
-		}
+				name: "OpenUI5",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -203,14 +202,14 @@ metadata:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -236,14 +235,14 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -269,14 +268,14 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -303,16 +302,16 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				libraries: [
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -344,16 +343,16 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				libraries: [
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -388,13 +387,13 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
-				libraries: []
-			}
-		}
+				libraries: [],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -426,13 +425,13 @@ resources:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
-				libraries: []
-			}
-		}
+				libraries: [],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -464,16 +463,16 @@ resources:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				libraries: [
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -509,16 +508,16 @@ resources:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				libraries: [
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -554,16 +553,16 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				libraries: [
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -595,7 +594,7 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
@@ -603,9 +602,9 @@ framework:
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
 					{name: "sap.ui.layout"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -641,7 +640,7 @@ resources:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
@@ -649,9 +648,9 @@ resources:
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
 					{name: "sap.ui.layout"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -690,7 +689,7 @@ resources:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
@@ -698,9 +697,9 @@ resources:
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
 					{name: "sap.ui.layout"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -740,7 +739,7 @@ resources:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
@@ -748,9 +747,9 @@ resources:
 					{name: "sap.ui.core"},
 					{name: "sap.m"},
 					{name: "sap.ui.layout"},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -787,7 +786,7 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
@@ -795,9 +794,9 @@ framework:
 					{name: "sap.ui.core", optional: true},
 					{name: "sap.m", optional: true},
 					{name: "sap.ui.layout", optional: true},
-				]
-			}
-		}
+				],
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -829,14 +828,14 @@ framework: { name: "SAPUI5" }
 	const error = await t.throwsAsync(updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
 				name: "SAPUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	}));
 
 	t.is(error.message,
@@ -863,10 +862,10 @@ metadata:
 	const error = await t.throwsAsync(updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project-3"
+			getName: () => "my-project-3",
 		},
 		configPathOverride: "ui5.yaml",
-		data: {}
+		data: {},
 	}));
 
 	t.is(error.message,
@@ -888,13 +887,13 @@ something: else
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		data: {
 			framework: {
-				version: "1.85.0"
-			}
-		}
+				version: "1.85.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
@@ -925,15 +924,15 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		configPathOverride: path.join("dir", "other-file.yaml"),
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsReadFileStub.callCount, 1, "fs.readFile should be called once");
@@ -965,15 +964,15 @@ framework:
 	await updateYaml({
 		project: {
 			getRootPath: () => "my-project",
-			getName: () => "my-project"
+			getName: () => "my-project",
 		},
 		configPathOverride: path.join("/", "dir", "other-file.yaml"),
 		data: {
 			framework: {
 				name: "OpenUI5",
-				version: "1.76.0"
-			}
-		}
+				version: "1.76.0",
+			},
+		},
 	});
 
 	t.is(t.context.fsReadFileStub.callCount, 1, "fs.readFile should be called once");

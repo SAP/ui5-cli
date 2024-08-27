@@ -8,7 +8,7 @@ test.beforeEach(async (t) => {
 
 	t.context.updateNotifierNotify = sinon.stub();
 	t.context.updateNotifier = sinon.stub().returns({
-		notify: t.context.updateNotifierNotify
+		notify: t.context.updateNotifierNotify,
 	}).named("updateNotifier");
 
 	t.context.argvGetter = sinon.stub();
@@ -22,7 +22,7 @@ test.beforeEach(async (t) => {
 		get argv() {
 			t.context.argvGetter();
 			return undefined;
-		}
+		},
 	};
 
 	t.context.yargs = sinon.stub().returns(t.context.yargsInstance).named("yargs");
@@ -33,22 +33,22 @@ test.beforeEach(async (t) => {
 	t.context.readdir = sinon.stub().resolves([
 		{
 			isDirectory: sinon.stub().returns(false),
-			name: "build.js"
+			name: "build.js",
 		},
 		{
 			isDirectory: sinon.stub().returns(false),
-			name: "serve.js"
+			name: "serve.js",
 		},
 		{
 			// Directory should be filtered out
 			isDirectory: sinon.stub().returns(true),
-			name: "someDir"
+			name: "someDir",
 		},
 		{
 			// Non-js files should be filtered out
 			isDirectory: sinon.stub().returns(false),
-			name: ".DS_Store"
-		}
+			name: ".DS_Store",
+		},
 	]);
 
 	t.context.cli = await esmock.p("../../../lib/cli/cli.js", {
@@ -59,11 +59,11 @@ test.beforeEach(async (t) => {
 		// 	hideBin: t.context.yargsHideBin
 		// },
 		"../../../lib/cli/version.js": {
-			setVersion: t.context.setVersion
+			setVersion: t.context.setVersion,
 		},
 		"../../../lib/cli/base.js": t.context.cliBase,
 		"node:fs/promises": {
-			readdir: t.context.readdir
+			readdir: t.context.readdir,
 		},
 	});
 });
@@ -77,11 +77,11 @@ test.afterEach.always((t) => {
 test.serial("CLI", async (t) => {
 	const {
 		cli, updateNotifier, updateNotifierNotify, argvGetter, yargsInstance, yargs,
-		setVersion, cliBase
+		setVersion, cliBase,
 	} = t.context;
 
 	const pkg = {
-		version: "0.0.0-test"
+		version: "0.0.0-test",
 	};
 
 	// Remove NODE_ENV=test to allow execution of update-notifier
@@ -100,17 +100,17 @@ test.serial("CLI", async (t) => {
 
 	t.is(yargsInstance.parserConfiguration.callCount, 1);
 	t.deepEqual(yargsInstance.parserConfiguration.getCall(0).args, [{
-		"parse-numbers": false
+		"parse-numbers": false,
 	}]);
 
 	t.is(setVersion.callCount, 1);
 	t.deepEqual(setVersion.getCall(0).args, [
-		`0.0.0-test (from ${fileURLToPath(new URL("../../../bin/ui5.cjs", import.meta.url))})`
+		`0.0.0-test (from ${fileURLToPath(new URL("../../../bin/ui5.cjs", import.meta.url))})`,
 	]);
 
 	t.is(yargsInstance.version.callCount, 1);
 	t.deepEqual(yargsInstance.version.getCall(0).args, [
-		`0.0.0-test (from ${fileURLToPath(new URL("../../../bin/ui5.cjs", import.meta.url))})`
+		`0.0.0-test (from ${fileURLToPath(new URL("../../../bin/ui5.cjs", import.meta.url))})`,
 	]);
 
 	t.is(yargsInstance.scriptName.callCount, 1);
@@ -152,11 +152,11 @@ test.serial("CLI", async (t) => {
 
 test.serial("CLI (NODE_ENV=test disables update-notifier)", async (t) => {
 	const {
-		cli, updateNotifier
+		cli, updateNotifier,
 	} = t.context;
 
 	const pkg = {
-		version: "0.0.0-test"
+		version: "0.0.0-test",
 	};
 
 	await cli(pkg);

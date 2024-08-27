@@ -6,9 +6,16 @@ import {getLogger} from "@ui5/logger";
 
 const log = getLogger("cli:framework:updateYaml");
 
+/**
+ *
+ * @param root0
+ * @param root0.project
+ * @param root0.configFile
+ * @param root0.configPath
+ */
 function getProjectYamlDocument({project, configFile, configPath}) {
 	const configs = loadAll(configFile, undefined, {
-		filename: configPath
+		filename: configPath,
 	});
 
 	const projectDocumentIndex = configs.findIndex((config) => {
@@ -42,11 +49,20 @@ function getProjectYamlDocument({project, configFile, configPath}) {
 
 	return {
 		projectDocumentContent: configFile.substring(currentIndex),
-		projectDocumentStartIndex: currentIndex
+		projectDocumentStartIndex: currentIndex,
 	};
 }
 
+/**
+ *
+ * @param string
+ * @param changes
+ */
 function applyChanges(string, changes) {
+	/**
+	 *
+	 * @param position
+	 */
 	function positionToIndex(position) {
 		// Match the n-th line-ending to find the start of the given line
 		const lineStartPattern = new RegExp("(?:(?:\r?\n)([^\r\n]*)){" + (position.line - 1) + "}");
@@ -63,7 +79,7 @@ function applyChanges(string, changes) {
 			return {
 				startIndex: positionToIndex(change.position.start),
 				endIndex: positionToIndex(change.position.end),
-				value: change.value
+				value: change.value,
 			};
 		} else if (change.type === "insert") {
 			let startIndex = positionToIndex(change.parentPosition.end);
@@ -76,7 +92,7 @@ function applyChanges(string, changes) {
 			return {
 				startIndex,
 				endIndex,
-				value: change.value
+				value: change.value,
 			};
 		}
 	}).sort((a, b) => {
@@ -103,12 +119,22 @@ function applyChanges(string, changes) {
 	return array.join("");
 }
 
+/**
+ *
+ * @param data
+ * @param path
+ */
 function getValueFromPath(data, path) {
 	return path.reduce((currentData, pathSegment) => {
 		return currentData[pathSegment];
 	}, data);
 }
 
+/**
+ *
+ * @param positionData
+ * @param path
+ */
 function getPositionFromPath(positionData, path) {
 	const data = getValueFromPath(positionData, path);
 	const position = getPosition(data);
@@ -129,6 +155,11 @@ function getPositionFromPath(positionData, path) {
 	return position;
 }
 
+/**
+ *
+ * @param value
+ * @param indent
+ */
 function formatValue(value, indent) {
 	if (typeof value === "string") {
 		// TODO: Use better logic?
@@ -156,7 +187,14 @@ function formatValue(value, indent) {
 	}
 }
 
-export default async function({project, configPathOverride, data}) {
+/**
+ *
+ * @param root0
+ * @param root0.project
+ * @param root0.configPathOverride
+ * @param root0.data
+ */
+export default async function ({project, configPathOverride, data}) {
 	let configPath;
 	if (configPathOverride) {
 		if (path.isAbsolute(configPathOverride)) {
@@ -172,17 +210,22 @@ export default async function({project, configPathOverride, data}) {
 
 	let {
 		projectDocumentContent,
-		projectDocumentStartIndex
+		projectDocumentStartIndex,
 	} = await getProjectYamlDocument({
 		project,
 		configFile,
-		configPath
+		configPath,
 	});
 
 	const positionData = fromYaml(projectDocumentContent);
 
 	const changes = [];
 
+	/**
+	 *
+	 * @param entryPath
+	 * @param newValue
+	 */
 	function addInsert(entryPath, newValue) {
 		// New
 		const parentPath = entryPath.slice(0, -1);
@@ -203,10 +246,15 @@ export default async function({project, configPathOverride, data}) {
 		changes.push({
 			type: "insert",
 			parentPosition,
-			value
+			value,
 		});
 	}
 
+	/**
+	 *
+	 * @param entryPath
+	 * @param newValue
+	 */
 	function addUpdate(entryPath, newValue) {
 		const position = getPositionFromPath(positionData, entryPath);
 		// -1 as column 1 starts at index 0
@@ -214,10 +262,14 @@ export default async function({project, configPathOverride, data}) {
 		changes.push({
 			type: "update",
 			position,
-			value: `${entryPath[entryPath.length - 1]}:${formatValue(newValue, indent + 2)}`
+			value: `${entryPath[entryPath.length - 1]}:${formatValue(newValue, indent + 2)}`,
 		});
 	}
 
+	/**
+	 *
+	 * @param entryPath
+	 */
 	function addRemove(entryPath) {
 		const position = getPositionFromPath(positionData, entryPath);
 		const copyPosition = JSON.parse(JSON.stringify(position));
@@ -226,7 +278,7 @@ export default async function({project, configPathOverride, data}) {
 		changes.push({
 			type: "update",
 			position: copyPosition,
-			value: ``
+			value: ``,
 		});
 	}
 
