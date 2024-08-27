@@ -9,7 +9,7 @@ import {pathsExist} from "../utils/fsHelper.js";
  * @param {string} filePath Path to package.json
  * @returns {object} Package json content
  */
-async function readPackageJson(filePath) {
+async function readPackageJson(filePath: string) {
 	const content = await readFile(filePath, "utf8");
 	return JSON.parse(content);
 }
@@ -23,7 +23,7 @@ async function readPackageJson(filePath) {
  * @param {boolean} hasTest Test folder exists
  * @returns {string} Project type
  */
-function getProjectType(hasWebapp, hasSrc, hasTest) {
+function getProjectType(hasWebapp: boolean, hasSrc: boolean, hasTest: boolean) {
 	let errorReason;
 	if (hasWebapp) {
 		// Mixed folders of application and library
@@ -70,7 +70,7 @@ function getProjectType(hasWebapp, hasSrc, hasTest) {
  * @param {string} cwd Current working directory
  * @returns {Promise} Promise resolving with the project configuration object
  */
-async function init({cwd = "./"} = {}) {
+async function init({ cwd = "./" }: string = {}) {
 	const projectConfig = {
 		specVersion: "4.0",
 		metadata: {}

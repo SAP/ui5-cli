@@ -6,7 +6,7 @@ import {getVersion} from "../version.js";
  *
  * @param {object} argv logger arguments
  */
-export async function initLogger(argv) {
+export async function initLogger(argv: object) {
 	if (argv.silent) {
 		setLogLevel("silent");
 	}

@@ -7,7 +7,7 @@ import {initLogger} from "./logger.js";
  * @param {object} argv The CLI arguments
  * @returns {object}
  */
-export default async function(argv) {
+export default async function(argv: object) {
 	await initLogger(argv);
 	return {};
 }

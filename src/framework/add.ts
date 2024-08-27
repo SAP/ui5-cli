@@ -7,7 +7,10 @@ import {getRootProjectConfiguration, createFrameworkResolverInstance} from "./ut
  * @param {object} parameters.projectGraphOptions
  * @param {object} parameters.libraries
  */
-export default async function({projectGraphOptions, libraries}) {
+export default async function({ projectGraphOptions, libraries }: {
+    projectGraphOptions: object;
+    libraries: object;
+}) {
 	const project = await getRootProjectConfiguration(projectGraphOptions);
 
 	if (project.getSpecVersion().lt("2.0")) {
