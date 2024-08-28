@@ -7,5 +7,7 @@
 		"lib": ["ES2022"],
 		"strict": true,
 		"sourceMap": true,
+		"declaration": true,
+		"declarationMap": true,
 	}
 }
