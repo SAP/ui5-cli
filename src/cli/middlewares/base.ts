@@ -1,0 +1,13 @@
+import {initLogger} from "./logger.js";
+/**
+ * Base middleware for CLI commands.
+ *
+ * This middleware should be executed for every CLI command to enable basic features (e.g. logging).
+ *
+ * @param argv The CLI arguments
+ * @returns
+ */
+export default async function (argv: object) {
+	await initLogger(argv);
+	return {};
+}

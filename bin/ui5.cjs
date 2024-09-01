@@ -23,14 +23,14 @@ const ui5 = {
 		}
 		if (
 			pkg.engines && pkg.engines.node &&
-		(!semver || !semver.satisfies(nodeVersion, pkg.engines.node, {includePrerelease: true}))
+			(!semver || !semver.satisfies(nodeVersion, pkg.engines.node, {includePrerelease: true}))
 		) {
 			process.stderr.write("==================== UNSUPPORTED NODE.JS VERSION ====================");
 			process.stderr.write("\n");
 			process.stderr.write("You are using an unsupported version of Node.js");
 			process.stderr.write("\n");
 			process.stderr.write("Detected version " + nodeVersion +
-				" but " + pkg.name + " requires " + pkg.engines.node);
+			" but " + pkg.name + " requires " + pkg.engines.node);
 			process.stderr.write("\n\n");
 			process.stderr.write("=> Please upgrade to a supported version of Node.js to use this tool");
 			process.stderr.write("\n");
@@ -104,7 +104,7 @@ const ui5 = {
 				await ui5.invokeCLI(pkg);
 			}
 		}
-	}
+	},
 };
 
 module.exports = ui5;
