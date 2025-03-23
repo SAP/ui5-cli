@@ -3130,9 +3130,9 @@
 			}
 		},
 		"node_modules/caniuse-lite": {
-			"version": "1.0.30001705",
-			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001705.tgz",
-			"integrity": "sha512-S0uyMMiYvA7CxNgomYBwwwPUnWzFD83f3B1ce5jHUfHTH//QL6hHsreI8RVC5606R4ssqravelYO5TU6t8sEyg==",
+			"version": "1.0.30001706",
+			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001706.tgz",
+			"integrity": "sha512-3ZczoTApMAZwPKYWmwVbQMFpXBDds3/0VciVoUwPUbldlYyVLmRVuRs/PcUZtHpbLRpzzDvrvnFuREsGt6lUug==",
 			"dev": true,
 			"funding": [
 				{
@@ -4722,9 +4722,9 @@
 			"integrity": "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow=="
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.5.119",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.119.tgz",
-			"integrity": "sha512-Ku4NMzUjz3e3Vweh7PhApPrZSS4fyiCIbcIrG9eKrriYVLmbMepETR/v6SU7xPm98QTqMSYiCwfO89QNjXLkbQ==",
+			"version": "1.5.123",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.123.tgz",
+			"integrity": "sha512-refir3NlutEZqlKaBLK0tzlVLe5P2wDKS7UQt/3SpibizgsRAPOsqQC3ffw1nlv3ze5gjRQZYHoPymgVZkplFA==",
 			"dev": true
 		},
 		"node_modules/emittery": {
@@ -8161,9 +8161,9 @@
 			"dev": true
 		},
 		"node_modules/meow/node_modules/yocto-queue": {
-			"version": "1.2.0",
-			"resolved": "https://registry.npmjs.org/yocto-queue/-/yocto-queue-1.2.0.tgz",
-			"integrity": "sha512-KHBC7z61OJeaMGnF3wqNZj+GGNXOyypZviiKpQeiHirG5Ib1ImwcLBH70rbMSkKfSmUNBsdf2PwaEJtKvgmkNw==",
+			"version": "1.2.1",
+			"resolved": "https://registry.npmjs.org/yocto-queue/-/yocto-queue-1.2.1.tgz",
+			"integrity": "sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==",
 			"dev": true,
 			"engines": {
 				"node": ">=12.20"
@@ -8231,9 +8231,9 @@
 			}
 		},
 		"node_modules/mime-db": {
-			"version": "1.53.0",
-			"resolved": "https://registry.npmjs.org/mime-db/-/mime-db-1.53.0.tgz",
-			"integrity": "sha512-oHlN/w+3MQ3rba9rqFr6V/ypF10LSkdwUysQL7GkXoTgIWeV+tcXGA852TBxH+gsh8UWoyhR1hKcoMJTuWflpg==",
+			"version": "1.54.0",
+			"resolved": "https://registry.npmjs.org/mime-db/-/mime-db-1.54.0.tgz",
+			"integrity": "sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==",
 			"engines": {
 				"node": ">= 0.6"
 			}
@@ -8596,9 +8596,9 @@
 			}
 		},
 		"node_modules/nanoid": {
-			"version": "3.3.10",
-			"resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.10.tgz",
-			"integrity": "sha512-vSJJTG+t/dIKAUhUDw/dLdZ9s//5OxcHqLaDWWrW4Cdq7o6tdLIczUkMXt2MBNmk6sJRZBZRXVixs7URY1CmIg==",
+			"version": "3.3.11",
+			"resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz",
+			"integrity": "sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==",
 			"dev": true,
 			"funding": [
 				{
@@ -10599,9 +10599,9 @@
 			}
 		},
 		"node_modules/pkg-conf/node_modules/yocto-queue": {
-			"version": "1.2.0",
-			"resolved": "https://registry.npmjs.org/yocto-queue/-/yocto-queue-1.2.0.tgz",
-			"integrity": "sha512-KHBC7z61OJeaMGnF3wqNZj+GGNXOyypZviiKpQeiHirG5Ib1ImwcLBH70rbMSkKfSmUNBsdf2PwaEJtKvgmkNw==",
+			"version": "1.2.1",
+			"resolved": "https://registry.npmjs.org/yocto-queue/-/yocto-queue-1.2.1.tgz",
+			"integrity": "sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==",
 			"dev": true,
 			"engines": {
 				"node": ">=12.20"
@@ -11218,9 +11218,9 @@
 			}
 		},
 		"node_modules/read-pkg-up/node_modules/yocto-queue": {
-			"version": "1.2.0",
-			"resolved": "https://registry.npmjs.org/yocto-queue/-/yocto-queue-1.2.0.tgz",
-			"integrity": "sha512-KHBC7z61OJeaMGnF3wqNZj+GGNXOyypZviiKpQeiHirG5Ib1ImwcLBH70rbMSkKfSmUNBsdf2PwaEJtKvgmkNw==",
+			"version": "1.2.1",
+			"resolved": "https://registry.npmjs.org/yocto-queue/-/yocto-queue-1.2.1.tgz",
+			"integrity": "sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==",
 			"engines": {
 				"node": ">=12.20"
 			},
