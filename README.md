@@ -1,6 +1,15 @@
 ![UI5 icon](https://raw.githubusercontent.com/UI5/cli/main/docs/images/UI5_logo_wide.png)
 
 # ui5-cli
+
+> ⚠️ **REPOSITORY MOVED**
+> 
+> The `@ui5/cli` package is now maintained in the [UI5 CLI monorepo](https://github.com/UI5/cli).
+> 
+> - **New location**: https://github.com/UI5/cli/tree/main/packages/cli
+> - **Issues & PRs**: Please submit to the [monorepo](https://github.com/UI5/cli/issues)
+> - **Latest releases**: Available from the monorepo
+
 > `ui5` Command Line Interface  
 > Part of the [UI5 CLI](https://github.com/UI5/cli)
 
