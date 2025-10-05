@@ -2568,9 +2568,9 @@
 			]
 		},
 		"node_modules/baseline-browser-mapping": {
-			"version": "2.8.8",
-			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.8.8.tgz",
-			"integrity": "sha512-be0PUaPsQX/gPWWgFsdD+GFzaoig5PXaUC1xLkQiYdDnANU8sMnHoQd8JhbJQuvTWrWLyeFN9Imb5Qtfvr4RrQ==",
+			"version": "2.8.12",
+			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.8.12.tgz",
+			"integrity": "sha512-vAPMQdnyKCBtkmQA6FMCBvU9qFIppS3nzyXnEM+Lo2IAhG4Mpjv9cCxMudhgV3YdNNJv6TNqXy97dfRVL2LmaQ==",
 			"dev": true,
 			"bin": {
 				"baseline-browser-mapping": "dist/cli.js"
@@ -2758,9 +2758,9 @@
 			}
 		},
 		"node_modules/browserslist": {
-			"version": "4.26.2",
-			"resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.26.2.tgz",
-			"integrity": "sha512-ECFzp6uFOSB+dcZ5BK/IBaGWssbSYBHvuMeMt3MMFyhI0Z8SqGgEkBLARgpRH3hutIgPVsALcMwbDrJqPxQ65A==",
+			"version": "4.26.3",
+			"resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.26.3.tgz",
+			"integrity": "sha512-lAUU+02RFBuCKQPj/P6NgjlbCnLBMp4UtgTx7vNHd3XSIJF87s9a5rA3aH2yw3GS9DqZAUbOtZdCCiZeVRqt0w==",
 			"dev": true,
 			"funding": [
 				{
@@ -2777,9 +2777,9 @@
 				}
 			],
 			"dependencies": {
-				"baseline-browser-mapping": "^2.8.3",
-				"caniuse-lite": "^1.0.30001741",
-				"electron-to-chromium": "^1.5.218",
+				"baseline-browser-mapping": "^2.8.9",
+				"caniuse-lite": "^1.0.30001746",
+				"electron-to-chromium": "^1.5.227",
 				"node-releases": "^2.0.21",
 				"update-browserslist-db": "^1.1.3"
 			},
@@ -3100,9 +3100,9 @@
 			}
 		},
 		"node_modules/caniuse-lite": {
-			"version": "1.0.30001745",
-			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001745.tgz",
-			"integrity": "sha512-ywt6i8FzvdgrrrGbr1jZVObnVv6adj+0if2/omv9cmR2oiZs30zL4DIyaptKcbOrBdOIc74QTMoJvSE2QHh5UQ==",
+			"version": "1.0.30001747",
+			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001747.tgz",
+			"integrity": "sha512-mzFa2DGIhuc5490Nd/G31xN1pnBnYMadtkyTjefPI7wzypqgCEpeWu9bJr0OnDsyKrW75zA9ZAt7pbQFmwLsQg==",
 			"dev": true,
 			"funding": [
 				{
@@ -4686,9 +4686,9 @@
 			"integrity": "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow=="
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.5.226",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.226.tgz",
-			"integrity": "sha512-0tS/r72Ze0WUBiDwnqw4X43TxA7gEuZg0kFwLthoCzkshIbNQFjkf6D8xEzBe6tY6Y65fUhZIuNedTugw+11Lw==",
+			"version": "1.5.230",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.230.tgz",
+			"integrity": "sha512-A6A6Fd3+gMdaed9wX83CvHYJb4UuapPD5X5SLq72VZJzxHSY0/LUweGXRWmQlh2ln7KV7iw7jnwXK7dlPoOnHQ==",
 			"dev": true
 		},
 		"node_modules/emittery": {
@@ -9125,9 +9125,9 @@
 			}
 		},
 		"node_modules/node-releases": {
-			"version": "2.0.21",
-			"resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.21.tgz",
-			"integrity": "sha512-5b0pgg78U3hwXkCM8Z9b2FJdPZlr9Psr9V2gQPESdGHqbntyFJKFW4r5TeWGFzafGY3hzs1JC62VEQMbl1JFkw==",
+			"version": "2.0.23",
+			"resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.23.tgz",
+			"integrity": "sha512-cCmFDMSm26S6tQSDpBCg/NR8NENrVPhAJSf+XbxBG4rPFaaonlEoE9wHQmun+cls499TQGSb7ZyPBRlzgKfpeg==",
 			"dev": true
 		},
 		"node_modules/node-stream-zip": {
