@@ -9,7 +9,7 @@
 			"version": "4.0.27",
 			"license": "Apache-2.0",
 			"dependencies": {
-				"@ui5/builder": "^4.0.11",
+				"@ui5/builder": "^4.0.12",
 				"@ui5/fs": "^4.0.3",
 				"@ui5/logger": "^4.0.2",
 				"@ui5/project": "^4.0.6",
@@ -2666,9 +2666,9 @@
 			"dev": true
 		},
 		"node_modules/@typescript-eslint/types": {
-			"version": "8.45.0",
-			"resolved": "https://registry.npmjs.org/@typescript-eslint/types/-/types-8.45.0.tgz",
-			"integrity": "sha512-WugXLuOIq67BMgQInIxxnsSyRLFxdkJEJu8r4ngLR56q/4Q5LrbfkFRH27vMTjxEK8Pyz7QfzuZe/G15qQnVRA==",
+			"version": "8.46.0",
+			"resolved": "https://registry.npmjs.org/@typescript-eslint/types/-/types-8.46.0.tgz",
+			"integrity": "sha512-bHGGJyVjSE4dJJIO5yyEWt/cHyNwga/zXGJbJJ8TiO01aVREK6gCTu3L+5wrkb1FbDkQ+TKjMNe9R/QQQP9+rA==",
 			"dev": true,
 			"engines": {
 				"node": "^18.18.0 || ^20.9.0 || >=21.1.0"
@@ -2679,12 +2679,12 @@
 			}
 		},
 		"node_modules/@ui5/builder": {
-			"version": "4.0.11",
-			"resolved": "https://registry.npmjs.org/@ui5/builder/-/builder-4.0.11.tgz",
-			"integrity": "sha512-6CsTCau0aP2NaXk9cZZ5dyINgKAoHL/n6l/O+d9ZTeHAKEyPM2+7WXXCLlMO/Z/SD+eEShztnsg1aCKyAzS5dQ==",
+			"version": "4.0.12",
+			"resolved": "https://registry.npmjs.org/@ui5/builder/-/builder-4.0.12.tgz",
+			"integrity": "sha512-79cTHC7Uch67RAV4YD0iWmT+U5o14wuywuD5W1iszPnfJ522MQ4lA0QILTODPPsZAwYrqwC6kRQeekESZnWVMg==",
 			"dependencies": {
 				"@jridgewell/sourcemap-codec": "^1.5.5",
-				"@ui5/fs": "^4.0.2",
+				"@ui5/fs": "^4.0.3",
 				"@ui5/logger": "^4.0.2",
 				"cheerio": "1.0.0",
 				"escape-unicode": "^0.2.0",
@@ -3290,9 +3290,9 @@
 			]
 		},
 		"node_modules/baseline-browser-mapping": {
-			"version": "2.8.12",
-			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.8.12.tgz",
-			"integrity": "sha512-vAPMQdnyKCBtkmQA6FMCBvU9qFIppS3nzyXnEM+Lo2IAhG4Mpjv9cCxMudhgV3YdNNJv6TNqXy97dfRVL2LmaQ==",
+			"version": "2.8.13",
+			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.8.13.tgz",
+			"integrity": "sha512-7s16KR8io8nIBWQyCYhmFhd+ebIzb9VKTzki+wOJXHTxTnV6+mFGH3+Jwn1zoKaY9/H9T/0BcKCZnzXljPnpSQ==",
 			"dev": true,
 			"bin": {
 				"baseline-browser-mapping": "dist/cli.js"
@@ -5218,9 +5218,9 @@
 			"integrity": "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow=="
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.5.230",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.230.tgz",
-			"integrity": "sha512-A6A6Fd3+gMdaed9wX83CvHYJb4UuapPD5X5SLq72VZJzxHSY0/LUweGXRWmQlh2ln7KV7iw7jnwXK7dlPoOnHQ==",
+			"version": "1.5.232",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.232.tgz",
+			"integrity": "sha512-ENirSe7wf8WzyPCibqKUG1Cg43cPaxH4wRR7AJsX7MCABCHBIOFqvaYODSLKUuZdraxUTHRE/0A2Aq8BYKEHOg==",
 			"dev": true
 		},
 		"node_modules/emittery": {
