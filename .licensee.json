@@ -9,7 +9,8 @@
 	},
 	"packages": {
 		"callsite": "1.0.0",
-		"yesno": "0.4.0"
+		"yesno": "0.4.0",
+		"stubborn-utils": "1.0.1"
 	},
 	"corrections": true
 }
