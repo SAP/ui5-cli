@@ -144,7 +144,7 @@
 		"eslint-plugin-ava": "^15.1.0",
 		"eslint-plugin-jsdoc": "^61.4.1",
 		"esmock": "^2.7.3",
-		"execa": "^9.6.0",
+		"execa": "^9.6.1",
 		"globals": "^16.5.0",
 		"jsdoc": "^4.0.5",
 		"licensee": "^11.1.1",

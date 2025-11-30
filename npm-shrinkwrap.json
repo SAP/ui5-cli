@@ -40,7 +40,7 @@
 				"eslint-plugin-ava": "^15.1.0",
 				"eslint-plugin-jsdoc": "^61.4.1",
 				"esmock": "^2.7.3",
-				"execa": "^9.6.0",
+				"execa": "^9.6.1",
 				"globals": "^16.5.0",
 				"jsdoc": "^4.0.5",
 				"licensee": "^11.1.1",
@@ -625,9 +625,9 @@
 			}
 		},
 		"node_modules/@eslint/eslintrc": {
-			"version": "3.3.1",
-			"resolved": "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-3.3.1.tgz",
-			"integrity": "sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==",
+			"version": "3.3.3",
+			"resolved": "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-3.3.3.tgz",
+			"integrity": "sha512-Kr+LPIUVKz2qkx1HAMH8q1q6azbqBAsXJUxBl/ODDuVPX45Z9DfwB8tPjTi6nNZ8BuM3nbJxC5zCAg5elnBUTQ==",
 			"dev": true,
 			"dependencies": {
 				"ajv": "^6.12.4",
@@ -636,7 +636,7 @@
 				"globals": "^14.0.0",
 				"ignore": "^5.2.0",
 				"import-fresh": "^3.2.1",
-				"js-yaml": "^4.1.0",
+				"js-yaml": "^4.1.1",
 				"minimatch": "^3.1.2",
 				"strip-json-comments": "^3.1.1"
 			},
@@ -3311,9 +3311,9 @@
 			]
 		},
 		"node_modules/baseline-browser-mapping": {
-			"version": "2.8.31",
-			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.8.31.tgz",
-			"integrity": "sha512-a28v2eWrrRWPpJSzxc+mKwm0ZtVx/G8SepdQZDArnXYU/XS+IF6mp8aB/4E+hH1tyGCoDo3KlUCdlSxGDsRkAw==",
+			"version": "2.8.32",
+			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.8.32.tgz",
+			"integrity": "sha512-OPz5aBThlyLFgxyhdwf/s2+8ab3OvT7AdTNvKHBwpXomIYeXqpUUuT8LrdtxZSsWJ4R4CU1un4XGh5Ez3nlTpw==",
 			"dev": true,
 			"bin": {
 				"baseline-browser-mapping": "dist/cli.js"
@@ -5957,9 +5957,9 @@
 			"dev": true
 		},
 		"node_modules/execa": {
-			"version": "9.6.0",
-			"resolved": "https://registry.npmjs.org/execa/-/execa-9.6.0.tgz",
-			"integrity": "sha512-jpWzZ1ZhwUmeWRhS7Qv3mhpOhLfwI+uAX4e5fOcXqwMR7EcJ0pj2kV1CVzHVMX/LphnKWD3LObjZCoJ71lKpHw==",
+			"version": "9.6.1",
+			"resolved": "https://registry.npmjs.org/execa/-/execa-9.6.1.tgz",
+			"integrity": "sha512-9Be3ZoN4LmYR90tUoVu2te2BsbzHfhJyfEiAVfz7N5/zv+jduIfLrV2xdQXOHbaD6KgpGdO9PRPM1Y4Q9QkPkA==",
 			"dev": true,
 			"dependencies": {
 				"@sindresorhus/merge-streams": "^4.0.0",
