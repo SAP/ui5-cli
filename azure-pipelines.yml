@@ -18,7 +18,7 @@ strategy:
       imageName: 'ubuntu-24.04'
       node_version: 18.x
     mac_node_lts_18:
-      imageName: 'macos-13'
+      imageName: 'macos-15'
       node_version: 18.x
     windows_node_lts_18:
       imageName: 'windows-2022'
@@ -27,7 +27,7 @@ strategy:
       imageName: 'ubuntu-24.04'
       node_version: 20.5.x
     mac_node_current:
-      imageName: 'macos-13'
+      imageName: 'macos-15'
       node_version: 20.5.x
     windows_node_current:
       imageName: 'windows-2022'
