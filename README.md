@@ -9,11 +9,7 @@
 [![npm Package Version](https://badge.fury.io/js/%40ui5%2Fcli.svg)](https://www.npmjs.com/package/@ui5/cli)
 [![Coverage Status](https://coveralls.io/repos/github/SAP/ui5-cli/badge.svg)](https://coveralls.io/github/SAP/ui5-cli)
 
-> [UI5 CLI v4](https://ui5.github.io/cli/v4) is the latest and stable version 🎉
->
-> [UI5 CLI v2](https://ui5.github.io/cli/v2) and [UI5 CLI v3](https://ui5.github.io/cli/v3) have been deprecated 🚫  
->
-> Please migrate your projects to [UI5 CLI v4](https://ui5.github.io/cli/stable/updates/migrate-v4/)!
+> ⚠️ UI5 CLI v3 has been deprecated! We highly recommend migrating to [**the latest version**](https://ui5.github.io/cli/stable/).
 
 ## Documentation
 UI5 CLI documentation can be found here: [ui5.github.io/cli](https://ui5.github.io/cli/pages/CLI/)
