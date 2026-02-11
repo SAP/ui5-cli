@@ -16,15 +16,12 @@ const config = {
 	},
 
 	ignoreDependencies: [
-		"@ui5/*",
+		"@ui5/fs",
 		"docdash",
-		"@istanbuljs/esm-loader-hook",
-		"data-with-position",
-		"js-yaml",
-		"open",
-		"pretty-hrtime",
-		"jsdoc",
+		"@istanbuljs/esm-loader-hook"
 	],
+
+	entry: ["lib/cli/commands/*.js", "lib/framework/*.js"]
 };
 
 export default config;
