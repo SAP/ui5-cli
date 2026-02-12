@@ -36,7 +36,7 @@ const config = {
 		"@istanbuljs/esm-loader-hook"
 	],
 
-	entry: ["lib/cli/commands/*.js", "lib/framework/*.js"]
+	entry: ["lib/cli/commands/*.js"]
 };
 
 export default config;
