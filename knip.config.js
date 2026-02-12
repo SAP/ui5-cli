@@ -19,7 +19,7 @@ const config = {
 	ignoreDependencies: [
 		/**
 		 * The package.json files of all @ui5/* packages are dynamically required for the "version" command
-		 * (See packages/cli/lib/cli/commands/versions.js)
+		 * (See lib/cli/commands/versions.js)
 		 * Only @ui5/fs is not used anywhere else in the CLI package, so we need to ignore it here
 		 */
 		"@ui5/fs",
