@@ -30,7 +30,7 @@
 		"npm": ">= 8"
 	},
 	"scripts": {
-		"test": "npm run lint && npm run jsdoc-generate && npm run coverage && npm run knip && npm run check-licenses",
+		"test": "npm run lint && npm run jsdoc-generate && npm run coverage && npm run check-licenses",
 		"test-azure": "npm run coverage-xunit",
 		"lint": "eslint ./",
 		"unit": "rimraf test/tmp && ava",
