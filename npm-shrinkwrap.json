@@ -12,7 +12,7 @@
 				"@ui5/builder": "^4.1.4",
 				"@ui5/fs": "^4.0.5",
 				"@ui5/logger": "^4.0.2",
-				"@ui5/project": "^4.0.11",
+				"@ui5/project": "^4.0.12",
 				"@ui5/server": "^4.0.13",
 				"chalk": "^5.6.2",
 				"data-with-position": "^0.5.0",
@@ -2438,9 +2438,9 @@
 			"license": "MIT"
 		},
 		"node_modules/@types/node": {
-			"version": "25.3.3",
-			"resolved": "https://registry.npmjs.org/@types/node/-/node-25.3.3.tgz",
-			"integrity": "sha512-DpzbrH7wIcBaJibpKo9nnSQL0MTRdnWttGyE5haGwK86xgMOkFLp7vEyfQPGLOJh5wNYiJ3V9PmUMDhV9u8kkQ==",
+			"version": "25.3.5",
+			"resolved": "https://registry.npmjs.org/@types/node/-/node-25.3.5.tgz",
+			"integrity": "sha512-oX8xrhvpiyRCQkG1MFchB09f+cXftgIXb3a7UUa4Y3wpmZPw5tyZGTLWhlESOLq1Rq6oDlc8npVU2/9xiCuXMA==",
 			"dev": true,
 			"license": "MIT",
 			"peer": true,
@@ -2532,9 +2532,9 @@
 			}
 		},
 		"node_modules/@ui5/project": {
-			"version": "4.0.11",
-			"resolved": "https://registry.npmjs.org/@ui5/project/-/project-4.0.11.tgz",
-			"integrity": "sha512-i/xc+AcL/O2oR0x+ZQpXpvfFQW6Dqyo+FIi4WwH5lbSqdhHP6+/9AD3bQvfq5zjwActRvh2MozD8zIzbR5uQ7g==",
+			"version": "4.0.12",
+			"resolved": "https://registry.npmjs.org/@ui5/project/-/project-4.0.12.tgz",
+			"integrity": "sha512-VNiYTU09NvXNiz9FIctzDOKh2qz1HntjgdCVtC8GI4FbEc6JAojx6qJpVFAnq0H2MWqTKmYc/O5E3H3uG6ZCBw==",
 			"license": "Apache-2.0",
 			"dependencies": {
 				"@npmcli/config": "^9.0.0",
