@@ -2026,6 +2026,7 @@
 			"version": "0.7.3",
 			"resolved": "https://registry.npmjs.org/@sinonjs/text-encoding/-/text-encoding-0.7.3.tgz",
 			"integrity": "sha512-DE427ROAphMQzU4ENbliGYrBSYPXF+TtLg9S8vzeA+OF4ZKzoDdzfL8sxuMUGS/lgRhM6j1URSk9ghf7Xo1tyA==",
+			"deprecated": "Deprecated: no longer maintained and no longer used by Sinon packages. See\n  https://github.com/sinonjs/nise/issues/243 for replacement details.",
 			"dev": true,
 			"license": "(Unlicense OR Apache-2.0)"
 		},
@@ -3354,9 +3355,9 @@
 			}
 		},
 		"node_modules/caniuse-lite": {
-			"version": "1.0.30001775",
-			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001775.tgz",
-			"integrity": "sha512-s3Qv7Lht9zbVKE9XoTyRG6wVDCKdtOFIjBGg3+Yhn6JaytuNKPIjBMTMIY1AnOH3seL5mvF+x33oGAyK3hVt3A==",
+			"version": "1.0.30001777",
+			"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001777.tgz",
+			"integrity": "sha512-tmN+fJxroPndC74efCdp12j+0rk0RHwV5Jwa1zWaFVyw2ZxAuPeG8ZgWC3Wz7uSjT3qMRQ5XHZ4COgQmsCMJAQ==",
 			"dev": true,
 			"funding": [
 				{
@@ -4183,9 +4184,9 @@
 			"license": "MIT"
 		},
 		"node_modules/correct-license-metadata": {
-			"version": "1.4.0",
-			"resolved": "https://registry.npmjs.org/correct-license-metadata/-/correct-license-metadata-1.4.0.tgz",
-			"integrity": "sha512-nvbNpK/aYCbztZWGi9adIPqR+ZcQmZTWNT7eMYLvkaVGroN1nTHiVuuNPl7pK6ZNx1mvDztlRBJtfUdrVwKJ5A==",
+			"version": "1.5.0",
+			"resolved": "https://registry.npmjs.org/correct-license-metadata/-/correct-license-metadata-1.5.0.tgz",
+			"integrity": "sha512-fVBH+P7EJvvzqQ1Jn7xrdAD7tKFrjeBDNawOgNELcSopCL70Ie8H9Cyn1nYO0E7jihunnpqjWdpEQinDhhKrzw==",
 			"dev": true,
 			"license": "MIT",
 			"dependencies": {
@@ -5098,9 +5099,9 @@
 			"license": "MIT"
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.5.302",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.302.tgz",
-			"integrity": "sha512-sM6HAN2LyK82IyPBpznDRqlTQAtuSaO+ShzFiWTvoMJLHyZ+Y39r8VMfHzwbU8MVBzQ4Wdn85+wlZl2TLGIlwg==",
+			"version": "1.5.307",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.307.tgz",
+			"integrity": "sha512-5z3uFKBWjiNR44nFcYdkcXjKMbg5KXNdciu7mhTPo9tB7NbqSNP2sSnGR+fqknZSCwKkBN+oxiiajWs4dT6ORg==",
 			"dev": true,
 			"license": "ISC"
 		},
@@ -6232,9 +6233,9 @@
 			}
 		},
 		"node_modules/flatted": {
-			"version": "3.3.3",
-			"resolved": "https://registry.npmjs.org/flatted/-/flatted-3.3.3.tgz",
-			"integrity": "sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==",
+			"version": "3.3.4",
+			"resolved": "https://registry.npmjs.org/flatted/-/flatted-3.3.4.tgz",
+			"integrity": "sha512-3+mMldrTAPdta5kjX2G2J7iX4zxtnwpdA8Tr2ZSjkyPSanvbZAcy6flmtnXbEybHrDcU9641lxrMfFuUxVz9vA==",
 			"dev": true,
 			"license": "ISC"
 		},
@@ -9962,9 +9963,9 @@
 			}
 		},
 		"node_modules/node-releases": {
-			"version": "2.0.27",
-			"resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.27.tgz",
-			"integrity": "sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==",
+			"version": "2.0.36",
+			"resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.36.tgz",
+			"integrity": "sha512-TdC8FSgHz8Mwtw9g5L4gR/Sh9XhSP/0DEkQxfEFXOpiul5IiHgHan2VhYYb6agDSfp4KuvltmGApc8HMgUrIkA==",
 			"dev": true,
 			"license": "MIT"
 		},
@@ -11621,9 +11622,9 @@
 			}
 		},
 		"node_modules/postcss": {
-			"version": "8.5.6",
-			"resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.6.tgz",
-			"integrity": "sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==",
+			"version": "8.5.8",
+			"resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.8.tgz",
+			"integrity": "sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==",
 			"dev": true,
 			"funding": [
 				{
@@ -12718,9 +12719,9 @@
 			"license": "MIT"
 		},
 		"node_modules/sax": {
-			"version": "1.4.4",
-			"resolved": "https://registry.npmjs.org/sax/-/sax-1.4.4.tgz",
-			"integrity": "sha512-1n3r/tGXO6b6VXMdFT54SHzT9ytu9yr7TaELowdYpMqY/Ao7EnlQGmAQ1+RatX7Tkkdm6hONI2owqNx2aZj5Sw==",
+			"version": "1.5.0",
+			"resolved": "https://registry.npmjs.org/sax/-/sax-1.5.0.tgz",
+			"integrity": "sha512-21IYA3Q5cQf089Z6tgaUTr7lDAyzoTPx5HRtbhsME8Udispad8dC/+sziTNugOEx54ilvatQ9YCzl4KQLPcRHA==",
 			"license": "BlueOak-1.0.0",
 			"engines": {
 				"node": ">=11.0.0"
