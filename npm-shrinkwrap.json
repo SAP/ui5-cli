@@ -2438,9 +2438,9 @@
 			"license": "MIT"
 		},
 		"node_modules/@types/node": {
-			"version": "25.3.5",
-			"resolved": "https://registry.npmjs.org/@types/node/-/node-25.3.5.tgz",
-			"integrity": "sha512-oX8xrhvpiyRCQkG1MFchB09f+cXftgIXb3a7UUa4Y3wpmZPw5tyZGTLWhlESOLq1Rq6oDlc8npVU2/9xiCuXMA==",
+			"version": "25.4.0",
+			"resolved": "https://registry.npmjs.org/@types/node/-/node-25.4.0.tgz",
+			"integrity": "sha512-9wLpoeWuBlcbBpOY3XmzSTG3oscB6xjBEEtn+pYXTfhyXhIxC5FsBer2KTopBlvKEiW9l13po9fq+SJY/5lkhw==",
 			"dev": true,
 			"license": "MIT",
 			"peer": true,
@@ -2455,9 +2455,9 @@
 			"license": "MIT"
 		},
 		"node_modules/@typescript-eslint/types": {
-			"version": "8.56.1",
-			"resolved": "https://registry.npmjs.org/@typescript-eslint/types/-/types-8.56.1.tgz",
-			"integrity": "sha512-dbMkdIUkIkchgGDIv7KLUpa0Mda4IYjo4IAMJUZ+3xNoUXxMsk9YtKpTHSChRS85o+H9ftm51gsK1dZReY9CVw==",
+			"version": "8.57.0",
+			"resolved": "https://registry.npmjs.org/@typescript-eslint/types/-/types-8.57.0.tgz",
+			"integrity": "sha512-dTLI8PEXhjUC7B9Kre+u0XznO696BhXcTlOn0/6kf1fHaQW8+VjJAVHJ3eTI14ZapTxdkOmc80HblPQLaEeJdg==",
 			"dev": true,
 			"license": "MIT",
 			"engines": {
@@ -6118,9 +6118,9 @@
 			}
 		},
 		"node_modules/flatted": {
-			"version": "3.3.4",
-			"resolved": "https://registry.npmjs.org/flatted/-/flatted-3.3.4.tgz",
-			"integrity": "sha512-3+mMldrTAPdta5kjX2G2J7iX4zxtnwpdA8Tr2ZSjkyPSanvbZAcy6flmtnXbEybHrDcU9641lxrMfFuUxVz9vA==",
+			"version": "3.4.1",
+			"resolved": "https://registry.npmjs.org/flatted/-/flatted-3.4.1.tgz",
+			"integrity": "sha512-IxfVbRFVlV8V/yRaGzk0UVIcsKKHMSfYw66T/u4nTwlWteQePsxe//LjudR1AMX4tZW3WFCh3Zqa/sjlqpbURQ==",
 			"dev": true,
 			"license": "ISC"
 		},
@@ -9782,9 +9782,9 @@
 			"license": "BlueOak-1.0.0"
 		},
 		"node_modules/pacote": {
-			"version": "20.0.0",
-			"resolved": "https://registry.npmjs.org/pacote/-/pacote-20.0.0.tgz",
-			"integrity": "sha512-pRjC5UFwZCgx9kUFDVM9YEahv4guZ1nSLqwmWiLUnDbGsjs+U5w7z6Uc8HNR1a6x8qnu5y9xtGE6D1uAuYz+0A==",
+			"version": "20.0.1",
+			"resolved": "https://registry.npmjs.org/pacote/-/pacote-20.0.1.tgz",
+			"integrity": "sha512-jTMLD/QK7JMUKg3g7K3M/DEqIbGm7sxclj12eQYIkL3viutSiefTs26IrqIqgGlFsviF/9dlDUZxnpGvkRXtjw==",
 			"license": "ISC",
 			"dependencies": {
 				"@npmcli/git": "^6.0.0",
@@ -9803,7 +9803,7 @@
 				"promise-retry": "^2.0.1",
 				"sigstore": "^3.0.0",
 				"ssri": "^12.0.0",
-				"tar": "^6.1.11"
+				"tar": "^7.5.10"
 			},
 			"bin": {
 				"pacote": "bin/index.js"
@@ -12330,9 +12330,9 @@
 			}
 		},
 		"node_modules/tar": {
-			"version": "7.5.10",
-			"resolved": "https://registry.npmjs.org/tar/-/tar-7.5.10.tgz",
-			"integrity": "sha512-8mOPs1//5q/rlkNSPcCegA6hiHJYDmSLEI8aMH/CdSQJNWztHC9WHNam5zdQlfpTwB9Xp7IBEsHfV5LKMJGVAw==",
+			"version": "7.5.11",
+			"resolved": "https://registry.npmjs.org/tar/-/tar-7.5.11.tgz",
+			"integrity": "sha512-ChjMH33/KetonMTAtpYdgUFr0tbz69Fp2v7zWxQfYZX4g5ZN2nOBXm1R2xyA+lMIKrLKIoKAwFj93jE/avX9cQ==",
 			"license": "BlueOak-1.0.0",
 			"dependencies": {
 				"@isaacs/fs-minipass": "^4.0.0",
