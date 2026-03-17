@@ -156,16 +156,5 @@
 		"strip-ansi": "^7.2.0",
 		"tap-xunit": "^2.4.1",
 		"testdouble": "^3.20.2"
-	},
-	"overrides": {
-		"pacote@<=20": {
-			"tar": "^7.5.7"
-		},
-		"cacache@18": {
-			"tar": "^7.5.7"
-		},
-		"node-gyp@10": {
-			"tar": "^7.5.7"
-		}
 	}
 }
