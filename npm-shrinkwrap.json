@@ -42,7 +42,7 @@
 				"execa": "^9.6.1",
 				"globals": "^17.4.0",
 				"jsdoc": "^4.0.5",
-				"knip": "^5.87.0",
+				"knip": "^5.88.1",
 				"licensee": "^11.1.1",
 				"nyc": "^17.1.0",
 				"open-cli": "^8.0.0",
@@ -545,9 +545,9 @@
 			"license": "CC0-1.0"
 		},
 		"node_modules/@emnapi/core": {
-			"version": "1.9.0",
-			"resolved": "https://registry.npmjs.org/@emnapi/core/-/core-1.9.0.tgz",
-			"integrity": "sha512-0DQ98G9ZQZOxfUcQn1waV2yS8aWdZ6kJMbYCJB3oUBecjWYO1fqJ+a1DRfPF3O5JEkwqwP1A9QEN/9mYm2Yd0w==",
+			"version": "1.9.1",
+			"resolved": "https://registry.npmjs.org/@emnapi/core/-/core-1.9.1.tgz",
+			"integrity": "sha512-mukuNALVsoix/w1BJwFzwXBN/dHeejQtuVzcDsfOEsdpCumXb/E9j8w11h5S54tT1xhifGfbbSm/ICrObRb3KA==",
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
@@ -557,9 +557,9 @@
 			}
 		},
 		"node_modules/@emnapi/runtime": {
-			"version": "1.9.0",
-			"resolved": "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.9.0.tgz",
-			"integrity": "sha512-QN75eB0IH2ywSpRpNddCRfQIhmJYBCJ1x5Lb3IscKAL8bMnVAKnRg8dCoXbHzVLLH7P38N2Z3mtulB7W0J0FKw==",
+			"version": "1.9.1",
+			"resolved": "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.9.1.tgz",
+			"integrity": "sha512-VYi5+ZVLhpgK4hQ0TAjiQiZ6ol0oe4mBx7mVv7IflsiEp0OWoVsp/+f9Vc1hOhE0TtkORVrI1GvzyreqpgWtkA==",
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
@@ -4016,9 +4016,9 @@
 			"license": "MIT"
 		},
 		"node_modules/baseline-browser-mapping": {
-			"version": "2.10.8",
-			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.8.tgz",
-			"integrity": "sha512-PCLz/LXGBsNTErbtB6i5u4eLpHeMfi93aUv5duMmj6caNu6IphS4q6UevDnL36sZQv9lrP11dbPKGMaXPwMKfQ==",
+			"version": "2.10.10",
+			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.10.tgz",
+			"integrity": "sha512-sUoJ3IMxx4AyRqO4MLeHlnGDkyXRoUG0/AI9fjK+vS72ekpV0yWVY7O0BVjmBcRtkNcsAO2QDZ4tdKKGoI6YaQ==",
 			"dev": true,
 			"license": "Apache-2.0",
 			"bin": {
@@ -5843,9 +5843,9 @@
 			"license": "MIT"
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.5.313",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.313.tgz",
-			"integrity": "sha512-QBMrTWEf00GXZmJyx2lbYD45jpI3TUFnNIzJ5BBc8piGUDwMPa1GV6HJWTZVvY/eiN3fSopl7NRbgGp9sZ9LTA==",
+			"version": "1.5.321",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.321.tgz",
+			"integrity": "sha512-L2C7Q279W2D/J4PLZLk7sebOILDSWos7bMsMNN06rK482umHUrh/3lM8G7IlHFOYip2oAg5nha1rCMxr/rs6ZQ==",
 			"dev": true,
 			"license": "ISC"
 		},
@@ -7116,9 +7116,9 @@
 			}
 		},
 		"node_modules/flatted": {
-			"version": "3.4.1",
-			"resolved": "https://registry.npmjs.org/flatted/-/flatted-3.4.1.tgz",
-			"integrity": "sha512-IxfVbRFVlV8V/yRaGzk0UVIcsKKHMSfYw66T/u4nTwlWteQePsxe//LjudR1AMX4tZW3WFCh3Zqa/sjlqpbURQ==",
+			"version": "3.4.2",
+			"resolved": "https://registry.npmjs.org/flatted/-/flatted-3.4.2.tgz",
+			"integrity": "sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==",
 			"dev": true,
 			"license": "ISC"
 		},
@@ -8730,9 +8730,9 @@
 			}
 		},
 		"node_modules/knip": {
-			"version": "5.87.0",
-			"resolved": "https://registry.npmjs.org/knip/-/knip-5.87.0.tgz",
-			"integrity": "sha512-oJBrwd4/Mt5E6817vcdQLaPpejxZTxpASauYLkp6HaT0HN1seHnpF96KEjza9O8yARvHEQ9+So9AFUjkPci7dQ==",
+			"version": "5.88.1",
+			"resolved": "https://registry.npmjs.org/knip/-/knip-5.88.1.tgz",
+			"integrity": "sha512-tpy5o7zu1MjawVkLPuahymVJekYY3kYjvzcoInhIchgePxTlo+api90tBv2KfhAIe5uXh+mez1tAfmbv8/TiZg==",
 			"dev": true,
 			"funding": [
 				{
@@ -13403,9 +13403,9 @@
 			}
 		},
 		"node_modules/tar": {
-			"version": "7.5.11",
-			"resolved": "https://registry.npmjs.org/tar/-/tar-7.5.11.tgz",
-			"integrity": "sha512-ChjMH33/KetonMTAtpYdgUFr0tbz69Fp2v7zWxQfYZX4g5ZN2nOBXm1R2xyA+lMIKrLKIoKAwFj93jE/avX9cQ==",
+			"version": "7.5.12",
+			"resolved": "https://registry.npmjs.org/tar/-/tar-7.5.12.tgz",
+			"integrity": "sha512-9TsuLcdhOn4XztcQqhNyq1KOwOOED/3k58JAvtULiYqbO8B/0IBAAIE1hj0Svmm58k27TmcigyDI0deMlgG3uw==",
 			"license": "BlueOak-1.0.0",
 			"dependencies": {
 				"@isaacs/fs-minipass": "^4.0.0",
@@ -14463,9 +14463,9 @@
 			"license": "ISC"
 		},
 		"node_modules/yaml": {
-			"version": "2.8.2",
-			"resolved": "https://registry.npmjs.org/yaml/-/yaml-2.8.2.tgz",
-			"integrity": "sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==",
+			"version": "2.8.3",
+			"resolved": "https://registry.npmjs.org/yaml/-/yaml-2.8.3.tgz",
+			"integrity": "sha512-AvbaCLOO2Otw/lW5bmh9d/WEdcDFdQp2Z2ZUH3pX9U2ihyUY0nvLv7J6TrWowklRGPYbB/IuIMfYgxaCPg5Bpg==",
 			"dev": true,
 			"license": "ISC",
 			"bin": {
