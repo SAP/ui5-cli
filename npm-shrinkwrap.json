@@ -9,7 +9,7 @@
 			"version": "4.0.51",
 			"license": "Apache-2.0",
 			"dependencies": {
-				"@ui5/builder": "^4.1.5",
+				"@ui5/builder": "^4.1.6",
 				"@ui5/fs": "^4.0.5",
 				"@ui5/logger": "^4.0.2",
 				"@ui5/project": "^4.0.15",
@@ -3346,9 +3346,9 @@
 			}
 		},
 		"node_modules/@ui5/builder": {
-			"version": "4.1.5",
-			"resolved": "https://registry.npmjs.org/@ui5/builder/-/builder-4.1.5.tgz",
-			"integrity": "sha512-eDd1mICbgL7fcK6MgpinG/cXDrkjTigaKSAmC/PlV+1RJKCN7fIpjSfW8HiRYvbAh81/HNUIo1FZ0JS+0gilTA==",
+			"version": "4.1.6",
+			"resolved": "https://registry.npmjs.org/@ui5/builder/-/builder-4.1.6.tgz",
+			"integrity": "sha512-e0SdT7f8HP4Fz1yZUofs4f6BJZCxh/KtxSyFIOuuidzoIK0f9Lpd4Rr135fzates+YZSrteb4BoECu3kevvFPg==",
 			"license": "Apache-2.0",
 			"dependencies": {
 				"@jridgewell/sourcemap-codec": "^1.5.5",
