@@ -4,6 +4,8 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
+  cooldown:
+    default-days: 2
 - package-ecosystem: npm
   directory: "/"
   schedule:
@@ -17,3 +19,5 @@ updates:
   commit-message:
     prefix: "[DEPENDENCY] "
     prefix-development: "[INTERNAL] "
+  cooldown:
+    default-days: 2
