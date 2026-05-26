@@ -45,7 +45,8 @@
 		"prepublishOnly": "git push --follow-tags",
 		"release-note": "git-chglog --sort semver -c .chglog/release-config.yml v$npm_package_version | node .chglog/consolidate-changelogs.js",
 		"knip": "knip --config knip.config.js",
-		"check-licenses": "licensee --errors-only"
+		"check-licenses": "licensee --errors-only",
+		"check-engine": "check-engine-light -f npm-shrinkwrap.json ."
 	},
 	"files": [
 		"CHANGELOG.md",
@@ -133,6 +134,7 @@
 		"@eslint/js": "^9.8.0",
 		"@istanbuljs/esm-loader-hook": "^0.3.0",
 		"ava": "^6.4.1",
+		"check-engine-light": "0.4.0",
 		"chokidar-cli": "^3.0.0",
 		"cross-env": "^10.1.0",
 		"docdash": "^2.0.2",
