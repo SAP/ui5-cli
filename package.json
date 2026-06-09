@@ -56,7 +56,8 @@
 		"bin/**",
 		"lib/**",
 		"LICENSES/**",
-		".reuse/**"
+		".reuse/**",
+		"bin"
 	],
 	"ava": {
 		"files": [
