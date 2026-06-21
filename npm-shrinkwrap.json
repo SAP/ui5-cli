@@ -20,9 +20,9 @@
 				"js-yaml": "^4.2.0",
 				"open": "^9.1.0",
 				"pretty-hrtime": "^1.0.3",
-				"semver": "^7.8.4",
+				"semver": "^7.8.5",
 				"update-notifier": "^6.0.2",
-				"yargs": "^17.7.2"
+				"yargs": "^17.7.3"
 			},
 			"bin": {
 				"ui5": "bin/ui5.cjs"
@@ -2777,9 +2777,9 @@
 			"license": "MIT"
 		},
 		"node_modules/baseline-browser-mapping": {
-			"version": "2.10.37",
-			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.37.tgz",
-			"integrity": "sha512-girxaJ7WZssDOFhzCGZTDKoTa1gk6A1TbflaYTpykLJ4UU9Fz9kx1aREM8JCuoVHbL8X8T/mJg7w2oYSq72Oig==",
+			"version": "2.10.38",
+			"resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.38.tgz",
+			"integrity": "sha512-31/02mVB4yuQU6adKk5SlY6m+mxDwUq5KZkyYgnLrrKl7TEm1+3PyDtDBz2kOv/wxZz41GHsvV1A/u6RmiyBvw==",
 			"dev": true,
 			"license": "Apache-2.0",
 			"bin": {
@@ -4790,9 +4790,9 @@
 			}
 		},
 		"node_modules/depcheck/node_modules/yargs": {
-			"version": "16.2.0",
-			"resolved": "https://registry.npmjs.org/yargs/-/yargs-16.2.0.tgz",
-			"integrity": "sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==",
+			"version": "16.2.2",
+			"resolved": "https://registry.npmjs.org/yargs/-/yargs-16.2.2.tgz",
+			"integrity": "sha512-Nt9ZJjXTv5R8MHbqby/wXQ6Gi0Bb3TcYZkR1bzuL4yB2OxWPkXknz513gEF0GoA6tn00UpbPvERW8rzCuWCA6w==",
 			"dev": true,
 			"license": "MIT",
 			"dependencies": {
@@ -5099,9 +5099,9 @@
 			"license": "MIT"
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.5.372",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.372.tgz",
-			"integrity": "sha512-M3yhbAlilnwqC8D21t28UCDGHyitShTmmLRU/H+b74P6Ski16Nb9HONYEaVpMj/pwC7BEo5B95FpjODLCWbtfA==",
+			"version": "1.5.376",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.376.tgz",
+			"integrity": "sha512-cUVA7/RvbFTEuw/i3obUwDTRIXojaxkResf+ibByPFxjc6XK3VNtcQXV0NSbAlJ0FMjcJGgftVVB4Qo184EXvA==",
 			"dev": true,
 			"license": "ISC"
 		},
@@ -9345,9 +9345,9 @@
 			}
 		},
 		"node_modules/nanoid": {
-			"version": "3.3.12",
-			"resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.12.tgz",
-			"integrity": "sha512-ZB9RH/39qpq5Vu6Y+NmUaFhQR6pp+M2Xt76XBnEwDaGcVAqhlvxrl3B2bKS5D3NH3QR76v3aSrKaF/Kiy7lEtQ==",
+			"version": "3.3.14",
+			"resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.14.tgz",
+			"integrity": "sha512-U9kYi5bpVMEI31yC8iw4bJJp0avcHXA0W8/wNfLfnvJYzihQo2ZRPYPvpAAd570HAcCBjCTN7vnr+v4StKl1IQ==",
 			"dev": true,
 			"funding": [
 				{
@@ -9993,9 +9993,9 @@
 			}
 		},
 		"node_modules/node-releases": {
-			"version": "2.0.47",
-			"resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.47.tgz",
-			"integrity": "sha512-Uzmd6LXpouKo8EUK68IjH4+E01w/hXyV3R3g/geCJo+rXLNfh1xucB+LOzYEOQPSiUK3h/xZf0cQGcSsmyL2Og==",
+			"version": "2.0.48",
+			"resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.48.tgz",
+			"integrity": "sha512-1uz8041X6LoI6ZSdZacM9lVY28vuzDlSKitnpbSNK0RfKoIJkX29NBPVEFXhnuSuEOA9Ww0xnPJ+ILWbGAv8DA==",
 			"dev": true,
 			"license": "MIT",
 			"engines": {
@@ -12768,9 +12768,9 @@
 			"license": "MIT"
 		},
 		"node_modules/semver": {
-			"version": "7.8.4",
-			"resolved": "https://registry.npmjs.org/semver/-/semver-7.8.4.tgz",
-			"integrity": "sha512-rUCObTnP32Q08R2uuIrt7r9PlEonuTmtuXYcW6s5kjdlj3xbnwe+21yXptAUYcMAABLkYYTtnmzb3w3EDZfueA==",
+			"version": "7.8.5",
+			"resolved": "https://registry.npmjs.org/semver/-/semver-7.8.5.tgz",
+			"integrity": "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==",
 			"license": "ISC",
 			"bin": {
 				"semver": "bin/semver.js"
@@ -14802,9 +14802,9 @@
 			"license": "Apache-2.0"
 		},
 		"node_modules/yargs": {
-			"version": "17.7.2",
-			"resolved": "https://registry.npmjs.org/yargs/-/yargs-17.7.2.tgz",
-			"integrity": "sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==",
+			"version": "17.7.3",
+			"resolved": "https://registry.npmjs.org/yargs/-/yargs-17.7.3.tgz",
+			"integrity": "sha512-GZtjxm/J/4TSxuL3FNYjCmLktBTnIw/rVmKSIyKeYAZpmJB2ig9VauCC5xsa82GNKVKDAqpOn3KVzNt0zmrU0g==",
 			"license": "MIT",
 			"dependencies": {
 				"cliui": "^8.0.1",
