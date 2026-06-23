@@ -41,7 +41,7 @@
 				"eslint-plugin-jsdoc": "61.5.0",
 				"esmock": "^2.7.6",
 				"execa": "^9.6.1",
-				"globals": "^17.6.0",
+				"globals": "^17.7.0",
 				"jsdoc": "^4.0.5",
 				"knip": "^5.88.1",
 				"licensee": "^11.1.1",
@@ -3253,9 +3253,9 @@
 			}
 		},
 		"node_modules/@tybys/wasm-util": {
-			"version": "0.10.2",
-			"resolved": "https://registry.npmjs.org/@tybys/wasm-util/-/wasm-util-0.10.2.tgz",
-			"integrity": "sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==",
+			"version": "0.10.3",
+			"resolved": "https://registry.npmjs.org/@tybys/wasm-util/-/wasm-util-0.10.3.tgz",
+			"integrity": "sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==",
 			"dev": true,
 			"license": "MIT",
 			"optional": true,
@@ -3317,9 +3317,9 @@
 			"license": "MIT"
 		},
 		"node_modules/@typescript-eslint/types": {
-			"version": "8.61.1",
-			"resolved": "https://registry.npmjs.org/@typescript-eslint/types/-/types-8.61.1.tgz",
-			"integrity": "sha512-G+CRlPqLv7Bz1IZVs03x5K59F1veqL0EJUROAdGhKsEq8qOiRiZbI+HUojPq5l0fEGOKModD9br6lObhB8zkoA==",
+			"version": "8.62.0",
+			"resolved": "https://registry.npmjs.org/@typescript-eslint/types/-/types-8.62.0.tgz",
+			"integrity": "sha512-KvAclkktORPvM54TgLgA4z9HIV1M8zOgw9ZVNXl9f/8dLYfXYX1wkMXP7qmabpijQRV5bHJLOmoyGQbLMaUYeg==",
 			"dev": true,
 			"license": "MIT",
 			"engines": {
@@ -4238,9 +4238,9 @@
 			}
 		},
 		"node_modules/browserslist": {
-			"version": "4.28.2",
-			"resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.28.2.tgz",
-			"integrity": "sha512-48xSriZYYg+8qXna9kwqjIVzuQxi+KYWp2+5nCYnYKPTr0LvD89Jqk2Or5ogxz0NUMfIjhh2lIUX/LyX9B4oIg==",
+			"version": "4.28.4",
+			"resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.28.4.tgz",
+			"integrity": "sha512-MTc8i/x9jBQd1iMw2CFGS+rwMa07eYjLR0CCTLDACl9xhxy+nIs3KeML/biicXtk9JrZ6dnnTatmc7ErPXIxqw==",
 			"dev": true,
 			"funding": [
 				{
@@ -4258,10 +4258,10 @@
 			],
 			"license": "MIT",
 			"dependencies": {
-				"baseline-browser-mapping": "^2.10.12",
-				"caniuse-lite": "^1.0.30001782",
-				"electron-to-chromium": "^1.5.328",
-				"node-releases": "^2.0.36",
+				"baseline-browser-mapping": "^2.10.38",
+				"caniuse-lite": "^1.0.30001799",
+				"electron-to-chromium": "^1.5.376",
+				"node-releases": "^2.0.48",
 				"update-browserslist-db": "^1.2.3"
 			},
 			"bin": {
@@ -5863,9 +5863,9 @@
 			"license": "MIT"
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.5.376",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.376.tgz",
-			"integrity": "sha512-cUVA7/RvbFTEuw/i3obUwDTRIXojaxkResf+ibByPFxjc6XK3VNtcQXV0NSbAlJ0FMjcJGgftVVB4Qo184EXvA==",
+			"version": "1.5.377",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.377.tgz",
+			"integrity": "sha512-cH1jZgJHoezfTnKfKwnScpHywTFVnJUNITDPREFdhNjiuD502+QFpG0Qk7G8jhsV/f+CEAFlIrzP1fT+IMb92g==",
 			"dev": true,
 			"license": "ISC"
 		},
@@ -7451,9 +7451,9 @@
 			}
 		},
 		"node_modules/globals": {
-			"version": "17.6.0",
-			"resolved": "https://registry.npmjs.org/globals/-/globals-17.6.0.tgz",
-			"integrity": "sha512-sepffkT8stwnIYbsMBpoCHJuJM5l98FUF2AnE07hfvE0m/qp3R586hw4jF4uadbhvg1ooIdzuu7CsfD2jzCaNA==",
+			"version": "17.7.0",
+			"resolved": "https://registry.npmjs.org/globals/-/globals-17.7.0.tgz",
+			"integrity": "sha512-Czmyns5dUsq4seFBR/Kdydhmo8y9kC79hiSkPn0YcGtNnYWnrgt0vjrSjx9tspoDGWm2CMarffRuLjM4xUz8xg==",
 			"dev": true,
 			"license": "MIT",
 			"engines": {
