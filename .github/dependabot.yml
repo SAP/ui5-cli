@@ -21,3 +21,15 @@ updates:
     prefix-development: "[INTERNAL] "
   cooldown:
     default-days: 2
+  ignore:
+    # eslint-plugin-ava, ava, and eslint would need to be updated together
+    # but this would require a higher node version which is not supported:
+    # eslint-plugin-ava@17 requires node 22 or newer
+    - dependency-name: "eslint-plugin-ava"
+      update-types: ["version-update:semver-major"]
+    # ava@8 requires node 22.20 || 24.12 or newer
+    - dependency-name: "ava"
+      update-types: ["version-update:semver-major"]
+    # eslint@10 requires node ^20.19.0 || ^22.13.0 || >=24
+    - dependency-name: "eslint"
+      update-types: ["version-update:semver-major"]
