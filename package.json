@@ -115,7 +115,7 @@
 		"url": "git@github.com:SAP/ui5-cli.git"
 	},
 	"dependencies": {
-		"@ui5/builder": "^4.3.0",
+		"@ui5/builder": "^4.3.1",
 		"@ui5/fs": "^4.0.6",
 		"@ui5/logger": "^4.0.2",
 		"@ui5/project": "^4.0.17",
@@ -124,7 +124,7 @@
 		"data-with-position": "^0.5.0",
 		"import-local": "^3.2.0",
 		"js-yaml": "^4.3.1",
-		"open": "^11.0.0",
+		"open": "^11.0.1",
 		"pretty-hrtime": "^1.0.3",
 		"semver": "^7.8.5",
 		"update-notifier": "^7.3.1",
@@ -144,7 +144,7 @@
 		"eslint-plugin-jsdoc": "61.5.0",
 		"esmock": "^2.7.6",
 		"execa": "^9.6.1",
-		"globals": "^17.9.0",
+		"globals": "^17.11.0",
 		"jsdoc": "^4.0.5",
 		"knip": "^5.88.1",
 		"licensee": "^11.1.1",
