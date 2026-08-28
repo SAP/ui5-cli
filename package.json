@@ -46,13 +46,13 @@
 		"release-note": "git-chglog --sort semver -c .chglog/release-config.yml v$npm_package_version | node .chglog/consolidate-changelogs.js",
 		"knip": "knip --config knip.config.js",
 		"check-licenses": "licensee --errors-only",
-		"check-engine": "check-engine-light -f npm-shrinkwrap.json ."
+		"check-engine": "check-engine-light -f package-lock.json ."
 	},
+	"bundleDependencies": true,
 	"files": [
 		"CHANGELOG.md",
 		"CONTRIBUTING.md",
 		"jsdoc.json",
-		"npm-shrinkwrap.json",
 		"bin/**",
 		"lib/**",
 		"LICENSES/**",
