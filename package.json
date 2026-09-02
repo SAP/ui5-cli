@@ -48,7 +48,22 @@
 		"check-licenses": "licensee --errors-only",
 		"check-engine": "check-engine-light -f package-lock.json ."
 	},
-	"bundleDependencies": true,
+	"bundleDependencies": [
+		"@ui5/builder",
+		"@ui5/fs",
+		"@ui5/logger",
+		"@ui5/project",
+		"@ui5/server",
+		"chalk",
+		"data-with-position",
+		"import-local",
+		"js-yaml",
+		"open",
+		"pretty-hrtime",
+		"semver",
+		"update-notifier",
+		"yargs"
+	],
 	"files": [
 		"CHANGELOG.md",
 		"CONTRIBUTING.md",
@@ -144,7 +159,7 @@
 		"eslint-plugin-jsdoc": "61.5.0",
 		"esmock": "^2.7.6",
 		"execa": "^9.6.1",
-		"globals": "^17.11.0",
+		"globals": "^17.12.0",
 		"jsdoc": "^4.0.5",
 		"knip": "^5.88.1",
 		"licensee": "^11.1.1",
