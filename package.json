@@ -135,7 +135,7 @@
 		"@ui5/logger": "^4.0.2",
 		"@ui5/project": "^4.0.17",
 		"@ui5/server": "^4.0.16",
-		"chalk": "^5.6.2",
+		"chalk": "^6.0.0",
 		"data-with-position": "^0.5.0",
 		"import-local": "^3.2.0",
 		"js-yaml": "^4.3.2",
