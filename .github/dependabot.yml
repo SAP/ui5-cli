@@ -21,3 +21,10 @@ updates:
     prefix-development: "[INTERNAL] "
   cooldown:
     default-days: 2
+  ignore:
+    - dependency-name: "eslint-plugin-ava"
+      update-types: ["version-update:semver-major"]
+    - dependency-name: "ava"
+      update-types: ["version-update:semver-major"]
+    - dependency-name: "eslint"
+      update-types: ["version-update:semver-major"]
