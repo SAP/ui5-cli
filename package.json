@@ -130,13 +130,11 @@
 		"url": "git@github.com:SAP/ui5-cli.git"
 	},
 	"overrides": {
-		"@ui5/server": {
-			"qs": "^6.16.0",
-			"express": {
-				"body-parser@1.20.6": {
-					"qs": "^6.16.0"
-				}
-			}
+		"express@4": {
+			"body-parser@1.20.6": {
+				"qs": "^6.16.0"
+			},
+			"qs": "^6.16.0"
 		}
 	},
 	"dependencies": {
