@@ -2,7 +2,13 @@
 All notable changes to this project will be documented in this file.  
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-A list of unreleased changes can be found [here](https://github.com/SAP/ui5-cli/compare/v4.0.65...HEAD).
+A list of unreleased changes can be found [here](https://github.com/SAP/ui5-cli/compare/v4.0.66...HEAD).
+
+<a name="v4.0.66"></a>
+## [v4.0.66] - 2026-09-07
+### Bug Fixes
+- Remove qs overrides from package.json [`1c048b7`](https://github.com/SAP/ui5-cli/commit/1c048b72d76a7d57ebc274e14515b6d0747b6b8e)
+
 
 <a name="v4.0.65"></a>
 ## [v4.0.65] - 2026-09-04
@@ -1585,6 +1591,7 @@ Only Node.js v10 or higher is supported.
 
 <a name="v0.0.1"></a>
 ## v0.0.1 - 2018-06-06
+[v4.0.66]: https://github.com/SAP/ui5-cli/compare/v4.0.65...v4.0.66
 [v4.0.65]: https://github.com/SAP/ui5-cli/compare/v4.0.64...v4.0.65
 [v4.0.64]: https://github.com/SAP/ui5-cli/compare/v4.0.63...v4.0.64
 [v4.0.63]: https://github.com/SAP/ui5-cli/compare/v4.0.62...v4.0.63
