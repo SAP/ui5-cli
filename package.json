@@ -48,22 +48,6 @@
 		"check-licenses": "licensee --errors-only",
 		"check-engine": "check-engine-light -f package-lock.json ."
 	},
-	"bundleDependencies": [
-		"@ui5/builder",
-		"@ui5/fs",
-		"@ui5/logger",
-		"@ui5/project",
-		"@ui5/server",
-		"chalk",
-		"data-with-position",
-		"import-local",
-		"js-yaml",
-		"open",
-		"pretty-hrtime",
-		"semver",
-		"update-notifier",
-		"yargs"
-	],
 	"files": [
 		"CHANGELOG.md",
 		"CONTRIBUTING.md",
