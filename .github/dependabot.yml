@@ -33,3 +33,11 @@ updates:
     # eslint@10 requires node ^20.19.0 || ^22.13.0 || >=24
     - dependency-name: "eslint"
       update-types: ["version-update:semver-major"]
+    - dependency-name: "@eslint/js"
+      update-types: ["version-update:semver-major"]
+    # chalk 6.0.0 requires Node.js >=22
+    - dependency-name: "chalk"
+      update-types: ["version-update:semver-major"]
+    # execa 10.0.0 requires Node.js >=22
+    - dependency-name: "execa"
+      update-types: ["version-update:semver-major"]
