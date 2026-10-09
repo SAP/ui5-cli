@@ -141,7 +141,7 @@
 		"eslint-config-google": "^0.14.0",
 		"eslint-plugin-ava": "^15.1.0",
 		"eslint-plugin-jsdoc": "65.1.0",
-		"esmock": "2.7.6",
+		"esmock": "^2.7.9",
 		"execa": "^9.6.1",
 		"globals": "^17.13.0",
 		"jsdoc": "^4.0.5",
