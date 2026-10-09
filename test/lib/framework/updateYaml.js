@@ -56,6 +56,44 @@ framework:
 `, "writeFile should be called with expected content");
 });
 
+test.serial("Should update document with merged metadata", async (t) => {
+	t.context.fsReadFileStub.resolves(`
+---
+projectDefaults: &projectDefaults
+  metadata:
+    name: my-project
+<<: *projectDefaults
+framework:
+  name: SAPUI5
+  version: 1.0.0
+`);
+
+	await updateYaml({
+		project: {
+			getRootPath: () => "my-project",
+			getName: () => "my-project"
+		},
+		data: {
+			framework: {
+				name: "OpenUI5",
+				version: "1.76.0"
+			}
+		}
+	});
+
+	t.is(t.context.fsWriteFileStub.callCount, 1, "fs.writeFile should be called once");
+	t.is(t.context.fsWriteFileStub.getCall(0).args[1], `
+---
+projectDefaults: &projectDefaults
+  metadata:
+    name: my-project
+<<: *projectDefaults
+framework:
+  name: OpenUI5
+  version: "1.76.0"
+`, "writeFile should be called with expected content");
+});
+
 test.serial("Should update first document", async (t) => {
 	t.context.fsReadFileStub.resolves(`
 specVersion: "2.0"
