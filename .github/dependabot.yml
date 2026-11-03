@@ -41,3 +41,7 @@ updates:
     # execa 10.0.0 requires Node.js >=22
     - dependency-name: "execa"
       update-types: ["version-update:semver-major"]
+    # esmock 3.0.0 drops support for Node v20 and earlier, requiring a minimum of Node 22.15
+    # This project currently supports Node v20 and test matrix still runs on it.
+    - dependency-name: "esmock"
+      update-types: ["version-update:semver-major"]
