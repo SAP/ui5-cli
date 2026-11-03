@@ -143,7 +143,7 @@
 		"eslint-plugin-jsdoc": "^65.4.2",
 		"esmock": "^2.8.0",
 		"execa": "^9.6.1",
-		"globals": "^17.13.0",
+		"globals": "^17.14.0",
 		"jsdoc": "^4.0.5",
 		"knip": "^6.44.1",
 		"licensee": "^12.0.2",
